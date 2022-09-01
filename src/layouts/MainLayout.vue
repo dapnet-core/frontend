@@ -1,12 +1,12 @@
 <template>
   <q-layout view="hHh LpR fff">
 
-    <q-header elevated class="bg-primary text-white">
+    <q-header elevated class="text-white bg-primary">
       <q-toolbar>
         <q-btn dense flat round icon="mdi-menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title>
-          <!-- TODO: Make responsive -->
+          <!-- TODO: Make responsive or remove/replace -->
           <q-img src="~assets/dapnet-logo.png" height="56px" fit="contain" position="0% 50%" />
         </q-toolbar-title>
 
@@ -28,8 +28,11 @@
       <q-list padding>
         <q-item v-if="store.loggedIn" >
           <q-item-section top avatar>
-            <q-avatar>
-              <img src="~assets/moth-drum.gif">
+            <q-avatar v-if="store.auth?.avatar">
+              <img :src="store.auth?.avatar">
+            </q-avatar>
+            <q-avatar v-else color="primary" text-color="white">
+              {{ store.auth?.username[0] }}
             </q-avatar>
           </q-item-section>
 
@@ -143,3 +146,11 @@ function toggleLeftDrawer () {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
 </script>
+
+<style scoped lang="scss">
+  .bg-gradient{
+    /* Created with https://www.css-gradient.com */
+    background: $primary;
+    background: linear-gradient(to bottom right, $primary, $secondary);
+  }
+</style>

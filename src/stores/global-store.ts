@@ -7,6 +7,7 @@ export type Theme = 'dark' | 'light'
 interface State {
   auth?: { // If set a user is logged in
     username: string
+    avatar?: string // avatar URL
     token: string // some web token used for authorization
     permissions: []
   }
