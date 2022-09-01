@@ -8,10 +8,19 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
+const { execSync } = require('node:child_process')
+
 const { configure } = require('quasar/wrappers')
 const path = require('path')
+const pkg = require('./package.json')
 
 module.exports = configure(function (/* ctx */) {
+  // Get local git metadata
+  // https://stackoverflow.com/a/71162041
+  const branchName = execSync('git rev-parse --abbrev-ref HEAD').toString().trimEnd()
+  const commitHash = execSync('git rev-parse HEAD').toString().trimEnd().substring(0, 8)
+  const version = pkg.version
+
   return {
     eslint: {
       // fix: true,
@@ -67,7 +76,11 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: {
+        version,
+        branchName,
+        commitHash
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,

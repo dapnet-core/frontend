@@ -7,19 +7,26 @@
 
         <q-toolbar-title>
           <!-- TODO: Make responsive -->
-          <q-img src="~assets/dapnet-logo.png" height="56px" fit="contain" position="0% 50%"/>
+          <q-img src="~assets/dapnet-logo.png" height="56px" fit="contain" position="0% 50%" />
         </q-toolbar-title>
 
         <q-space />
 
-        <q-btn flat label="Lang" />
-        <q-btn flat label="Theme" />
+        <!-- TODO: Make dropdown wider on large screens so 2 languages fit per line -->
+        <q-btn-dropdown flat :label="store.language">
+          <q-list>
+            <q-item clickable v-close-popup v-for="(item, key) in MessageLanguages" :key="key" @click="store.changeLanguage(item)">
+              <q-item-section>{{ $t(`footer.language.${item}`) }}</q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
+        <q-btn dense flat icon="mdi-brightness-6" @click="store.toggleTheme" />
       </q-toolbar>
     </q-header>
 
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
       <q-list padding>
-        <q-item>
+        <q-item v-if="store.loggedIn" >
           <q-item-section top avatar>
             <q-avatar>
               <img src="~assets/moth-drum.gif">
@@ -27,159 +34,29 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Username</q-item-label>
+            <q-item-label>{{ store.auth?.username }}</q-item-label>
           </q-item-section>
         </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="mdi-send" />
-          </q-item-section>
-
-          <q-item-section>
-            Send call
-          </q-item-section>
-        </q-item>
-
+        <Item icon="mdi-send" :title="$t('navigation.calls.new')" to="/calls/new" v-if="store.loggedIn" />
+        <Item icon="mdi-cast" :title="$t('navigation.subscribers.my')" to="/subscribers/my" :count="count?.my?.subscribers" v-if="store.loggedIn && count?.my?.subscribers"/>
+        <Item icon="mdi-wifi" :title="$t('navigation.transmitters.my')" to="/transmitters/my" :count="count?.my?.transmitters" v-if="store.loggedIn && count?.my?.transmitters"/>
+        <Item icon="mdi-message-text" :title="$t('navigation.rubrics.my')" to="/rubrics/my" :count="count?.my?.rubrics" v-if="store.loggedIn && count?.my?.rubrics"/>
+        <Item icon="mdi-cloud" :title="$t('navigation.nodes.my')" to="/nodes/my" :count="count?.my?.nodes" v-if="store.loggedIn && count?.my?.nodes"/>
+        <q-separator v-if="store.loggedIn" />
+        <Item icon="mdi-map" :title="$t('navigation.transmitters.map')" to="/transmitters/map" />
+        <Item icon="mdi-email" :title="$t('navigation.calls.all')" to="/calls" :count="count?.calls" />
+        <Item icon="mdi-cast" :title="$t('navigation.subscribers.all')" to="/subscribers" :count="count?.subscribers"/>
+        <Item icon="mdi-wifi" :title="$t('navigation.transmitters.all')" to="/transmitters" :count="count?.transmitters"/>
+        <Item icon="mdi-message-text" :title="$t('navigation.rubrics.all')" to="/rubrics" :count="count?.rubrics"/>
+        <Item icon="mdi-account-box" :title="$t('navigation.users.all')" to="/users" :count="count?.users"/>
+        <Item icon="mdi-cloud" :title="$t('navigation.nodes.all')" to="/nodes" :count="count?.nodes" />
         <q-separator />
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="mdi-map" />
-          </q-item-section>
-
-          <q-item-section>
-            Map
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="mdi-email" />
-          </q-item-section>
-
-          <q-item-section>
-            All calls
-          </q-item-section>
-
-          <q-item-section side>
-            <q-badge color="primary" label="10k" />
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="mdi-cast" />
-          </q-item-section>
-
-          <q-item-section>
-            All Subscribers
-          </q-item-section>
-
-          <q-item-section side>
-            <q-badge color="primary" label="10k" />
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="mdi-wifi" />
-          </q-item-section>
-
-          <q-item-section>
-            All Transmitters
-          </q-item-section>
-
-          <q-item-section side>
-            <q-badge color="primary" label="10k" />
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="mdi-message-text" />
-          </q-item-section>
-
-          <q-item-section>
-            All Rubics
-          </q-item-section>
-
-          <q-item-section side>
-            <q-badge color="primary" label="10k" />
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="mdi-account-box" />
-          </q-item-section>
-
-          <q-item-section>
-            All Users
-          </q-item-section>
-
-          <q-item-section side>
-            <q-badge color="primary" label="10" />
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="mdi-cloud" />
-          </q-item-section>
-
-          <q-item-section>
-            All Nodes
-          </q-item-section>
-
-          <q-item-section side>
-            <q-badge color="primary" label="10" />
-          </q-item-section>
-        </q-item>
-
+        <Item icon="mdi-information" :title="$t('navigation.help.wiki')" href="https://hampager.de/dokuwiki/doku.php" target="_blank"/>
+        <Item icon="mdi-comment-question" :title="$t('navigation.help.support')" href="https://support.hampager.de/" target="_blank"/>
         <q-separator />
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="mdi-information" />
-          </q-item-section>
-
-          <q-item-section>
-            Documentation
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="mdi-comment-question" />
-          </q-item-section>
-
-          <q-item-section>
-            Support
-          </q-item-section>
-        </q-item>
-
-        <q-separator />
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="mdi-cog" />
-          </q-item-section>
-
-          <q-item-section>
-            Settings
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="mdi-logout" />
-          </q-item-section>
-
-          <q-item-section>
-            Logout
-          </q-item-section>
-        </q-item>
+        <Item icon="mdi-cog" :title="$t('navigation.settings')" to="/settings" v-if="store.loggedIn" />
+        <Item icon="mdi-logout" :title="$t('navigation.logout')" v-if="store.loggedIn" />
+        <Item icon="mdi-login" :title="$t('navigation.login')" to="/login" v-if="!store.loggedIn" />
       </q-list>
     </q-drawer>
 
@@ -188,21 +65,24 @@
     </q-page-container>
 
     <q-footer elevated class="bg-grey-8 text-white">
+      <!-- TODO: Make responsive -->
       <q-toolbar class="q-px-xl">
-
-        <q-btn flat label="Privacy" />
-        <q-btn flat label="Impress" />
-
-        <q-space />
-
-        <q-btn flat round icon="mdi-github" />
-        <q-btn flat round icon="mdi-web" />
-        <q-btn flat round icon="mdi-facebook" />
-        <q-btn flat round icon="mdi-twitter" />
+        <q-btn flat :label="$t('footer.contact.contact')" href="https://www.afu.rwth-aachen.de/ueber-uns/kontakt" target="_blank"/>
+        <q-btn flat :label="$t('footer.contact.impress')" to="/impress" />
+        <q-btn flat :label="$t('footer.contact.privacy')" to="/privacy" />
 
         <q-space />
 
-        Version 4.0.0-alpha
+        <q-btn flat round v-for="(item, key) in footerLinks" :key="key" :icon="item.icon" :href="item.link" target="_blank">
+          <q-tooltip>{{ item.tooltip }}</q-tooltip>
+        </q-btn>
+
+        <q-space />
+
+        <span>
+          {{ $t('footer.version.frontend', {version}) }}
+          <q-tooltip>{{ branch }} / {{commit}}</q-tooltip>
+        </span>
       </q-toolbar>
     </q-footer>
 
@@ -210,9 +90,54 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, Ref, ref } from 'vue'
+import { globalStore } from 'stores/global-store'
+import { MessageLanguages } from 'boot/i18n'
+import { useI18n } from 'vue-i18n'
+import Item from 'components/AppSidebarComponent.vue'
+
+const store = globalStore()
+const { t } = useI18n()
+
+const version = process.env.version
+const commit = process.env.commitHash
+const branch = process.env.branchName
 
 const leftDrawerOpen = ref(false)
+const footerLinks = computed(() => [
+  { icon: 'mdi-github', link: 'https://github.com/dapnet-core', tooltip: t('footer.support.github') },
+  { icon: 'mdi-web', link: 'https://www.afu.rwth-aachen.de', tooltip: t('footer.support.rwth-amateur-radio') },
+  { icon: 'mdi-twitter', link: 'https://twitter.com/RWTHAmateurfunk', tooltip: 'Twitter' },
+  { icon: 'mdi-facebook', link: 'https://www.facebook.com/DL0UA', tooltip: 'Facebook' }
+])
+interface Count {
+  calls: number
+  subscribers: number
+  transmitters: number
+  rubrics: number
+  users: number
+  nodes: number
+  my?: {
+    subscribers: number
+    transmitters: number
+    rubrics: number
+    nodes: number
+  }
+}
+const count : Ref<Count | undefined> = ref({
+  calls: 10,
+  subscribers: 50,
+  transmitters: 0,
+  rubrics: 0,
+  users: 0,
+  nodes: 0,
+  my: {
+    subscribers: 50,
+    transmitters: 0,
+    rubrics: 0,
+    nodes: 0
+  }
+})
 
 function toggleLeftDrawer () {
   leftDrawerOpen.value = !leftDrawerOpen.value

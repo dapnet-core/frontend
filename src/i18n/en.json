@@ -305,6 +305,9 @@
 			"title": "Versions",
 			"check": "Check"
 		},
+		"version": {
+			"frontend": "Version: {version}"
+		},
 		"frontendcodedby" : "Frontend coded by",
 		"cookieconsent": {
 			"button": "OK",
