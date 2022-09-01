@@ -1,0 +1,1166 @@
+{
+	"navigation": {
+		"home" : "Home",
+		"myentities": "My Entities",
+		"allentities": "All Entities",
+		"calls": {
+			"title": "Calls",
+			"all": "All Calls",
+			"my": "My Calls",
+			"new": "Send call"
+		},
+		"subscribers": {
+			"title": "Subscribers",
+			"all": "All Subscribers",
+			"my": "My Subscribers",
+			"onlynames": " All Subscriber Names"
+		},
+		"rubrics": {
+			"title": "Rubrics",
+			"all": "All Rubrics",
+			"my": "My Rubrics",
+			"onlynames": "Ruric Names",
+			"activate": "Activate Rubrics",
+			"content": "Rubric Content"
+		},
+		"transmitters": {
+			"title": "Transmitters",
+			"all": "All Transmitters",
+			"my": "My Transmitters",
+			"onlynames": " All Subscriber Names",
+			"map": "Map",
+			"groups": "Transmitter Groups"
+		},
+		"nodes": {
+			"title": "Nodes",
+			"all": "All Nodes",
+			"my": "My Nodes",
+			"onlynames": " All Node Names",
+			"map": "Map"
+		},
+		"users":
+		{
+			"title": "Users",
+			"all": "All Users",
+			"onlynames": "Usernames"
+		},
+		"help": {
+			"title": "Help",
+			"wiki": "Documentation",
+			"support": "Support"
+		},
+		"settings": "Settings",
+		"login": "Login",
+		"logout": "Logout"
+	},
+	"home": {
+		"carousel": {
+			"button": "Learn more",
+			"dapnet": {
+				"title": "Welcome to DAPNET Web!",
+				"text1": "The DAPNET (Decentralized Amateur Paging Network) is a network operated by amateur radio enthusiasts. As it is used on amateur radio frequencies, commercial use is forbidden.",
+				"text2": "If you are a licensed amateur radio operator, get your login account now."
+			},
+			"raspager": {
+				"title": "Transmitter Raspager",
+				"text": "A low-cost and low-power personal transmitter as an add-on board for Raspberry Pi."
+			},
+			"map": {
+				"title": "Coverage Map",
+				"text": "Transmitters are displayed on a map with their simulated coverage area."
+			},
+			"display": {
+				"title": "Touch Display for Transmitters",
+				"text": "Easy-to-use graphical control display based on Nextion Displays. Connection to transmitter host via UART or USB2UART."
+			},
+			"unipager": {
+				"title": "Unipager - One software for all transmitter types",
+				"text": "Written in RUST, the Unipager software controls all transmitter types: Raspager, Ericsson C9000, Soundcard and RFM69. A Debian package is available for easy install and update."
+			},
+			"swissphone": {
+				"title": "Modern paging receiver Swissphone",
+				"text": "High-End model for pro-users."
+			},
+			"gm1200": {
+				"title": "SDR based Transmitter with GM1200",
+				"text": "All you need is a Raspberry Pi, a 9600 Baud-ready radio and a simple audio interface. Also feasable in combination with the touch display."
+			},
+			"alphapoc": {
+				"title": "AlphaPOC 6002R paging reciever",
+				"text": "Commercially available, small and no modification needed. Easy on-pager programming."
+			},
+			"dapnet_structure": {
+				"title": "Structure of DAPNET",
+				"text": "Transparent and up-to-date comminication protocols like REST and Websocket are used."
+			},
+			"tickets": {
+				"title": "Support by ticket system",
+				"text": "Support requests are handled by a team for quick response time and maximum knowledge sharing."
+			}
+		},
+		"information": {
+			"dapnet": {
+				"title": "The DAPNET",
+				"projects": "Projects"
+			},
+			"map": "Go to full map view",
+			"statistics": {
+				"calls": "Calls",
+				"rubric-content": "Rubric Content",
+				"rubrics": "Rubrics",
+				"transmitters": "Transmitters",
+				"nodes": "Nodes",
+				"users": "Users"
+			}
+		}
+	},
+	"transmitters": {
+		"usage": {
+			"title": "Usage",
+			"widerange": "Widerange",
+			"personal": "Personal"
+		},
+		"status": {
+			"connected": "Connected",
+			"online": "Online",
+			"offline": "Offline",
+			"software": "Software",
+			"IPaddress": "Address",
+			"node": "Node",
+			"lastseen": "Last seen",
+			"onair": "On Air",
+			"messagequeue": "Queue"
+		},
+		"emergency_power": {
+			 "title": "Emerg. Power"
+		},
+		"power": "Output Power",
+		"frequency": "Frequency",
+		"overview": {
+			"newtransmitter": "New Transmitter",
+			"table": {
+				"title": "All Transmitters",
+				"callsign": "Callsign",
+				"node": "Node",
+				"ipaddress": "IP-Address",
+				"device": "Device",
+				"status": "Status",
+				"connectedsince": "Connected since"
+			},
+			"actions": {
+				"newtransmitter": "New Transmitter",
+				"sendmailtoallowners": "Send a mail to all owners"
+			},
+			"statistics": {
+				"total": "Total",
+				"widerangeonly": "Widerange-transmitter only"
+			},
+			"information": {
+				"text": "This overview shows all registered transmitters of the DAPNET network. Before you can connect your transmitter to one of the DAPNET-Nodes, it has to be registered by one of the admins. There are two classes of transmitters: Widerange (&gt; 1 Watt) and Personal (&lt;= 1 Watt). Why is there such a big number of offline transmitters? These are transmitters which have been registered in the past, but apparently are not online now. There is no information stored which transmitters \"should\" be online and which not.<br>Transmitters have one or multiple owners who can change the settings by themselves. Each transmitter is assigned to one or max. 16 timeslots. This is necessary as they transmit all on the same frequency, but not overlapping at the same time. Be aware to assign no timeslots to your transmitter that are already used in you coverage area. Contact one of the admins, if you need help."
+			}
+		},
+		"new": {
+			"newtransmitter": "New Transmitter",
+			"edittransmitter": "Edit Transmitter",
+			"callsign": {
+				"title": "Callsign",
+				"help": "Enter a valid amateur radio callsign of this transmitter. It will be also used for the 10 minute interval transmitter identification message to fulfill the law (at least the German law)."
+			},
+			"import": {
+				"help": "Easy import of stations from hamnetdb.net. Location data of the selected transmitter site will be copied into the form."
+			},
+			"authkey": {
+				"title": "Auth-Key",
+				"help": "Enter an authentication key for this transmitter. Set the exact same on the transmitter itself."
+			},
+			"enabled" : {
+				"title": "Transmitter enabled?",
+				"help": "Select here if the transmitter is able to connect to the network."
+			},
+			"transmitter_groups": {
+				"help": "Select one or more existing transmitter groups or create a new one by typing."
+			},
+			"owner": {
+				"help": "An owner of a transmitter association can edit its parameters."
+			},
+			"usage": {
+				"help": "For classification of the transmitters, there are two categories: Personal (Transmitters with low output power like RasPager) and Wide Range (Higher output power and elevated location site)."
+			},
+			"aprs_broadcast": {
+				"title": "APRS Beacon Broadcast?",
+				"help": "Selectes weather the position of this transmitter is published by the DAPNET System on APRS."
+			},
+			"emergency": {
+				"available": {
+					"title": "Off-grid emerency power supply available?",
+					"help": "Is off-grid power supply for this transmitter available?"
+				},
+				"infinite":{
+					"title": "Quasi Infinite?",
+					"help": "Is the off-grid power for an quasi infinite periode of time available (e.g. photovoltaic or DFMG tower petrol generator)?"
+				},
+				"duration":{
+					"title": "Duration in hours",
+					"help": "Enter the duration time of off-grid power in hours.",
+					"title_short": "Duration"
+				}
+			},
+			"antennatype": {
+				"title": "Antenna Type",
+				"omni": "Omni",
+				"directional": "Directional",
+				"other": "Other",
+				"help": "Please select if you have a omnidirectional antenna (e.g. X-50) or a directional antenna (e.g. Yagi)."
+			},
+			"antennadirection": {
+				"title": "Antenna main beam direction",
+				"help": "Enter the antenna main beam direction in degrees according to \"True North\" (in German \"rechtweisend Nord\")."
+			},
+			"power": {
+				"title_short": "Output power",
+				"help": "Enter the transmitter output power in Watts including your cable losses."
+			},
+			"frequency": {
+				"title_short": "Frequency",
+				"help": "Enter the transmitter frequency in Hz."
+			},
+			"antennalevel": {
+				"title": "Antenna elevation over ground",
+				"help": "Enter the antenna elevation over ground; NOT over NN (!) in meters.",
+				"title_short": "Antenna elevation"
+			},
+			"antennagain": {
+				"title": "Antenna gain",
+				"help": "Enter the antenna gain in the main lobe direction for directional antennas and the average gain for omnidirectional antennas in dBi (dBi: Gain over isotropic radiator).",
+				"title_short": "Antenna gain in dBi"
+			},
+			"txidentric": {
+				"help": "<b>Transmitter identification RIC</b>: Enter a RIC (default value is 8) which will be used to generate an artificial paging message containing the amateur radio callsign as given in this form."
+			},
+			"timeslots": {
+				"title": "Timeslots",
+				"help": "As all transmitters use the same frequency a time division multiplex access scheme is used. There are 16 timeslots available. Assign the slots of this transmitter according to you surrounding transmitters in your neighborhood without overlapping timeslots that are assigned to more than one transmitter. You can use the transmitter map to check already assigned timeslots of adjacent transmitters. In case that you cannot fulfill your requirements, contact the adjacent transmitter owners and try to get an agreement. Normally four 4 or less timeslots per transmitter are more than enough."
+			},
+			"table": {
+				"description": "This table shows the registered paging transmitters, their online status and additional information. Personal transmitters have low output power and a very small coverage. Wide range transmitters are usually installed at elevated locations leading to a wide coverage area."
+			}
+		},
+		"map": {
+			"title": "Map",
+			"settings": {
+				"title": "Settings"
+			},
+			"checkbox": {
+				"showpttstatus": "Show live OnAir Status",
+				"showonlineonly": "Show online transmitters only",
+				"showwiderangeonly": "Show Widerange-transmitter only",
+				"showbytimeslot": "Show transmitters by timeslots",
+				"shownodes": "Show nodes",
+				"shownodeline": "Show line from transmitter to node"
+			},
+			"actions": {
+				"showallcoverage": "Show all coverage-overlays",
+				"removeallcoverage": "Remove all coverage-overlays"
+			},
+			"alerts": {
+				"load": {
+					"title": "Load coverage-overlays?",
+					"text": "Press \"Continue\" to load all coverage-overlays for the currently visible transmitters. This may take some time and put your device under heavy load."
+				},
+				"confirm": {
+					"title": "Are you really sure?",
+					"text": "You are going to load and display the coverage of <b> {amount} transmitters</b>. This will take some time and put your device under heavy load.",
+					"continue": "Yes, I am sure and I won't blame the developer if my browser crashes."
+				}
+			}
+		}
+	},
+	"footer": {
+		"language": {
+			"title": "Language",
+			"en": "English",
+			"de": "German",
+			"es": "Spanish",
+			"nl": "Dutch",
+			"fr": "French",
+			"pl": "Polish",
+			"it": "Italian",
+			"pt": "Portuguese",
+			"se": "Swedish"
+		},
+		"support": {
+			"title": "Support us",
+			"github": "GitHub",
+			"rwth-amateur-radio": "RWTH Amateur Radio"
+		},
+		"contact": {
+			"title": "Contact us",
+			"twitter": "Twitter",
+			"facebook": "Facebook",
+			"contact": "Contact",
+			"impress": "Impress",
+			"privacy": "Privacy"
+		},
+		"versions": {
+			"title": "Versions",
+			"check": "Check"
+		},
+		"frontendcodedby" : "Frontend coded by",
+		"cookieconsent": {
+			"button": "OK",
+			"text": "This site uses cookies and your browser's local storage to deliver our services. By using our site, you acknowledge that you have read and understand our Privacy Policy."
+		}
+	},
+	"table": {
+		"search": "Search",
+		"pagination": {
+			"page": "Page",
+			"of": "of"
+		},
+		"actionbuttons": {
+			"edit": "Edit",
+			"delete": "Delete",
+			"email": "Send email",
+			"rubrics": "Send rubrics",
+			"monitoring": "Monitoring",
+			"showeditrubriccontent": "Show and edit rubric content"
+		}
+	},
+	"rest": {
+		"errors": {
+			"title": "Error",
+			"no-connection": "No Connection",
+			"api-unreachable": "Unable to reach API server. Please try again later.",
+			"permissions": "Invalid login credentials or no permission for this request. Please check username and password.",
+			"http-error": "Unhandled HTTP error {status}. Please try again later.",
+			"403": {
+				"title": "Forbidden",
+				"text": "No permission for this request."
+			},
+			"404": {
+				"title": "Not Found",
+				"text": "Unable to find the requested resource."
+			},
+			"409": {
+				"title": "Conflict",
+				"text": "This resource is already present."
+			}
+		}
+	},
+	"alerts": {
+		"noGitHubConnection": "Cannot obtain the latest release information from GitHub. Maybe your device is not able to reach this website?",
+		"noUndo": "You will not be able to undo this step once it is done.",
+		"cancel": "Cancel",
+		"ok": "OK",
+		"ticketlink": "Please open a ticket at {htmlcode}.",
+		"success": {
+			"title": "Success",
+			"text": "Operation successfully executed."
+		},
+		"versioncheck": {
+			"uptodate": "This platform runs at least the latest released version on GitHub.",
+			"outdated": "This platform runs an older released version compared to the latest released one on GitHub. The latest version is:"
+		},
+		"rolesempty": {
+			"title": "No roles selected",
+			"text": "There must be at least one role selected."
+		},
+		"delete": {
+			"transmitter": {
+				"title": "Are you sure to delete transmitter {fieldname} ?",
+				"confirm": "Yes, I know what I'm doing, delete transmitter {fieldname}.",
+				"success": "Transmitter {fieldname} was deleted.",
+				"error": "An error occurred deleting transmitter {fieldname}."
+			},
+			"rubric": {
+				"title": "Are you sure to delete rubric {fieldname} ?",
+				"confirm": "Yes, I know what I'm doing, delete rubric {fieldname}.",
+				"success": "Rubric {fieldname} was deleted.",
+				"error": "An error occurred deleting rubric {fieldname}."
+			},
+			"node": {
+				"title": "Are you sure to delete node {fieldname} ?",
+				"confirm": "Yes, I know what I'm doing, delete node {fieldname}.",
+				"success": "Node {fieldname} was deleted.",
+				"error": "An error occurred deleting node {fieldname}."
+			},
+			"subscriber": {
+				"title": "Are you sure to delete subscriber {fieldname} ?",
+				"confirm": "Yes, I know what I'm doing, delete subscriber {fieldname}.",
+				"success": "Subscriber {fieldname} was deleted.",
+				"error": "An error occurred deleting subscriber {fieldname}."
+			},
+			"user": {
+				"title": "Are you sure to delete user {fieldname} ?",
+				"confirm": "Yes, I know what I'm doing, delete user {fieldname}.",
+				"success": "User {fieldname} was deleted.",
+				"error": "An error occurred deleting user {fieldname}."
+			}
+		},
+		"addmode": {
+			"transmitter": {
+				"fail": {
+					"title": "Failed to add transmitter {fieldname}."
+				},
+				"success": {
+					"title": "Added transmitter {fieldname} successfully."
+				}
+			},
+			"rubric": {
+				"fail": {
+					"title": "Failed to add rubric {fieldname}."
+				},
+				"success": {
+					"title": "Added rubric {fieldname} successfully."
+				}
+			},
+			"node": {
+				"fail": {
+					"title": "Failed to add node {fieldname}."
+				},
+				"success": {
+					"title": "Added node {fieldname} successfully."
+				}
+			},
+			"subscriber": {
+				"fail": {
+					"title": "Failed to add subscriber {fieldname}."
+				},
+				"success": {
+					"title": "Added subscriber {fieldname} successfully."
+				}
+			},
+			"user": {
+				"fail": {
+					"title": "Failed to add user {fieldname}."
+				},
+				"success": {
+					"title": "Added user {fieldname} successfully."
+				}
+			}
+		},
+		"editmode": {
+			"transmitter": {
+				"fail": {
+					"title": "Failed to store changes of transmitter {fieldname}."
+				},
+				"success": {
+					"title": "Stored changes of transmitter {fieldname} successfully."
+				}
+			},
+			"rubric": {
+				"fail": {
+					"title": "Failed to store changes of rubric {fieldname}."
+				},
+				"success": {
+					"title": "Stored changes of rubric {fieldname} successfully."
+				}
+			},
+			"node": {
+				"fail": {
+					"title": "Failed to store changes of node {fieldname}."
+				},
+				"success": {
+					"title": "Stored changes of node {fieldname} successfully."
+				}
+			},
+			"subscriber": {
+				"fail": {
+					"title": "Failed to store changes of subscriber {fieldname}."
+				},
+				"success": {
+					"title": "Stored changes of subscriber {fieldname} successfully."
+				}
+			},
+			"user": {
+				"fail": {
+					"title": "Failed to store changes of user {fieldname}."
+				},
+				"success": {
+					"title": "Stored changes of user {fieldname} successfully."
+				}
+			}
+		},
+		"errorLoad": {
+			"nodes": {
+				"list": {
+					"title": "Could not load list of nodes."
+				},
+				"my": {
+					"title": "Could not load data of my nodes."
+				},
+				"details": {
+					"title": "Could not load details of node {fieldname}."
+				},
+				"names": {
+					"title": "Could not load list of node names."
+				}
+			},
+			"users": {
+				"list": {
+					"title": "Could not load list of users."
+				},
+				"names": {
+					"title": "Could not load list of user names."
+				},
+				"details": {
+					"title": "Could not load details of user {fieldname}."
+				},
+				"roles": {
+					"title": "Could not load list of user roles."
+				}
+			},
+			"rubrics": {
+				"list": {
+					"title": "Could not load list of rubrics."
+				},
+				"my": {
+					"title": "Could not load data of my rubrics."
+				},
+				"names": {
+					"title": "Could not load list of rubric names."
+				},
+				"details": {
+					"title": "Could not load details of rubric {fieldname}."
+				}
+			},
+			"transmitters": {
+				"list": {
+					"title": "Could not load list of transmitters."
+				},
+				"my": {
+					"title": "Could not load data of my transmitters."
+				},
+				"names": {
+					"title": "Could not load list of transmitter names."
+				},
+				"groups": {
+					"title": "Could not load list of transmitter groups."
+				},
+				"details": {
+					"title": "Could not load details of transmitter {fieldname}."
+				}
+			},
+			"subscribers": {
+				"list": {
+					"title": "Could not load list of subscribers."
+				},
+				"my": {
+					"title": "Could not load data of my subscribers."
+				},
+				"names": {
+					"title": "Could not load list of subscriber names."
+				},
+				"groups": {
+					"title": "Could not load list of subscriber groups."
+				},
+				"details": {
+					"title": "Could not load details of subscriber {fieldname}."
+				}
+			}
+		},
+		"LoadSubcribersdetails": {
+			"input": {
+				"title": "Missing input",
+				"text": "Please fill in every field to continue."
+			},
+			"overwrite": {
+				"title": "Prevented Overwriting",
+				"text": "A possible case of overwriting existing data has been prevented."
+			},
+			"getUserData": {
+				"title": "Unable to load User data from Server",
+				"text": "Please try again later."
+			},
+			"password": {
+				"title": "Forbidden character",
+				"text": "Your password must not contain anything but <code>A-Z</code>, <code>a-Z</code> and/or <code>0-9</code>."
+			},
+			"location": {
+				"title": "Invalid location",
+				"text": "Please check the given location and make sure to use your locale's decimal separator (e.g. <code>,</code> in German or <code>.</code> in US-English)."
+			}
+		},
+		"sidebar": {
+			"errorLoading": {
+				"my": {
+					"subscribers": "Error loading count of my subscribers.",
+					"rubrics": "Error loading count of my rubrics.",
+					"transmitters": "Error loading count of my transmitters.",
+					"nodes": "Error loading count of my nodes."
+				},
+				"total": {
+					"subscribers": "Error loading total count of nodes.",
+					"rubrics": "Error loading total count of rubrics.",
+					"transmitters": "Error loading total count of transmitters.",
+					"nodes": "Error loading total count of nodes.",
+					"users": "Error loading total count of users.",
+					"calls": "Error loading total count of calls."
+				}
+			}
+		}
+	},
+	"formvalidation": {
+		"overlength": "{fieldname} must be less or equal than {count} characters.",
+		"underlength": "{fieldname} must be minimum {count} characters.",
+		"isrequired": "{fieldname} is required.",
+		"onlyalphanumeric": "Only numbers and letters allowed.",
+		"onylalphanumericspacehyphen": "Only numbers, letters, spaces and - are allowed.",
+		"onylalphanumerichyphen": "Only numbers, letters and - are allowed.",
+		"onlyalphanumerichyphenunderscorepoint": "Only numbers, letters, points, _ and - are allowed",
+		"isvalidEmail": "The given email must be valid.",
+		"minonerole": "At least one role",
+		"minoneowner": "At least one owner",
+		"OutOfRange": "{fieldname} must be between {min} and {max}.",
+		"onlyInteger": "Only integer numbers allowed as {fieldname}",
+		"onlyIntegerSearch": "Only integer numbers allowed in this search context.",
+		"notzeroornegative": "{fieldname} must be greater than 0.",
+		"notnegative": "{fieldname} must be not negative.",
+		"notgreateras": "{fieldname} must not be greater as {max}.",
+		"maximal": "{fieldname} cannot be greater than {max}.",
+		"notlessorequalthan": "{fieldname} cannot be less or equal than {min}.",
+		"minonetransmitterorgroup": "There must be at least one transmitter or one transmitter group selected.",
+		"allreadypresent": "{fieldname} is already present in database. Select another one.",
+		"usageSelected": "The usage of the transmitter must be selected.",
+		"antennaTypeSelected": "The antenna type of the transmitter must be selected.",
+		"noTimeslotSelected": "At least one timeslot must be selected.",
+		"multipleof500Hz": "The frequency must be an integer multiple of 500 Hz.",
+		"invalidAPRSCallsign": "At least one of the entered APRS callsigns is invalid.",
+		"OutOfRangeAtLeastOne": "At least one of the entered {fieldname} is out of range. {fieldname} must be between {min} and {max}.",
+		"emailInvaildAtLeastOne": "At least one of the entered email adresses is invalid."
+	},
+	"general": {
+		"callsign": "Callsign",
+		"transmitters": "Transmitters",
+		"transmitter_groups": "Transmitter Groups",
+		"subscribers": "Subscribers",
+		"subscriber": "Subscriber",
+		"subscriber_groups": "Subscriber Groups",
+		"priority": "Priority",
+		"priority_hint": "Store priority for personal messages",
+		"priorities": {
+			"lowest": "lowest",
+			"low": "low",
+			"medium": "medium",
+			"high": "high",
+			"highest": "highest"
+		},
+		"expiration": "Expiration time",
+		"default_expiration": "Default expiration time",
+		"days": "Days",
+		"hours": "Hours",
+		"minutes": "Minutes",
+		"enabled": "Enabled?",
+		"roles": "Roles",
+		"continue": "Continue",
+		"submit": "Submit",
+		"abort": "Abort",
+		"information": "Information",
+		"owner": "Owner",
+		"owners": "Owners",
+		"actions": "Actions",
+		"statistics": "Statistics",
+		"description": "Description",
+		"name": "Name",
+		"latlong": {
+			"latitude": "Latitude",
+			"longitude": "Longitude",
+			"title": "Latitude / Longitude",
+			"north": "North",
+			"south": "South",
+			"east": "East",
+			"west": "West",
+			"picker": "Location Picker"
+		},
+		"password": "Password",
+		"username": "Username",
+		"email": "Email",
+		"password_unchanged": "Password unchanged",
+		"password_new": "New Password",
+		"yes": "Yes",
+		"no": "No",
+		"confirm": "Confirm",
+		"cancel": "Cancel",
+		"permalink": "Permalink",
+		"duplication": "Changing this name will create a duplication and <i>not</i> change the element's name.",
+		"news": "News",
+		"updated_at": "Updated at",
+		"created_at": "Created at",
+		"byUser": "by",
+		"missing": "missing",
+		"general_settings": "General Settings",
+		"default_settings": "Default Settings",
+		"message": "Message",
+		"thirdpartyservices": "Third-Party Services",
+		"pagers": "Pagers",
+		"24hr": "false",
+		"firstdayofweek": "Sunday",
+		"toggleauthkeyvisibility": "Toggle auth key visibility",
+		"generaterandomauthkey": "Generate random auth key",
+		"copyauthkeytoclipboard": "Copy auth key to clipboard",
+		"authkey": "Authentication Key",
+		"noResultsInDataTable": "No matching results for {fieldname} found.",
+		"upload": "Upload",
+		"hamcloud": "Hamcloud",
+		"search": "Search",
+		"searchSelectHint": "Select which column to search",
+		"seachHintDisabled": "Search disabled, click on a searchable column header.",
+		"DMRID": "DMR ID"
+	},
+	"rubrics": {
+		"number": "Number",
+		"subric": "SubRIC",
+		"id": "ID",
+		"label": "Label",
+		"description": "Description",
+		"cyclicTransmit": "Cyclic retransmissions?",
+		"cyclicTX": "Cyclic TX?",
+		"numberofMessages": "#Messages",
+		"function": {
+			"title": "Function (SubRIC)",
+			"help": "Non-Skyper-Function Bits are not avaiable on Skypers."
+		},
+		"expirationdate": {
+			"title": "Expiration date",
+			"help": "Enter the expiration date."
+		},
+		"expirationtime": {
+			"title": "Expiration time",
+			"help": "Enter the expiration time."
+		},
+		"notskyper": "This rubric will not be reveiced by Skpers, as the function SubRIC is not 3. That's ok, but be aware for this fact.",
+		"notskypershort": "NOT AVAILABLE ON SKYPERs",
+		"highprioritywarning": "You selected a high priority for this rubric. In order to assure personal calls are delivered fast, please rethink if this is really necessary. A priority of maximum medium should be enough in most use cases. Please DO NOT abuse the priority for egoistic reasons.",
+		"highestprioritywarning": "You selected the highest priority for this rubric. THIS IS NOT GOOD!",
+		"expirationenabled": {
+			"title": "Expires?",
+			"show": "Show expiration selection fields"
+		},
+		"message" : {
+			"help": "Enter your new message here."
+		},
+		"priorityboost": {
+			"title": "Prio. Boost",
+			"show": "Show priority boost selection"
+		},
+		"livepreview": {
+			"title": "Live preview",
+			"help": "Show live preview of your changes"
+		},
+		"addfirst": {
+			"selecttext": "Add as first"
+		},
+		"slotselect": {
+			"title": "Select slot",
+			"help": "You can either choose a specific slot or add it as first."
+		},
+		"emptymessages": "There are empty messages between others with content. They will be removed once you save this form and the messages below will be moved up to fill the empty message slot.",
+		"overview": {
+			"dateinthepast": "Date is in the past",
+			"allrubrics": "All Rubrics",
+			"addrubric": "Add Rubric",
+			"totalrubrics": "Total Rubrics",
+			"editrubriccontentof": "Edit Rubric Content of",
+			"movecontentup": "Move content up",
+			"movecontentdown": "Move content down",
+			"addcontentabove": "Add content above",
+			"deletecontent": "Delete this content and move the remaining content slots upwards",
+			"information": {
+				"help": "This is a list of all rubrics on the DAPNET. A rubric number can by assigned to several transmitter groups. Keep in mind that the transmitter groups are disjunct for the same rubric number in order to avoid overlapping number assigments.<br>Use the Activate Rubrics button to enable the reception of rubrics on your Skyper."
+			},
+			"addcontent": "Add content to this rubric",
+			"addcontenttorubric": "Add content to rubric"
+		},
+		"new": {
+			"id": {
+				"help": "Enter an unique name for this rubric. It should be descriptive enough to get an idea about the content just from it. This is not the name that will appear on the Skyper."
+			},
+			"label": {
+				"help": "This how the rubric will be names on the Skyper."
+			},
+			"number" : {
+				"help": "This number is displayed on the Skyper."
+			},
+			"description": {
+				"help": "This description is only visible on the web interface, not on the paging receiver. Describe the content or purpose of this rubric so others can know what it is about."
+			},
+			"cyclicTransmit": {
+				"help": "This switch enabled cyclic retransmissions of the complete 10 message slots in this rubric. Useful for general news, DEFINITELY not useful for rubrics that are updated from third-party sources on a regular basis!"
+			},
+			"cyclicTransmitInterval": {
+				"title": "Cyclic retransmit interval",
+				"help": "Enter an interval in minutes, in which the complete content of this rubric shall be retransmitted."
+			},
+			"transmitters": {
+				"help": "Select specific transmitters on which this rubric shall be transmitted. If they are already part of a selected transmitter group, don't select them here!"
+			},
+			"transmitter_groups": {
+				"help": "Select specific transmitter groups on which this rubric shall be transmitted."
+			},
+			"owner": {
+				"help": "An owner of a rubric can edit its parameters."
+			},
+			"information": {
+				"help": "Rubrics are a Skyper based invention allowing to send news sorted into categories (the rubrics). Assign the number with care and contact <code>support [at] hampager.de</code> in case of doubt. Be aware that the number of rubrics is limited netwide to 99."
+			},
+			"editrubric": "Edit Rubric"
+		},
+		"activation": {
+			"pagernumber": "Pager-Number (your RIC)",
+			"information": {
+				"help": "Use the function to send an activation call to your Skyper. After successful reception, you can select the rubrics on \"Skyper Setup\" in the skyper menu."
+			},
+			"transmittergroup": "Transmitter Groups"
+		}
+	},
+	"subscribers": {
+		"overviewonlynames": {
+		"information": {
+			"help": "These are all registered subscribers in the DAPNET."
+		}
+		 },
+		"overview": {
+			"addsubscriber": "Add Subscriber",
+			"allsubscribers": "All Subscribers",
+			"totalsubscribers": "Total Subscribers",
+			"information": {
+				"help": "A subscriber is the logical connection between a name (the callsign) and one or multiple RIC numbers, for example a Skyper address."
+				}
+		},
+		"newsubscriber": "New Subscriber",
+		"editsubscriber": "Edit Subscriber",
+		"new": {
+			"subscriber": {
+				"title": "Subscriber",
+				"help": "Please enter a valid amateur radio callsign of a human or a classifying name of an organization."
+			},
+			"description": {
+				"title": "Description",
+				"help": "Provide your name or any other useful description of this entry."
+			},
+			"pager": {
+				"title": "Pager",
+				"ric": {
+				"title": "RIC",
+				"help": "Add a RIC"
+				},
+				"function": {
+				"title": "Function",
+				"help": "Some pagers can use SubRICs"
+				},
+				"name": {
+				"title": "Name",
+				"help": "Just a name"
+				},
+				"type": {
+				"title": "Type",
+				"help": "Select one of the types"
+				},
+				"enabled": {
+				"title": "Enabled"
+				}
+			},
+			"owner": {
+				"help": "An owner of a subscriber association can edit its parameters."
+			},
+			"aprs": {
+				"title": "APRS Message Forward",
+				"help": "Enter APRS callsign(s) (if necessary with SSID seperated by a hyphon) to which messages directed to this subscriber shall be forwarded to."
+			},
+			"brandmeister": {
+				"title": "Brandmeister DMR SMS Message Forward",
+				"help": "Enter DMR ID(s) to which messages directed to this subscriber shall be forwarded to."
+			},
+			"ipsc2": {
+				"title": "IPCS2 DMR SMS Message Forward",
+				"help": "Enter DMR ID(s) to which messages directed to this subscriber shall be forwarded to."
+			},
+			"email": {
+				"title": "Email Message Forward",
+				"help": "Enter email address(es) to which messages directed to this subscriber shall be forwarded to."
+			},
+			"subscriber_groups": {
+				"help": "Select one or more existing subscriber groups or create a new one by typing."
+			},
+			"information": {
+				"help": "Subscribers are an allocation between a name (usually your amateur radio callsign) and one or multiple pager IDs (RICs)."
+			}
+		}
+	},
+	"calls": {
+		"overview": {
+			"allcalls": "All Calls",
+			"newcall": "New Call",
+			"totalcalls": "Total Calls",
+			"information": {
+				"help": "Calls are a personal paging transmission to individual receivers."
+			},
+			"from": "From",
+			"origin": "Origin",
+			"table": {
+				"timestamp": "Timestamp",
+				"transmitters": "Transmitters",
+				"txgroups": "TX Groups",
+				"message": "Message",
+				"priority": "Priority"
+			}
+		},
+		"new": {
+			"newcall": "New Call",
+			"message": {
+				"title": "Message"
+			},
+			"expirationdate": {
+				"title": "Expiration date",
+				"help": "Enter the expiration date of this call."
+			},
+			"expirationtime": {
+				"title": "Expiration time",
+				"help": "Enter the expiration time of this call."
+			}
+		}
+	},
+	"news": {
+		"overview": {
+			"allrubriccontent": "All Rubric Content",
+			"newrubriccontent": "New Rubric Content",
+			"totalrubriccontent": "Total Rubric Content",
+			"information": {
+				"help": "The content displayed here are NOT general news about DAPNET, but the recently sent content to rubrics. Every time a user updates the 10 available rubric messages slots, this change will be displayed here."
+			},
+			"table": {
+				"timestamp": "Timestamp",
+				"rubric": "Rubric",
+				"number": "#",
+				"message": "Message"
+			}
+		},
+		"new": {
+			"newrubriccontent": "New Rubric Content",
+			"message": "Message",
+			"charactersremaining": "characters remaining",
+			"rubrics": "Rubrics",
+			"number": "Number",
+			"chooseautomatically": "Choose automatically",
+			"information": {
+				"help": "These are the contents of rubrics. They are up to now only available on Skyper paging receivers in this form, but also sent as personal calls to RIC 1000 + (Rubric-Number) for reception with e.g. AlphaPoc."
+			}
+		}
+	},
+	"nodes": {
+		"overview": {
+			"allnodes": "All Nodes",
+			"newnode": "New Node",
+			"sendmailtoallowners": "Send a mail to all owners",
+			"statistics": {
+				"totalnodes": "Total Nodes"
+			},
+			"information": {
+				"help": "Nodes are the instances of the DAPNET cluster. This list shows the status of them."
+			},
+			"table": {
+				"name": "Name",
+				"version": "Version",
+				"ipaddress": "IP-Address",
+				"status": "Status"
+			}
+		},
+		"new": {
+			"authkey": {
+				"help": "Enter an authentication key for this node."
+			},
+			"id": {
+				"help": "This a is unique name for this node."
+			},
+			"description": {
+			"help": "Optional provide a description for this node."
+			},
+			"hamcloud": {
+				"title": "Hamcloud-Node?",
+				"help": "A Hamcloud node is a special node whose database is always right in case of conflicts."
+			},
+
+			"owner": {
+				"help": "An owner of a Node can edit it's configuration."
+			},
+
+			"newnode": "New Node",
+			"editnode": "Edit Node",
+			"name": {
+				"title": "Name"
+			},
+			"status": {
+				"title": "Status",
+				"online": "Online",
+				"suspended": "Suspended"
+			},
+			"information": {
+				"help": "This table shows the registered DAPNET Core nodes and is mostly for SysOp information."
+			}
+		}
+	},
+	"login": {
+		"username": "Username",
+		"password": "Password",
+		"information": {
+			"help": "Please enter here your personal login data. This is necessary as you may trigger transmission on amateur radio frequencies after login. If the login does not work you most probably have not agreed to our privacy statement before 25.5.2018 of there is another problem. Please not that in case you have not agreeed to our privacy statement, we were obligated to delete all your personal related data including you user account and all data you provided in the past."
+		}
+	},
+	"logout": {
+		"seepagewrong": "If you see this page, something went wrong.",
+		"emoji": "Emoji provided for free by"
+	},
+	"impress": {
+		"title": "Impress"
+	},
+	"error404": {
+		"title": "Error 404 - Not Found",
+		"emoji": "Emoji provided for free by"
+	},
+	"privacy": {
+		"title": "Privacy"
+	},
+	"versioncheck": {
+		"title": "Version Check"
+	},
+	"group": {
+		"overview": {
+			"newtxgroup": "New Transmitter Groups",
+			"alltxgroups": "All Transmitter Groups",
+			"totaltxgroups": "Total Groups",
+			"information": {
+				"help": "A transmitter group is a logical association of one or multiple transmitters to a group. This is necessary to divide the transmitters into regional areas, as not all content has to be transmitted on the whole network. Both personal calls as well als rubric's content have to be linked to a transmitter group. Only transmitters that are member of this group will get the information from the DAPNET node in order to transmit it."
+			}
+		},
+		"new": {
+			"newtxgroup": "New Transmitter Group",
+			"edittxgroup": "Edit Transmitter Group",
+			"information": {
+				"help": "A transmitter group combines one of several transmitters to a logical entity."
+			}
+		}
+	},
+	"users": {
+		"admin": "Admin?",
+		"newuser": "New User",
+		"edituser": "Edit User",
+		"roles": "Roles",
+		"othersettings": "Other settings",
+		"metainfo": "Meta-Information",
+		"addroles": {
+			"title": "Add new third-party role to available selections",
+			"help": "Add a the name of a new third-party role. The part \"thridparty.\" must be at the beginning. If the role designator is already present, you won't be able to add it.",
+			"add": "Add",
+			"newthirdpartyrole": "New third-party role, Example: \"dmrplus\", \"lorawan\"",
+			"notstartingright": "The role's name does not start with \"thirdparty.\"",
+			"notvalid": "The role's name just contains the prefix \"thirdparty.\". Add a name after the dot."
+		},
+		"showthirdpartyroles": "Show third-party roles",
+		"togglepasswordvisibility": "Toggle password visibility",
+		"generaterandompassword": "Generate random password",
+		"copypasswordtoclipboard": "Copy password to clipboard",
+		"overview": {
+			"allusers": "All Users",
+			"sendemailallusers": "Send a mail to all users",
+			"totaladmins": "Total Administrators",
+			"totalusers": "Total Users",
+			"information": {
+				"help": "This is an overview of all registered user account on the DAPNET network. If you are not an admin, you don't see other user's details. You can edit your user by yourself, e.g. change your password or your email address."
+			}
+		},
+		"overviewonlynames": {
+			"information": {
+				"help": "These are all registered users in the DAPNET."
+			}
+		},
+		"new": {
+			"edituser": "Edit User",
+			"password": {
+				"help": "This is the newly generated password:"
+			},
+			"information": {
+				"help": "This table shows the registered users and their detail information."
+			}
+		}
+	},
+	"pagetitle": {
+		"home": "Home",
+		"calls": {
+			"overview": "Call Overview",
+			"new": "New Call"
+		},
+		"subscriber": {
+			"my": "My Subscribers",
+			"overview": "Subscriber Overview",
+			"new": "New Subscriber",
+			"edit": "Edit Subscriber"
+		},
+		"rubric": {
+			"my": "My Rubrics",
+			"overview": "Rubric Overview",
+			"new": "New Rubric",
+			"edit": "Edit Rubric",
+			"activate": "Activate Rubrics",
+			"content": {
+				"edit": "Edit Rubric Content",
+				"add": "Add Rubric Content",
+				"overview": "Rubric Content Overview",
+				"new": "New Rubric Content"
+			}
+		},
+		"transmitter": {
+			"my": "My Transmitters",
+			"overview": "Transmitter Overview",
+			"new": "New Transmitter",
+			"edit": "Edit Transmitter",
+			"map": {
+				"overview": "Transmitter Map",
+				"detail": "Transmitter Map Details"
+			},
+			"monitoring": "Transmitter Monitoring"
+		},
+		"transmittergroup": {
+			"overview": "Transmitter Group Overview",
+			"new": "New Transmitter Group",
+			"edit": "Edit Transmitter Group"
+		},
+		"node": {
+			"my": "My Nodes",
+			"overview": "Node Overview",
+			"new": "New Node",
+			"edit": "Edit Node",
+			"monitoring": "Node Monitoring"
+		},
+		"user": {
+			"overview": "User Overview",
+			"overviewonlynames": "User Names",
+			"new": "New User",
+			"edit": "Edit User"
+		},
+		"login": "Login",
+		"logout": "Logout",
+		"versioncheck": "Versioncheck",
+		"impress": "Impress",
+		"privacy": "Privacy",
+		"notfound": "Not Found"
+	},
+	"$vuetify": {
+		"dataIterator": {
+			"rowsPerPageText": "Items per page:",
+			"rowsPerPageAll": "All",
+			"pageText": "{0}-{1} of {2}",
+			"noResultsText": "No matching records found",
+			"nextPage": "Next page",
+			"prevPage": "Previous page"
+		},
+		"dataTable": {
+			"rowsPerPageText": "Rows per page:",
+			"rowsPerPageAll": "All",
+			"pageText": "{0}-{1} of {2}",
+			"noResultsText": "No matching records found",
+			"nextPage": "Next page",
+			"prevPage": "Previous page"
+		},
+		"noDataText": "No data available"
+	}
+}

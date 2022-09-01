@@ -1,0 +1,602 @@
+{
+    "navigation": {
+        "calls": "Llamadas",
+        "subscribers": "Suscriptores",
+        "rubrics": {
+            "title": "Temas",
+            "all": "Todos los temas",
+            "activate": "Activar acceso a temas",
+            "content": "Contenido del tema"
+        },
+        "transmitters": {
+            "title": "Transmisores",
+            "all": "Todos los transmisores",
+            "map": "Mapa",
+            "groups": "Groupos de transmisores"
+        },
+        "nodes": "Vértices",
+        "users": "Usuarios",
+        "help": {
+            "title": "Ayuda",
+            "wiki": "Documentación",
+            "support": "Apoyo"
+        },
+        "settings": "Ajustes",
+        "login": "Iniciar sesión",
+        "logout": "Cerrar sesión"
+    },
+    "home": {
+        "carousel": {
+            "dapnet": {
+                "title": "Bienvenido a DAPNET Web!"
+            },
+            "raspager": {
+                "title": "Transmisor Raspager",
+                "text": "Un transmisor personal de bajo costo y baja potencia como placa adicional para Raspberry Pi"
+            },
+            "map": {
+                "title": "Mapa de cobertura",
+                "text": "Los transmisores se muestran en un mapa con su área de cobertura simulada."
+            },
+            "display": {
+                "title": "Pantalla táctil para transmisores",
+                "text": "Pantalla de control gráfico de uso fácil basado en dispositivos Nextion. Conneción al transmisor por medio de UART or USB2UART."
+            },
+            "unipager": {
+                "title": "Unipager: un software para todos los tipos de transmisores",
+                "text": "Escrito en RUST, el software Unipager controla todos los tipos de transmisores: Raspager, Ericsson C9000, Soundcard y RFM69. Un paquete Debian está disponible para una instalación y actualización fácil."
+            },
+            "swissphone": {
+                "title": "BiPeer moderno Swissphone",
+                "text": "Modelo de alta gama para usuarios profesionales"
+            },
+            "gm1200": {
+                "title": "Transmisor basado en SDR con GM1200",
+                "text": "Todo lo que necesita es una Raspberry Pi, una radio preparada para 9600 Baud y un interfaz de audio simple. También es factible en combinación con la pantalla táctil."
+            },
+            "alphapoc": {
+                "title": "BiPeer AlphaPOC 6002R",
+                "text": "Disponible comercialmente, pequeño y sin modificaciones necesarias. Programación fácil en el BiPeer mismo."
+            },
+            "dapnet_structure": {
+                "title": "Estructura de DAPNET",
+                "text": "Se utilizan protocolos de comunicación transparentes y actualizados como REST y Websocket."
+            },
+            "tickets": {
+                "title": "Soporte por sistema de tickets",
+                "text": "Las solicitudes de soporte son manejadas por un equipo para un tiempo de respuesta rápido y un intercambio de conocimiento máximo."
+            }
+        },
+        "information": {
+            "dapnet": {
+                "title": "El DAPNET",
+                "projects": "Proyectos"
+            },
+            "map": "Ir a la vista completa del mapa",
+            "statistics": {
+                "calls": "Llamadas",
+                "rubric-content": "Contenido de Rúbrica",
+                "rubrics": "Rúbricas",
+                "transmitters": "Transmisores",
+                "nodes": "Nodos",
+                "users": "Usuarios"
+            }
+        }
+    },
+    "transmitter": {
+        "overview": {
+            "table": {
+                "title": "Todos los transmisores",
+                "callsign": "Indicativo",
+                "node": "Nodo",
+                "ipaddress": "Dirección IP",
+                "device": "Device",
+                "status": "Estatus",
+                "connectedsince": "Conectado desde"
+            },
+            "actions": {
+                "newtransmitter": "Nuevo transmisor",
+                "sendmailtoallowners": "Envia un correo a todas los dueños"
+            },
+            "statistics": {
+                "widerange": "Alcance amplia",
+                "personal": "Personal",
+                "total": "Total",
+                "widerangeonly": "solamente alcance amplia"
+            },
+            "information": {
+                "text": "Esta descripción general muestra todos los transmisores registrados de la red DAPNET. Antes de que pueda conectar su transmisor a uno de los Nodos DAPNET, tiene que ser registrado por uno de los administradores. Hay dos clases de transmisores: Widerange (<10 vatios) y Personal (<1 vatios). ¿Por qué hay una gran cantidad de transmisores fuera de línea? Estos son transmisores que se han registrado en el pasado, pero aparentemente no están en línea ahora. No hay información almacenada  cuales transmisores \"deberían\" estar en línea y cuales no.<br>Los transmisores tienen uno o múltiples propietarios que pueden cambiar la configuración por sí mismos. Cada transmisor está asignado a uno o máx. 16 intervalo de tiempo. Esto es necesario ya que transmiten todos en la misma frecuencia, pero no se superponen al mismo tiempo. Tenga en cuenta que no asigne ningún intervalo de tiempo a su transmisor que ya esté en uso en su área de cobertura. Póngase en contacto con uno de los administradores, si necesita ayuda."
+            }
+        },
+        "new": {
+            "newtransmitter": "Nuevo Transmisor",
+            "edittransmitter": "Cambiar Transmisor",
+            "callsign": {
+                "title": "Señal de llamada",
+                "help": "Ingrese un indicativo válido de radio aficionado de este transmisor. También se usará para el mensaje de identificación del transmisor de intervalo de 10 minutos para cumplir con la ley (al menos la ley alemana)."
+            },
+            "import": {
+                "help": "Fácil importación de estaciones desde hamnetdb.net. Los datos de ubicación del sitio del transmisor seleccionado se copiarán en el formulario."
+            },
+            "password": {
+                "title": "Contraseña",
+                "help": "Ingrese una contraseña de autenticación para este transmisor. En la interfaz web de UniPager se llama Auth Key."
+            },
+            "usage": {
+                "title": "Uso",
+                "personal": "Personal",
+                "widerange": "Alcance amplia",
+                "help": "Para la clasificación de los transmisores, hay dos categorías: Personal (Transmisores con baja potencia de salida como RasPager) y Alcance amplia (mayor potencia de salida y sitio de ubicación elevada)."
+            },
+            "antennatype": {
+                "title": "Tipo de antena",
+                "omni": "Omni",
+                "directional": "Direccional",
+                "other": "Otro",
+                "help": "Please select if you have a omnidirectional antenna (e.g. X-50) or a directional antenna (e.g. Yagi)."
+            },
+            "antennadirection": {
+                "help": "<b>Dirección del haz principal de la antena</ b>: Ingrese la dirección del haz principal de la antena en grados de acuerdo con \"True North\" (en alemán \"rechtweisend Nord\")."
+            },
+            "other": {
+                "title": "Otro",
+                "power": {
+                    "help": "<b>Potencia del transmisor</ b>: Ingrese la potencia de salida del transmisor en vatios, incluidas las pérdidas de su cable."
+                },
+                "antennalevel": {
+                    "help": "<b>Elevación de antena sobre el suelo</ b>: Ingrese la elevación de la antena sobre el suelo; NO sobre el nivel del mar (!) en metros."
+                },
+                "antennagain": {
+                    "help": "<b>Ganancia de antena</ b>: Ingrese la ganancia de la antena en la dirección del lóbulo principal para las antenas direccionales y la ganancia promedio para las antenas omnidireccionales en dBi (dBi: ganancia sobre el radiador isotrópico)."
+                },
+                "txidentric": {
+                    "help": "<b>RIC de identificación del transmisor</ b>: Ingrese un RIC (valor predeterminado es 8) que se utilizará para generar un mensaje de búsqueda artificial que contenga el indicativo de radio aficionado como se indica en este formulario."
+                }
+            },
+            "timeslots": {
+                "title": "Intervalo de Tiempo",
+                "help": "Como todos los transmisores usan la misma frecuencia, se utiliza un esquema de acceso multiplexado por división de tiempo. Hay 16 intervalos disponibles. Asigne los intervalos de este transmisor de acuerdo con los transmisores que lo rodean en su vecindario sin superponer intervalos de tiempo que están asignadas a más de un transmisor. Puede usar el mapa de los transmisores para verificar los intervalos de tiempo ya asignados de los transmisores adyacentes. En caso de que no pueda cumplir con sus requisitos, comuníquese con los propietarios del transmisor adyacente y trate de obtener un acuerdo. Normalmente cuatro 4 o menos intervalos de tiempo por transmisor son más que suficientes."
+            },
+            "owner": {
+                "help": "Si usted es dueño, puede cambiar los parámetros de este transmisor."
+            },
+            "table": {
+                "description": "Esta tabla muestra los transmisores de paginación registrados, su estado en línea e información adicional. Los transmisores personales tienen poca potencia de salida y una cobertura muy pequeña. Los transmisores de amplio rango generalmente se instalan en ubicaciones elevadas que conducen a un área de cobertura amplia."
+            }
+        },
+        "map": {
+            "title": "Mapa",
+            "settings": {
+                "title": "Ajustes"
+            },
+            "checkbox": {
+                "showonlineonly": "Mostrar solo transmisores en línea",
+                "showwiderangeonly": "Show Widerange-transmitter only",
+                "showbytimeslot": "Mostrar transmisores por intervalo de tiempo",
+                "shownodes": "Show nodos",
+                "shownodeline": "Show linea desde el transmisor al nodo"
+            },
+            "actions": {
+                "showallcoverage": "Mostrar todas las superposiciones de cobertura",
+                "removeallcoverage": "Eliminar todas las superposiciones de cobertura"
+            },
+            "alerts": {
+                "load": {
+                    "title": "Cargar superposiciones de cobertura?",
+                    "text": "Presione \"Continuar\" para cargar todas las superposiciones de cobertura para los transmisores actualmente visibles. Esto puede llevar algo de tiempo y poner su dispositivo bajo una carga pesada."
+                },
+                "confirm": {
+                    "title": "¿Estas realmente seguro?",
+                    "text": "Va a cargar y mostrar la cobertura de <b> {cantidad} de transmisores </ b>. Esto llevará algún tiempo y pondrá su dispositivo bajo una carga pesada.",
+                    "continue": "Sí, estoy seguro y no culparé al desarrollador si mi navegador falla."
+                }
+            }
+        }
+    },
+    "footer": {
+        "language": {
+            "title": "Idioma",
+            "en": "Inglés",
+            "de": "Alemán",
+            "es": "Español",
+            "nl": "Holandés",
+            "fr": "Francés",
+            "pl": "Polaco",
+            "it": "Italian",
+            "pt": "Portuguese",
+            "se": "Swedish"
+        },
+        "support": {
+            "title": "Apoyanos ya",
+            "github": "GitHub",
+            "rwth-amateur-radio": "RWTH Amateur Radio"
+        },
+        "contact": {
+            "title": "Contáctenos",
+            "twitter": "Twitter",
+            "facebook": "Facebook",
+            "contact": "Contacto",
+            "impress": "Impress",
+            "privacy": "Privacy"
+        },
+        "versions": {
+            "title": "Versiones",
+            "check": "Comprobar"
+        },
+        "cookieconsent": {
+            "button": "OK",
+            "text": "This site uses cookies and your browser's local storage to deliver our services. By using our site, you acknowledge that you have read and understand our Privacy Policy."
+        }
+    },
+    "table": {
+        "search": "Buscar",
+        "pagination": {
+            "page": "pagina",
+            "of": "de"
+        },
+        "actionbuttons": {
+            "edit": "Editar",
+            "delete": "Borrar",
+            "email": "Enviar correo",
+            "rubrics": "Emitir nombres de Rúbricas",
+            "monitoring": "Monitoring"
+        }
+    },
+    "rest": {
+        "errors": {
+            "title": "Error",
+            "no-connection": "Sin conexión",
+            "api-unreachable": "No se puede llegar al servidor API. Por favor, inténtelo de nuevo más tarde.",
+            "permissions": "Credenciales de inicio de sesión inválidas o sin permiso para esta solicitud. Por favor verifique el nombre de usuario y la contraseña.",
+            "http-error": "Error HTTP sin gestionar {estado}. Por favor, inténtelo de nuevo más tarde.",
+            "403": {
+                "title": "Prohibido",
+                "text": "No permission para esta solicitud."
+            },
+            "404": {
+                "title": "Extraviado",
+                "text": "No se puede encontrar el recurso solicitado."
+            }
+        }
+    },
+    "alerts": {
+        "success": {
+            "title": "Éxito",
+            "text": "Operación ejecutada con éxito."
+        },
+        "delete": {
+            "title": "Estás seguro?",
+            "text": "No podrá recuperar estos datos una vez que se eliminend."
+        },
+        "input": {
+            "title": "Registro faltante",
+            "text": "Por favor complete cada campo para continuar."
+        },
+        "overwrite": {
+            "title": "Prevented Overwriting",
+            "text": "A possible case of overwriting existing data has been prevented."
+        },
+        "password": {
+            "title": "Forbidden character",
+            "text": "Your password must not contain anything but <code>A-Z</code>, <code>a-Z</code> and/or <code>0-9</code>."
+        },
+        "location": {
+            "title": "Invalid location",
+            "text": "Please check the given location and make sure to use your locale's decimal separator (e.g. <code>,</code> in German or <code>.</code> in US-English)."
+        }
+    },
+    "general": {
+        "continue": "Continuar",
+        "submit": "Enviar",
+        "abort": "anular",
+        "search": "Buscar",
+        "information": "Información",
+        "owner": "Dueño",
+        "actions": "Acciones",
+        "statistics": "Estadísticas",
+        "description": "Descripción",
+        "name": "Nombre",
+        "latlong": {
+            "title": "Latitud / Longitug",
+            "north": "norte",
+            "south": "sur",
+            "east": "este",
+            "west": "oeste",
+            "picker": "Location Picker"
+        },
+        "password": "Contraseña",
+        "yes": "Sí",
+        "no": "No",
+        "permalink": "Permalink",
+        "duplication": "Cambiar este nombre creará una duplicación y <i>no</ i> cambiará el nombre del elemento.",
+        "news": "Noticias"
+    },
+    "rubric": {
+        "overview": {
+            "totalrubrics": "Total de rúbricas",
+            "information": {
+                "help": "Esta es una lista de todas las rúbricas en DAPNET. Se puede asignar un número de rúbrica a varios grupos de transmisores. Tenga en cuenta que los grupos de transmisores están diferentes para el mismo número de rúbrica para evitar la superposición de asignaciones de números.<br>Utilice el botón Activar rúbricas para permitir la recepción de rúbricas en su Skyper."
+            },
+            "table": {
+                "number": "Número",
+                "name": "Nombre",
+                "label": "Etiqueta",
+                "transmittergroup": "Grupos de transmisores"
+            }
+        },
+        "new": {
+            "newrubric": "Nueva rúbrica",
+            "name": "Nombre",
+            "label": "Etiqueta",
+            "number": "Nombre",
+            "transmittergroup": "Grupos de transmisores",
+            "information": {
+                "help": "Las rúbricas son una invención basada en Skyper que permite enviar noticias clasificadas en categorías (las rúbricas). Asigne el número con cuidado y póngase en contacto con <code>support [at] hampager.de</ code> en caso de duda. Tenga en cuenta que el número de rúbricas está limitado en toda la red a 99."
+            },
+            "editrubric": "Editar rúbrica"
+        },
+        "activation": {
+            "pagernumber": "Número de buscapersonas (su RIC)",
+            "information": {
+                "help": "Use la función para enviar una llamada de activación a su Skyper. Después de una recepción exitosa, puede seleccionar las rúbricas en \"Configuración de Skyper\" en el menú de Skyper."
+            },
+            "transmittergroup": "Grupos de transmisores"
+        }
+    },
+    "subscribers": {
+        "overview": {
+            "newsubscriber": "Nuevo suscriptor",
+            "allsubscribers": "Todos los suscriptores",
+            "totalsubscribers": "Total suscriptors",
+            "information": {
+                "help": "Un suscriptor es la conexión lógica entre un nombre (el indicativo) y uno o varios números RIC, por ejemplo, una dirección Skyper."
+            },
+            "table": {
+                "pager": "Buscapersonas",
+                "subscriber": "Suscriptor"
+            }
+        },
+        "new": {
+            "newsubscriber": "Nuevo suscriptor",
+            "editsubscriber": "Editar suscriptor",
+            "subscriber": {
+                "title": "Suscriptor",
+                "help": "Ingrese un indicativo válido de radio aficionado de un ser humano o un nombre clasificador de una organización."
+            },
+            "description": {
+                "help": "Proporcione su nombre o cualquier otra descripción útil de este elemento."
+            },
+            "pager": {
+                "title": "Buscapersonas",
+                "helprics": "Agregue una o más líneas de números RIC de buscapersonas.",
+                "helpnames": "Agregue un número correspondiente para líneas como una descripción para los números RIC dados en el primer cuadro."
+            },
+            "owner": {
+                "title": "Dueño",
+                "help": "Un dueño de una asociación de suscriptores puede editar sus parámetros"
+            },
+            "information": {
+                "help": "Los suscriptores son una asignación entre un nombre (generalmente su indicativo de radio amateur) y uno o varios ID de buscapersonas (RIC)."
+            }
+        }
+    },
+    "calls": {
+        "overview": {
+            "allcalls": "Todas las llamadas",
+            "newcall": "Nueva llamada",
+            "emergencies": "Emergencias",
+            "totalcalls": "Total llamadas",
+            "information": {
+                "help": "Las llamadas son transmisión personal de buscapersonas a receptores individuales."
+            },
+            "table": {
+                "timestamp": "Marca de tiempo",
+                "txgroups": "Grupos de transmisores",
+                "message": "Mensaje",
+                "emergency": "Alta Prio?"
+            }
+        },
+        "new": {
+            "newcall": "Nueva llamada",
+            "message": {
+                "title": "Mensaje",
+                "charactersremaining": "{remaining} / 80 caracteres restantes. <br> Ingrese su mensaje. Su nombre de usuario se agrega automáticamente."
+            },
+            "subscribers": {
+                "help": "Seleccione uno o varios suscriptores a qué enviar el mensaje."
+            },
+            "transmittergroups": {
+                "title": "Groupos de transmisores",
+                "help": "Seleccione un grupo transmisor lógico que debe transmitir su mensaje. Por defecto son todos los transmisores, pero si conoce la ubicación aproximada del receptor, puede limitar los transmisores utilizados para su paginación a un área determinada. Esto reduce la carga en los transmisores."
+            },
+            "emergency": {
+                "title": "Emergencia?",
+                "help": "En caso de que desee que su mensaje se entregue lo antes posible, marque esta casilla. No ocurrirán cosas dañinas, DAPNET solo procesará su mensaje con la máxima prioridad. Por favor haz un uso justo de esta característica."
+            },
+            "information": {
+                "help": "Aquí se muestran sus llamadas recientes."
+            }
+        }
+    },
+    "news": {
+        "overview": {
+            "allrubriccontent": "Todo el contenido de la rúbrica",
+            "newrubriccontent": "Nuevo contenido de rúbrica",
+            "totalrubriccontent": "Todo el contenido de la rúbrica",
+            "information": {
+                "help": "El contenido que se muestra aquí NO son noticias generales sobre DAPNET, sino el contenido enviado recientemente a las rúbricas. Cada vez que un usuario actualice las 10 ranuras de mensajes de rúbrica disponibles, este cambio se mostrará aquí."
+            },
+            "table": {
+                "timestamp": "Marca de tiempo",
+                "rubric": "Rúbrica",
+                "number": "#",
+                "message": "Mensaje"
+            }
+        },
+        "new": {
+            "newrubriccontent": "Nuevo contenido de rúbrica",
+            "message": "Mensaje",
+            "charactersremaining": "caracteres restantes",
+            "rubrics": "Rúbricas",
+            "number": "Numero",
+            "chooseautomatically": "Elija automáticamente",
+            "information": {
+                "help": "Estos son los contenidos de las rúbricas. Hasta ahora, solo están disponibles en los receptores de paginación de Skyper en este formulario, pero también se envían como llamadas personales a RIC 1000 + (Número de rúbrica) para la recepción con, por ej. AlphaPoc."
+            }
+        }
+    },
+    "nodes": {
+        "overview": {
+            "allnodes": "Todos los Nodos",
+            "newnode": "Nuevo Nodo",
+            "sendmailtoallowners": "Enviar un correo a todos los propietarios",
+            "statistics": {
+                "totalnodes": "Total Nodos"
+            },
+            "information": {
+                "help": "Los nodos son las instancias del clúster DAPNET. Esta lista muestra el estado de ellos."
+            },
+            "table": {
+                "name": "Nombre",
+                "version": "Versión",
+                "ipaddress": "Dirección IP",
+                "status": "Estado"
+            }
+        },
+        "new": {
+            "newnode": "Nuevo Nodo",
+            "editnode": "Editar Nodo",
+            "name": {
+                "title": "Nombre"
+            },
+            "status": {
+                "title": "Estado",
+                "online": "on-line",
+                "suspended": "Suspendido"
+            },
+            "information": {
+                "help": "Esta tabla muestra los nodos DAPNET Core registrados y es principalmente para información SysOp."
+            }
+        }
+    },
+    "login": {
+        "username": "Nombre de usuario",
+        "password": "Contraseña",
+        "information": {
+            "help": "Please enter here your personal login data. This is necessary as you may trigger transmission on amateur radio frequencies after login. If the login does not work you most probably have not agreed to our privacy statement before 25.5.2018 of there is another problem. Please not that in case you have not agreeed to our privacy statement, we were obligated to delete all your personal related data including you user account and all data you provided in the past."
+        }
+    },
+    "logout": {
+        "seepagewrong": "Si ves esta página, algo salió mal.",
+        "emoji": "Emoji proporcionado de forma gratuita por"
+    },
+    "impress": {
+        "title": "Impress"
+    },
+    "error404": {
+        "title": "Error 404 - No encontrado",
+        "emoji": "Emoji proporcionado de forma gratuita por"
+    },
+    "privacy": {
+        "title": "política de privacidad"
+    },
+    "versioncheck": {
+        "title": "Verificación de versión"
+    },
+    "group": {
+        "overview": {
+            "newtxgroup": "Nuevos grupos de transmisores",
+            "alltxgroups": "Todos los grupos de transmisores",
+            "totaltxgroups": "Total de grupos de transmisores",
+            "information": {
+                "help": "Un grupo transmisor es una asociación lógica de uno o múltiples transmisores a un grupo. Esto es necesario para dividir los transmisores en áreas regionales, ya que no todo el contenido debe transmitirse en toda la red. Tanto las llamadas personales como el contenido de la rúbrica deben estar vinculados a un grupo transmisor. Solo los transmisores que son miembros de este grupo obtendrán la información del nodo DAPNET para transmitirla."
+            }
+        },
+        "new": {
+            "newtxgroup": "Nuevos grupos de transmisores",
+            "edittxgroup": "Editar grupos de transmisores",
+            "information": {
+                "help": "Un grupo transmisor combina uno de varios transmisores con una entidad lógica."
+            }
+        }
+    },
+    "users": {
+        "general": {
+            "email": "Email",
+            "admin": "Admin?",
+            "newuser": "Nuevo Usuario"
+        },
+        "overview": {
+            "allusers": "Todos los Usuarios",
+            "sendemailallusers": "Enviar un correo a todos los usuarios",
+            "totaladmins": "Total de administradores",
+            "totalusers": "Total Usuarios",
+            "information": {
+                "help": "Esta es una descripción general de todas las cuentas de usuario registradas en la red DAPNET. Si no eres administrador, no ves los detalles de otros usuarios. Puede editar su usuario usted mismo, por ejemplo cambios de su contraseña o su dirección de correo electrónico."
+            }
+        },
+        "new": {
+            "edituser": "Editar Usuario",
+            "password": {
+                "help": "Eso es la una nueva contraseña aleatoria:"
+            },
+            "information": {
+                "help": "Esta tabla muestra los usuarios registrados y su información detallada."
+            }
+        }
+    },
+    "pagetitle": {
+        "home": "Home",
+        "calls": {
+            "overview": "Call Overview",
+            "new": "New Call"
+        },
+        "subscribers": {
+            "overview": "Subscriber Overview",
+            "new": "New Subscriber",
+            "edit": "Edit Subscriber"
+        },
+        "rubric": {
+            "overview": "Rubric Overview",
+            "new": "New Rubric",
+            "edit": "Edit Rubric",
+            "activate": "Activate Rubrics",
+            "content": {
+                "overview": "Rubric Content Overview",
+                "new": "New Rubric Content"
+            }
+        },
+        "transmitter": {
+            "overview": "Transmitter Overview",
+            "new": "New Transmitter",
+            "edit": "Edit Transmitter",
+            "map": {
+                "overview": "Transmitter Map",
+                "detail": "Transmitter Map Details"
+            },
+            "monitoring": "Transmitter Monitoring"
+        },
+        "transmittergroup": {
+            "overview": "Transmitter Group Overview",
+            "new": "New Transmitter Group",
+            "edit": "Edit Transmitter Group"
+        },
+        "node": {
+            "overview": "Node Overview",
+            "new": "New Node",
+            "edit": "Edit Node",
+            "monitoring": "Node Monitoring"
+        },
+        "user": {
+            "overview": "User Overview",
+            "new": "New User",
+            "edit": "Edit User"
+        },
+        "login": "Login",
+        "logout": "Logout",
+        "versioncheck": "Versioncheck",
+        "impress": "Impress",
+        "privacy": "Privacy",
+        "notfound": "Not Found"
+    }
+}
