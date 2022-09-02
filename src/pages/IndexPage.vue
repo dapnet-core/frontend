@@ -1,8 +1,25 @@
 <template>
   <q-page padding class="row justify-evenly">
     <div class="column full-width">
-      <h2>Nett hier.</h2>
-      <h4>Aber waren sie schonmal in Baden-Württemberg?</h4>
+      <q-table
+        title="DataTableTest"
+        :rows="rows"
+        :columns="columns"
+        row-key="id"
+      >
+        <template v-slot:body-cell-subscribers="props">
+          <q-td :props="props">
+            <q-chip v-for="(item, key) in props.value" :key="key" icon="mdi-wifi" :label="item" color="grey" text-color="white" />
+            <q-chip v-for="(item, key) in props.row.subscriber_groups" :key="key" icon="mdi-wifi-strength-4" :label="item" color="grey" text-color="white" />
+          </q-td>
+        </template>
+        <template v-slot:body-cell-priority="props">
+          <q-td :props="props">
+            <q-chip :label="priorities(props.value).text" :color="priorities(props.value).color" />
+          </q-td>
+        </template>
+      </q-table>
+
       <Map height="600px" :center="[6, 50]"
           :markers="[{ coordinates: [6, 51], icon }]">
           <template #marker-info>
@@ -28,5 +45,71 @@
 <script setup lang="ts">
 import Map from 'components/MapComponent.vue'
 import icon from 'assets/markers/marker-transmitter-personal-online.png'
+import { computed } from 'vue'
+import { QTableColumn } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
+const { t, d } = useI18n({ useScope: 'global' })
+
+const columns = computed<QTableColumn[]>(() => [
+  {
+    name: 'created_at',
+    label: t('general.created_at'),
+    align: 'left',
+    field: 'created_at',
+    format: (val: string) => d(val, 'numeric'),
+    sortable: true
+  },
+  {
+    name: 'created_by',
+    label: t('calls.overview.from'),
+    align: 'left',
+    field: 'created_by',
+    sortable: true
+  },
+  {
+    name: 'subscribers',
+    align: 'center',
+    label: t('general.subscribers'),
+    field: 'subscribers'
+  },
+  {
+    name: 'priority',
+    label: t('general.priority'),
+    align: 'center',
+    field: 'priority',
+    // TODO: Use format
+    sortable: true
+  }
+])
+
+const rows = [{
+  id: 0,
+  created_at: '2022-06-10T11:41:29Z',
+  created_by: 'Valentin',
+  subscribers: ['Test', 'Test2'],
+  subscriber_groups: ['Test3'],
+  priority: 3
+},
+{
+  id: 1,
+  created_at: '2022-08-10T14:46:59Z',
+  created_by: 'Yolomeus',
+  subscribers: [],
+  subscriber_groups: ['Test4', 'Test5'],
+  priority: 5
+}
+]
+
+const priorities = computed(() => (priority: number) => {
+  switch (priority) {
+    case 1: return { text: t('general.priorities.lowest'), color: 'green' }
+    case 2: return { text: t('general.priorities.low'), color: 'green' }
+    case 3: return { text: t('general.priorities.medium'), color: 'yellow' }
+    case 4: return { text: t('general.priorities.high'), color: 'orange' }
+    case 5: return { text: t('general.priorities.highest'), color: 'red' }
+  }
+  console.warn(`Undefined priority: ${priority}`)
+  return { text: t('general.priorities.high'), color: 'grey' }
+})
 </script>

@@ -16,18 +16,109 @@ declare module 'vue-i18n' {
   export interface DefineLocaleMessage extends MessageSchema {}
 
   // define the datetime format schema
-  export interface DefineDateTimeFormat {}
+  export interface DefineDateTimeFormat {
+    numeric: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    }
+  }
 
   // define the number format schema
   export interface DefineNumberFormat {}
 }
+// TODO: Auto-generate DatetimeFormats
 /* eslint-enable @typescript-eslint/no-empty-interface */
-
 const i18n = createI18n({
   locale: 'en',
   fallbackLocale: 'en',
   legacy: false,
-  messages
+  messages,
+  datetimeFormats: {
+    en: {
+      numeric: {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      }
+    },
+    de: {
+      numeric: {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      }
+    },
+    es: {
+      numeric: {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      }
+    },
+    fr: {
+      numeric: {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      }
+    },
+    it: {
+      numeric: {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      }
+    },
+    nl: {
+      numeric: {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      }
+    },
+    pl: {
+      numeric: {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      }
+    },
+    se: {
+      numeric: {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      }
+    }
+  }
 })
 
 export default boot(({ app }) => {
