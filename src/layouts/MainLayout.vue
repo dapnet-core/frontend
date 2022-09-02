@@ -149,7 +149,6 @@ function toggleLeftDrawer () {
 
 <style scoped lang="scss">
   .bg-gradient{
-    /* Created with https://www.css-gradient.com */
     background: $primary;
     background: linear-gradient(to bottom right, $primary, $secondary);
   }
