@@ -58,8 +58,8 @@
         <Item icon="mdi-comment-question" :title="$t('navigation.help.support')" href="https://support.hampager.de/" target="_blank"/>
         <q-separator />
         <Item icon="mdi-cog" :title="$t('navigation.settings')" to="/settings" v-if="store.loggedIn" />
-        <Item icon="mdi-logout" :title="$t('navigation.logout')" v-if="store.loggedIn" />
-        <Item icon="mdi-login" :title="$t('navigation.login')" to="/login" v-if="!store.loggedIn" />
+        <Item icon="mdi-logout" :title="$t('navigation.logout')" v-if="store.loggedIn" @click="store.auth = undefined"/>
+        <Item icon="mdi-login" :title="$t('navigation.login')" v-if="!store.loggedIn" @click="store.auth = {username: 'Testtyp', token: '', permissions: []}" />
       </q-list>
     </q-drawer>
 

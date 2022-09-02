@@ -24,7 +24,8 @@ export const globalStore = defineStore('global', {
   },
   state: () : State => ({
     language: 'en',
-    theme: 'light'
+    theme: 'light',
+    auth: undefined // For some reason this is necessary
   }),
   getters: {
     loggedIn: (state) => !!state.auth
