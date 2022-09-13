@@ -1,6 +1,6 @@
 <!-- Cheap workaround till https://github.com/MelihAltintas/vue3-openlayers/issues/102 is resolved -->
 <template>
-  <div ref="mountpoint" :style="props" class="ol-unselectable ol-control ol-uncollapsible">
+  <div ref="mountpoint" class="ol-unselectable ol-control ol-uncollapsible">
     <slot />
   </div>
 </template>
@@ -16,13 +16,6 @@ import {
 } from 'vue'
 import Control from 'ol/control/Control'
 import Map from 'ol/Map'
-
-const props = defineProps<{
-  top?: string
-  right?: string
-  bottom?: string
-  left?: string
-}>()
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const map: Map = inject('map')!

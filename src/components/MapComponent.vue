@@ -10,8 +10,8 @@
     <ol-scaleline-control />
     <!-- <ol-zoom-control /> TODO: Move to bottom right. Waits on https://github.com/MelihAltintas/vue3-openlayers/issues/101 -->
     <ol-attribution-control />
-    <ControlContainer top="0.5em" left="0.5em">
-      <slot name="marker-info" v-if="selected" :marker="selected.marker" :index="selected.key" />
+    <ControlContainer v-if="selected" class="data-container">
+      <slot name="marker-info" :marker="selected.marker" :index="selected.key" />
     </ControlContainer>
 
     <ol-tile-layer>
@@ -52,7 +52,7 @@ export type Marker = {
 }
 
 const props = defineProps<{
-  height: string // TODO: specify so only CSS lengths are allowed?
+  height: string
   markers?: Marker[]
   center: [number, number]
 }>()
@@ -64,11 +64,12 @@ const selected = ref<{marker: Marker, key: number} | null>(null)
 const map = ref<HTMLElement | null>(null) // Reference to map DOM element
 
 const featureSelected = (event: SelectEvent) => {
+  // TODO: Center map on selected marker
   selected.value = event.selected.length > 0 ? { marker: event.selected[0].get('marker'), key: event.selected[0].get('key') } : null
 }
 
 /**
- * Converts the given coordinates to EPSG:3857 if they use the EPSG:4326 projection
+ * Converts the given coordinates to EPSG:3857 from EPSG:4326 projection
  */
 function transformCoords (coords: [number, number]): [number, number] {
   return fromLonLat(coords as Coordinate) as [number, number]
@@ -76,3 +77,15 @@ function transformCoords (coords: [number, number]): [number, number] {
 
 // TODO: Use https://vueuse.org/core/useresizeobserver to resize map on component resize
 </script>
+
+<style lang="scss" scoped>
+  .data-container{
+    padding: 0.5em 0.25em 0.25em 0.5em;
+    border-radius: 0 0 0.5em 0;
+    background-color: $transparent-light;
+  }
+
+  body.body--dark .data-container{
+    background-color: $transparent-dark;
+  }
+</style>
