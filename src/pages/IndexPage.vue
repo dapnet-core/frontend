@@ -21,9 +21,9 @@
       </q-table>
 
       <Map height="600px" :center="[6, 50]"
-          :markers="[{ coordinates: [6, 51], icon }]">
-          <template #marker-info>
-            testsignal
+          :markers="markers">
+          <template #marker-info="{ marker, index }">
+            Position {{ marker.coordinates }}
             <br>
             Usage: WIDERANGE
             <br>
@@ -34,7 +34,8 @@
             Timeslot: 0123456789ABCDEF
             <br>
             Owner: me
-
+            <br>
+            Index: {{ index }}
           </template>
       </Map>
     </div>
@@ -43,13 +44,15 @@
 </template>
 
 <script setup lang="ts">
-import Map from 'components/MapComponent.vue'
+import Map, { Marker } from 'components/MapComponent.vue'
 import icon from 'assets/markers/marker-transmitter-personal-online.png'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { QTableColumn } from 'quasar'
 import { useI18n } from 'vue-i18n'
 
 const { t, d } = useI18n({ useScope: 'global' })
+
+const markers = ref<Marker[]>([{ coordinates: [6, 51], icon }, { coordinates: [6, 50], icon }])
 
 const columns = computed<QTableColumn[]>(() => [
   {

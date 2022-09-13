@@ -22,19 +22,20 @@
 
     <ol-vector-layer>
       <ol-source-vector ref="source">
-        <ol-feature v-for="(marker, key) in markers" :key="key"> <!-- TODO: WHY CANT I SET :properties="{'id': key}" and use that to reference the selection?? -->
+        <ol-feature v-for="(marker, key) in markers" :key="key" :properties="{key, marker}">
           <ol-geom-point :coordinates="transformCoords(marker.coordinates)" />
-            <ol-style>
-              <ol-style-icon :src="marker.icon" :scale="1"></ol-style-icon>
-            </ol-style>
-            <ol-interaction-select @select="featureSelected">
-              <ol-style>
-                  <ol-style-icon :src="marker.icon" :scale="1.25"></ol-style-icon>
-              </ol-style>
-            </ol-interaction-select>
+          <ol-style>
+            <ol-style-icon :src="marker.icon" :scale="1" />
+          </ol-style>
         </ol-feature>
       </ol-source-vector>
     </ol-vector-layer>
+
+    <ol-interaction-select @select="featureSelected">
+      <ol-style>
+        <ol-style-icon v-if="selected" :src="selected.marker.icon" :scale="1.25" />
+      </ol-style>
+    </ol-interaction-select>
   </ol-map>
 </template>
 
@@ -42,6 +43,7 @@
 import { ref } from 'vue'
 import { fromLonLat } from 'ol/proj'
 import { Coordinate } from 'ol/coordinate'
+import { SelectEvent } from 'ol/interaction/Select'
 import ControlContainer from 'components/MapControlContainer.vue'
 
 export type Marker = {
@@ -61,10 +63,8 @@ const rotation = ref(0)
 const selected = ref<{marker: Marker, key: number} | null>(null)
 const map = ref<HTMLElement | null>(null) // Reference to map DOM element
 
-const featureSelected = (event: any) => {
-  // TODO: Hack till I manage to figure out why I can't set the feature properties. Will set selected to the right stuff then
-  console.log(event)
-  selected.value = event.selected.length > 0 ? { marker: { coordinates: [0, 0], icon: '' }, key: 0 } : null
+const featureSelected = (event: SelectEvent) => {
+  selected.value = event.selected.length > 0 ? { marker: event.selected[0].get('marker'), key: event.selected[0].get('key') } : null
 }
 
 /**
