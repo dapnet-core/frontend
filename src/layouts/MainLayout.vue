@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, Ref, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { globalStore } from 'stores/global-store'
 import { MessageLanguages } from 'boot/i18n'
 import { useI18n } from 'vue-i18n'
@@ -127,7 +127,7 @@ interface Count {
     nodes: number
   }
 }
-const count : Ref<Count | undefined> = ref({
+const count = ref<Count | undefined>({
   calls: 10,
   subscribers: 50,
   transmitters: 0,

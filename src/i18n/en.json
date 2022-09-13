@@ -320,6 +320,8 @@
 			"page": "Page",
 			"of": "of"
 		},
+		"noData": "No data found",
+		"error": "Failed to load data: \"{error}\"",
 		"actionbuttons": {
 			"edit": "Edit",
 			"delete": "Delete",

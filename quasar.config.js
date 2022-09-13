@@ -14,7 +14,7 @@ const { configure } = require('quasar/wrappers')
 const path = require('path')
 const pkg = require('./package.json')
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function (ctx) {
   // Get local git metadata
   // https://stackoverflow.com/a/71162041
   const branchName = execSync('git rev-parse --abbrev-ref HEAD').toString().trimEnd()
@@ -79,7 +79,8 @@ module.exports = configure(function (/* ctx */) {
       env: {
         version,
         branchName,
-        commitHash
+        commitHash,
+        apiServer: ctx.dev ? 'http://localhost:8000' : 'unknown'
       },
       // rawDefine: {}
       // ignorePublicFolder: true,
