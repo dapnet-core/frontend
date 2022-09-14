@@ -92,7 +92,12 @@ export type TableCell<
 
 // Wrap the DataTable component in a genericly-typed wrapper
 // Adapted from https://logaretm.com/blog/generic-type-components-with-composition-api/
-export function useGenericTable<RowType extends Record<string, unknown>, Cols extends Record<string, Column<RowType, string, any>>> () {
+export function useGenericTable<
+  RowType extends Record<string, unknown>,
+  // This must be any, otherwise the index signature doesn't work
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Cols extends Record<string, Column<RowType, string, any>>
+> () {
   const wrapper = defineComponent((props: Props<RowType, Cols>, { slots }) => {
     // Returning functions in `setup` means this is the render function
     return () => h(DataTable, props, slots)
@@ -105,7 +110,7 @@ export function useGenericTable<RowType extends Record<string, unknown>, Cols ex
       $slots: {
         // each function correspond to a slot and its arguments are the slot props available
         // it should return an array of `VNode`
-        [name in keyof Cols]: (arg: TableCell<RowType, Cols[name]>) => VNode[];
+        [name in keyof Cols as name extends string ? `cell-${name}` : never]: (arg: TableCell<RowType, Cols[name]>) => VNode[];
       };
     };
   }

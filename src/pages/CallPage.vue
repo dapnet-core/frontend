@@ -6,22 +6,19 @@
       row-key="id"
       :load-data-function="async () => { return testData }"
     >
-      <template #subscribers="props">
-        <q-td :props="props">
-          <q-chip v-for="(item, key) in props.row.recipients.subscribers"       :key="key" icon="mdi-wifi"            :label="item" color="grey" text-color="white" />
-          <q-chip v-for="(item, key) in props.row.recipients.subscriber_groups" :key="key" icon="mdi-wifi-strength-4" :label="item" color="grey" text-color="white" />
-        </q-td>
+      <template #cell-subscribers="props">
+        <q-chip v-for="(item, key) in props.row.recipients.subscribers"       :key="key" icon="mdi-wifi"            :label="item" color="grey" text-color="white" />
+        <q-chip v-for="(item, key) in props.row.recipients.subscriber_groups" :key="key" icon="mdi-wifi-strength-4" :label="item" color="grey" text-color="white" />
       </template>
-      <template #transmitters="props">
-        <q-td :props="props">
-          <q-chip v-for="(item, key) in props.row.distribution.transmitters"       :key="key" icon="mdi-account"       :label="item" color="grey" text-color="white" />
-          <q-chip v-for="(item, key) in props.row.distribution.transmitter_groups" :key="key" icon="mdi-account-group" :label="item" color="grey" text-color="white" />
-        </q-td>
+      <template #cell-transmitters="props">
+        <q-chip v-for="(item, key) in props.row.distribution.transmitters"       :key="key" icon="mdi-account"       :label="item" color="grey" text-color="white" />
+        <q-chip v-for="(item, key) in props.row.distribution.transmitter_groups" :key="key" icon="mdi-account-group" :label="item" color="grey" text-color="white" />
       </template>
-      <template #priority="props">
-        <q-td :props="props">
-          <q-chip :label="priorities(props.value).text" :color="priorities(props.value).color" />
-        </q-td>
+      <template #cell-priority="props">
+        <q-chip :label="priorities(props.value).text" :color="priorities(props.value).color" />
+      </template>
+      <template #test>
+        I don't render
       </template>
     </CallTable>
   </q-page>
