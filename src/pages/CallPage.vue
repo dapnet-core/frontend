@@ -6,13 +6,13 @@
       row-key="id"
       :load-data-function="async () => { return testData }"
     >
-      <template #recipients="props">
+      <template #subscribers="props">
         <q-td :props="props">
           <q-chip v-for="(item, key) in props.row.recipients.subscribers"       :key="key" icon="mdi-wifi"            :label="item" color="grey" text-color="white" />
           <q-chip v-for="(item, key) in props.row.recipients.subscriber_groups" :key="key" icon="mdi-wifi-strength-4" :label="item" color="grey" text-color="white" />
         </q-td>
       </template>
-      <template #distribution="props">
+      <template #transmitters="props">
         <q-td :props="props">
           <q-chip v-for="(item, key) in props.row.distribution.transmitters"       :key="key" icon="mdi-account"       :label="item" color="grey" text-color="white" />
           <q-chip v-for="(item, key) in props.row.distribution.transmitter_groups" :key="key" icon="mdi-account-group" :label="item" color="grey" text-color="white" />
@@ -29,11 +29,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { QTableColumn } from 'quasar'
 import { useI18n } from 'vue-i18n'
 import { fetchJson } from 'src/fetch'
 import _testData from 'src/test.json'
-import { useGenericTable } from 'src/components/GenericDataTable'
+import { Column, useGenericTable } from 'src/components/GenericDataTable'
 
 const { t, d } = useI18n({ useScope: 'global' })
 
@@ -57,58 +56,61 @@ type CallResponse = {
   }
 }
 
-const testData = _testData as CallResponse[]
-const CallTable = useGenericTable<CallResponse>()
+type Columns = {
+  created_at: Column<CallResponse, 'created_at'>
+  created_by: Column<CallResponse, 'created_by'>
+  message: Column<CallResponse, 'data'>
+  subscribers: Column<CallResponse, 'recipients'>
+  transmitters: Column<CallResponse, 'distribution'>
+  origin: Column<CallResponse, 'origin'>
+  priority: Column<CallResponse, 'priority'>
+}
 
-const columns = computed<QTableColumn<CallResponse>[]>(() => [
-  {
-    name: 'created_at',
+const columns = computed<Columns>(() => ({
+  created_at: {
     label: t('general.created_at'),
     align: 'left',
     field: 'created_at',
-    format: (val: string) => d(val, 'numeric'),
+    format: (val) => d(val, 'numeric'),
     sortable: true
   },
-  {
-    name: 'created_by',
+  created_by: {
     label: t('calls.overview.from'),
     align: 'left',
     field: 'created_by',
     sortable: true
   },
-  {
-    name: 'data',
+  message: {
     label: t('general.message'),
     align: 'left',
     field: 'data'
   },
-  {
-    name: 'recipients',
+  subscribers: {
     align: 'center',
     label: t('general.subscribers'),
     field: 'recipients'
   },
-  {
-    name: 'distribution',
+  transmitters: {
     align: 'center',
     label: t('general.transmitters'),
     field: 'distribution'
   },
-  {
-    name: 'origin',
+  origin: {
     label: t('calls.overview.origin'),
     align: 'center',
     field: 'origin',
     sortable: true
   },
-  {
-    name: 'priority',
+  priority: {
     label: t('general.priority'),
     align: 'center',
     field: 'priority',
     sortable: true
   }
-])
+}))
+
+const testData = _testData as CallResponse[]
+const CallTable = useGenericTable<CallResponse, Columns>()
 
 const priorities = computed(() => (priority: number) => {
   switch (priority) {

@@ -2,23 +2,43 @@ import { defineComponent, h, VNode } from 'vue'
 import DataTable from 'components/DataTable.vue'
 import { QTableColumn } from 'quasar'
 
-export interface Props<RowType> {
+type Merge<T, R extends Record<string, unknown>> = Omit<T, keyof R> & R
+
+/** Generic version of quasar/dist/types/index.d.ts:9908 */
+export type Column<
+  RowType extends Record<string, unknown>,
+  Field = keyof RowType,
+  ValueType = Field extends keyof RowType ? RowType[Field] : never
+> = Merge<QTableColumn<RowType>, {
+  name?: string
+  field: Field
+  sort?: (a: ValueType, b: ValueType, rowA: RowType, rowB: RowType) => number
+  format?: (val: ValueType, row: RowType) => string
+  style?: string | ((row: RowType) => string)
+  classes?: string | ((row: RowType) => string)
+}>
+
+export interface Props<RowType extends Record<string, unknown>, Cols> {
   title: string
-  cols: QTableColumn<RowType>[]
+  cols: Cols
   loadDataFunction:() => Promise<readonly RowType[]>
   rowKey: keyof RowType
 }
 
 /** Generic version of quasar/dist/types/index.d.ts:10536 */
-type TableCell<RowType, Cell extends keyof RowType> = {
+export type TableCell<
+  RowType extends Record<string, unknown>,
+  Col extends Column<RowType>,
+  ValueType = Col extends Column<RowType, any, infer V> ? V : never
+> = {
   /**
    * Column definition for column associated with table cell
    */
-  col: QTableColumn<RowType>;
+  col: Col;
   /**
    * Parsed/Formatted value of table cell
    */
-  value: RowType[Cell];
+  value: ValueType;
   /**
    * Row's key
    */
@@ -72,8 +92,8 @@ type TableCell<RowType, Cell extends keyof RowType> = {
 
 // Wrap the DataTable component in a genericly-typed wrapper
 // Adapted from https://logaretm.com/blog/generic-type-components-with-composition-api/
-export function useGenericTable<RowType> () {
-  const wrapper = defineComponent((props: Props<RowType>, { slots }) => {
+export function useGenericTable<RowType extends Record<string, unknown>, Cols extends Record<string, Column<RowType, string, any>>> () {
+  const wrapper = defineComponent((props: Props<RowType, Cols>, { slots }) => {
     // Returning functions in `setup` means this is the render function
     return () => h(DataTable, props, slots)
   })
@@ -85,7 +105,7 @@ export function useGenericTable<RowType> () {
       $slots: {
         // each function correspond to a slot and its arguments are the slot props available
         // it should return an array of `VNode`
-        [K in keyof RowType]: (arg: TableCell<RowType, K>) => VNode[];
+        [name in keyof Cols]: (arg: TableCell<RowType, Cols[name]>) => VNode[];
       };
     };
   }

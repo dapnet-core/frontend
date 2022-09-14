@@ -2,7 +2,7 @@
   <q-table
     :title="title"
     :rows="rows"
-    :columns="cols"
+    :columns="Array.isArray(cols) ? cols : mapCols(cols)"
     color="primary"
     :loading="state.loading"
     :row-key="props.rowKey"
@@ -21,7 +21,7 @@ import { ref, onMounted } from 'vue'
 // Import 'Props' from 'components/GenericDataTable' once https://github.com/vuejs/core/issues/4294 is fixed
 const props = defineProps<{
   title: string
-  cols: QTableColumn[]
+  cols: QTableColumn[] | Record<string, Omit<QTableColumn, 'name'>>
   loadDataFunction:() => Promise<readonly unknown[]>
   rowKey: string
 }>()
@@ -33,4 +33,12 @@ onMounted(async () => {
   await props.loadDataFunction().then(data => { rows.value = data }).catch(error => { state.value.error = error })
   state.value.loading = false
 })
+
+function mapCols (obj: Record<string, Omit<QTableColumn, 'name'>>): QTableColumn[] {
+  return Object.entries(obj).map(([name, val]) => {
+    const t = val as QTableColumn
+    t.name = name
+    return t
+  })
+}
 </script>
