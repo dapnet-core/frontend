@@ -1,44 +1,66 @@
 <template>
   <q-page padding>
-    <q-table
-        :title="$t('pagetitle.calls.overview')"
-        :rows="data"
-        :columns="columns"
-        color="primary"
-        :loading="state.loading"
-        row-key="id"
-        :no-data-label="state.error ? $t('table.error', {error: state.error}) : $t('table.noData')"
+    <CallTable
+      :title="$t('pagetitle.calls.overview')"
+      :cols="columns"
+      row-key="id"
+      :load-data-function="async () => { return testData }"
     >
-      <template v-slot:body-cell-subscribers="props">
+      <template #recipients="props">
         <q-td :props="props">
           <q-chip v-for="(item, key) in props.row.recipients.subscribers"       :key="key" icon="mdi-wifi"            :label="item" color="grey" text-color="white" />
           <q-chip v-for="(item, key) in props.row.recipients.subscriber_groups" :key="key" icon="mdi-wifi-strength-4" :label="item" color="grey" text-color="white" />
         </q-td>
       </template>
-      <template v-slot:body-cell-transmitters="props">
+      <template #distribution="props">
         <q-td :props="props">
           <q-chip v-for="(item, key) in props.row.distribution.transmitters"       :key="key" icon="mdi-account"       :label="item" color="grey" text-color="white" />
           <q-chip v-for="(item, key) in props.row.distribution.transmitter_groups" :key="key" icon="mdi-account-group" :label="item" color="grey" text-color="white" />
         </q-td>
       </template>
-      <template v-slot:body-cell-priority="props">
+      <template #priority="props">
         <q-td :props="props">
           <q-chip :label="priorities(props.value).text" :color="priorities(props.value).color" />
         </q-td>
       </template>
-    </q-table>
+    </CallTable>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import { QTableColumn } from 'quasar'
 import { useI18n } from 'vue-i18n'
 import { fetchJson } from 'src/fetch'
+import _testData from 'src/test.json'
+import { useGenericTable } from 'src/components/GenericDataTable'
 
 const { t, d } = useI18n({ useScope: 'global' })
 
-const columns = computed<QTableColumn[]>(() => [
+// Expected response from the server
+type CallResponse = {
+  created_at: string // DateTime
+  created_by: string
+  data: string
+  distribution: {
+    transmitter_groups: string[]
+    transmitters: string[]
+  }
+  expires_at: string // DateTime
+  id: string // UUID
+  local: boolean
+  origin: string
+  priority: number
+  recipients: {
+    subscriber_groups: string[]
+    subscribers: string[]
+  }
+}
+
+const testData = _testData as CallResponse[]
+const CallTable = useGenericTable<CallResponse>()
+
+const columns = computed<QTableColumn<CallResponse>[]>(() => [
   {
     name: 'created_at',
     label: t('general.created_at'),
@@ -61,16 +83,16 @@ const columns = computed<QTableColumn[]>(() => [
     field: 'data'
   },
   {
-    name: 'subscribers',
+    name: 'recipients',
     align: 'center',
     label: t('general.subscribers'),
-    field: 'subscribers'
+    field: 'recipients'
   },
   {
-    name: 'transmitters',
+    name: 'distribution',
     align: 'center',
     label: t('general.transmitters'),
-    field: 'transmitters'
+    field: 'distribution'
   },
   {
     name: 'origin',
@@ -98,39 +120,5 @@ const priorities = computed(() => (priority: number) => {
   }
   console.warn(`Undefined priority: ${priority}`)
   return { text: t('general.priorities.high'), color: 'grey' }
-})
-
-// Expected response from the server
-type CallResponse = {
-  created_at: string // DateTime
-  created_by: string
-  data: string
-  distribution: {
-    transmitter_groups: string[]
-    transmitters: string[]
-  }
-  expires_at: string // DateTime
-  id: string // UUID
-  local: boolean
-  origin: string
-  priority: number
-  recipients: {
-    subscriber_groups: string[]
-    subscribers: string[]
-  }
-}[]
-
-const data = ref<CallResponse>([])
-const state = ref<{loading: boolean, error?: string}>({ loading: false })
-
-onMounted(() => {
-  state.value.loading = true
-  fetchJson<CallResponse>('calls').then(json => {
-    data.value = json
-    state.value.loading = false
-  }).catch(error => {
-    console.log(error)
-    state.value = { loading: false, error }
-  })
 })
 </script>
