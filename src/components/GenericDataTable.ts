@@ -10,15 +10,17 @@ type Merge<T, R extends Record<string, unknown>> = Omit<T, keyof R> & R
  *
  * `const col: Column<DataType, 'myField'> = { ... }`
  *
- * Generic version of quasar/dist/types/index.d.ts:9908
+ * Generic version of QTableColumn
  */
 export type Column<
   RowType extends Record<string, unknown>,
-  Field = keyof RowType,
-  ValueType = Field extends keyof RowType ? RowType[Field] : never
+  Field = keyof RowType | ((row: RowType) => unknown),
+  ValueType = Field extends keyof RowType ? RowType[Field] : (Field extends (row: RowType) => infer T ? T : never)
 > = Merge<Omit<QTableColumn<RowType>, 'name'>, {
   /**
-   * Row Object property to determine value for this column
+   * Row Object property to determine value for this column; Either a key of the row type, or a
+   * function taking in one row and returning any value. If this value is not primitive, you have
+   * to provide your own cell implementation or use a formatting function
    */
   field: Field
   /**
@@ -48,8 +50,6 @@ export type Column<
    */
   classes?: string | ((row: RowType) => string)
 }>
-// TODO: Support field functions: (row: RowType) => unknown
-// TODO: Should be able to infer field type if https://github.com/microsoft/TypeScript/issues/24085 is resolved
 
 export interface Props<RowType extends Record<string, unknown>, Cols extends Record<string, Column<RowType>>> {
   /**
@@ -66,7 +66,7 @@ export interface Props<RowType extends Record<string, unknown>, Cols extends Rec
    */
   loadDataFunction:() => Promise<readonly RowType[]>
   /**
-   * Property name of each row that defines the unique key for each row
+   * Property name of row type that defines the unique key for each row
    */
   uniqueRowKey: keyof RowType
 }
@@ -158,7 +158,7 @@ export function useGenericTable<
   RowType extends Record<string, unknown>,
   // This must be any, otherwise the index signature doesn't work
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Cols extends Record<string, Column<RowType, string, any>>
+  Cols extends Record<string, Column<RowType, any, any>>
 > () {
   const wrapper = defineComponent((props: Props<RowType, Cols>, { slots }) => {
     // Returning functions in `setup` means this is the render function

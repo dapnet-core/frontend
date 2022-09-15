@@ -54,6 +54,7 @@ type CallResponse = {
   }
 }
 
+// TODO: Should be able to infer field type if https://github.com/microsoft/TypeScript/issues/24085 is resolved
 type Columns = {
   created_at: Column<CallResponse, 'created_at'>
   created_by: Column<CallResponse, 'created_by'>

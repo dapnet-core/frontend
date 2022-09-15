@@ -4,9 +4,10 @@
     :rows="rows"
     :columns="Array.isArray(cols) ? cols : mapCols(cols)"
     color="primary"
-    :loading="state.loading"
+    :loading="loading"
     :row-key="props.uniqueRowKey"
-    :no-data-label="state.error ? $t('table.error', {error: state.error}) : $t('table.noData')"
+    :no-data-label="error ? $t('table.error', {error}) : $t('table.noData')"
+    :filter="filter"
   >
     <!-- Filter all passed slots on 'cell-{name}', then use this to pass it through to QTable.
          The extra step of stripping 'cell-' just to append it later is necessary so the slot is correctly identified -->
@@ -15,6 +16,13 @@
         <slot :name="`cell-${name}`" v-bind="slotData"></slot>
       </q-td>
     </template>
+    <template v-slot:top-right>
+      <q-input borderless dense debounce="250" v-model="filter" :placeholder="$t('table.search')">
+        <template v-slot:append>
+          <q-icon name="mdi-magnify" />
+        </template>
+      </q-input>
+      </template>
   </q-table>
 </template>
 
@@ -27,16 +35,20 @@ const props = defineProps<{
   title: string
   // Array is used for normal use, Record for generic use
   cols: QTableColumn[] | Record<string, Omit<QTableColumn, 'name'>>
+  // TODO: Add support for (and encourage) server-side pagination
   loadDataFunction:() => Promise<readonly unknown[]>
   uniqueRowKey: string
 }>()
+
 const rows = ref<readonly unknown[] | undefined>()
-const state = ref<{loading: boolean, error?: string}>({ loading: false })
+const filter = ref('')
+const loading = ref(false)
+const error = ref<string | undefined>(undefined)
 
 onMounted(async () => {
-  state.value.loading = true
-  await props.loadDataFunction().then(data => { rows.value = data }).catch(error => { state.value.error = error })
-  state.value.loading = false
+  loading.value = true
+  await props.loadDataFunction().then(data => { rows.value = data }).catch(error => { error.value = error })
+  loading.value = false
 })
 
 const cellSlots = computed(() => {
