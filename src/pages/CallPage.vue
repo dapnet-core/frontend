@@ -27,7 +27,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { fetchJson } from 'src/fetch'
 import { Column, useGenericTable } from 'src/components/GenericDataTable'
 
 const { t, d } = useI18n({ useScope: 'global' })

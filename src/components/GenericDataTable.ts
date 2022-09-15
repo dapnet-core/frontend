@@ -10,7 +10,7 @@ type Merge<T, R extends Record<string, unknown>> = Omit<T, keyof R> & R
  *
  * `const col: Column<DataType, 'myField'> = { ... }`
  *
- * Generic version of QTableColumn
+ * *Generic version of QTableColumn*
  */
 export type Column<
   RowType extends Record<string, unknown>,
@@ -71,7 +71,7 @@ export interface Props<RowType extends Record<string, unknown>, Cols extends Rec
   uniqueRowKey: keyof RowType
 }
 
-/** Generic version of quasar/dist/types/index.d.ts:10536 */
+/** *Generic version of quasar/dist/types/index.d.ts:10536* */
 export type TableCell<
   RowType extends Record<string, unknown>,
   Col extends Column<RowType>,
