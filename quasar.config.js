@@ -80,7 +80,7 @@ module.exports = configure(function (ctx) {
         version,
         branchName,
         commitHash,
-        apiServer: ctx.dev ? 'http://localhost:8000' : 'unknown'
+        apiServer: ctx.dev ? 'http://localhost:5555' : 'unknown'
       },
       // rawDefine: {}
       // ignorePublicFolder: true,

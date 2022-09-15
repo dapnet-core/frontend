@@ -2,34 +2,80 @@ import { defineComponent, h, VNode } from 'vue'
 import DataTable from 'components/DataTable.vue'
 import { QTableColumn } from 'quasar'
 
+/** Merge two types; Information from the right side is used if there is a conflict */
 type Merge<T, R extends Record<string, unknown>> = Omit<T, keyof R> & R
 
-/** Generic version of quasar/dist/types/index.d.ts:9908 */
+/**
+ * Column type. It is advised to type it explicitly with string literals as Field so type inference works as expected:
+ *
+ * `const col: Column<DataType, 'myField'> = { ... }`
+ *
+ * Generic version of quasar/dist/types/index.d.ts:9908
+ */
 export type Column<
   RowType extends Record<string, unknown>,
   Field = keyof RowType,
   ValueType = Field extends keyof RowType ? RowType[Field] : never
-> = Merge<QTableColumn<RowType>, {
-  name?: string
+> = Merge<Omit<QTableColumn<RowType>, 'name'>, {
+  /**
+   * Row Object property to determine value for this column
+   */
   field: Field
+  /**
+   * Compare function if you have some custom data or want a specific way to compare two rows
+   * @param a Value of the first comparison term
+   * @param b Value of the second comparison term
+   * @param rowA Full Row object in which is contained the first term
+   * @param rowB Full Row object in which is contained the second term
+   * @returns Comparison result of term 'a' with term 'b'. Less than 0 when 'a' should come first; greater than 0 if 'b' should come first; equal to 0 if their position must not be changed with respect to each other
+   */
   sort?: (a: ValueType, b: ValueType, rowA: RowType, rowB: RowType) => number
+  /**
+   * Function you can apply to format your data
+   * @param val Value of the cell
+   * @param row Full Row object in which the cell is contained
+   * @returns The resulting formatted value
+   */
   format?: (val: ValueType, row: RowType) => string
+  /**
+   * Style to apply on normal cells of the column
+   * @param row The current row being processed
+   */
   style?: string | ((row: RowType) => string)
+  /**
+   * Classes to add on normal cells of the column
+   * @param row The current row being processed
+   */
   classes?: string | ((row: RowType) => string)
 }>
+// TODO: Support field functions: (row: RowType) => unknown
+// TODO: Should be able to infer field type if https://github.com/microsoft/TypeScript/issues/24085 is resolved
 
-export interface Props<RowType extends Record<string, unknown>, Cols> {
+export interface Props<RowType extends Record<string, unknown>, Cols extends Record<string, Column<RowType>>> {
+  /**
+   * Title of this table
+   */
   title: string
+  /**
+   * Column definition. Is is advised to statically type this
+   */
   cols: Cols
+  /**
+   * Called on mount of this component to supply data to the table.
+   * This is an async function; Until it is resolved, a loading animation will play
+   */
   loadDataFunction:() => Promise<readonly RowType[]>
-  rowKey: keyof RowType
+  /**
+   * Property name of each row that defines the unique key for each row
+   */
+  uniqueRowKey: keyof RowType
 }
 
 /** Generic version of quasar/dist/types/index.d.ts:10536 */
 export type TableCell<
   RowType extends Record<string, unknown>,
   Col extends Column<RowType>,
-  ValueType = Col extends Column<RowType, any, infer V> ? V : never
+  ValueType = Col extends Column<RowType, unknown, infer V> ? V : never
 > = {
   /**
    * Column definition for column associated with table cell
@@ -90,7 +136,23 @@ export type TableCell<
   dense: boolean;
 }
 
-// Wrap the DataTable component in a genericly-typed wrapper
+/**
+ * Wrap the DataTable component in a generically-typed wrapper that gives full type support
+ * to templates, data loading callbacks and more.
+ *
+ * ## Usage
+ *
+ * Define the wrapper component somwhere in your setup function
+ *
+ * `const myGenericTable = useGenericTable<myRowDataType, myColumns>()`
+ *
+ * and then you can use it in your template like so
+ *
+ * `<MyGenericTable :cols="..." ... />`
+ *
+ * ## Slots
+ * - `cell-{colName}`, where *colName* is a name of the defined columns. Overwrites the render function for this specific column. Equivalent to QTable `body-cell-{colName}`, except that we don't have to wrap out code in `<q-td>`. Props are of type `TableCell<RowType, Column>`
+ */
 // Adapted from https://logaretm.com/blog/generic-type-components-with-composition-api/
 export function useGenericTable<
   RowType extends Record<string, unknown>,
@@ -108,8 +170,9 @@ export function useGenericTable<
     // the slots type information by adding a `$slots` object with slot functions defined as properties
     new (): {
       $slots: {
-        // each function correspond to a slot and its arguments are the slot props available
-        // it should return an array of `VNode`
+        // each function correspond to a slot and its arguments are the slot props available; it should return an array of `VNode`
+
+        // Slot 'cell-{colName}', where colName is any column name (not field name!)
         [name in keyof Cols as name extends string ? `cell-${name}` : never]: (arg: TableCell<RowType, Cols[name]>) => VNode[];
       };
     };
