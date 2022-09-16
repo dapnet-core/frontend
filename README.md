@@ -3,7 +3,7 @@
 New multi-platform frontend for [DAPNET v2](https://github.com/dapnet-core)
 
 ## Getting started
-Install node.js and npm (or any other package manager) and install the dependencies
+Install node.js (≥ 18) and npm (or any other package manager) and install the dependencies
 ```bash
 npm install
 ```

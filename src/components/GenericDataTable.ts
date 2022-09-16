@@ -142,7 +142,7 @@ export type TableCell<
  *
  * ## Usage
  *
- * Define the wrapper component somwhere in your setup function
+ * Define the wrapper component somewhere in your setup function
  *
  * `const myGenericTable = useGenericTable<myRowDataType, myColumns>()`
  *
