@@ -1,0 +1,13 @@
+# This file makes sure only important data is copied into the docker production build image
+
+# Quasar & build stuff
+dist/
+.quasar/
+
+# npm
+node_modules/
+npm-debug.log*
+
+# IDEs
+.idea/
+.vs-code/

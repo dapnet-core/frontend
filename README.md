@@ -3,6 +3,15 @@
 New multi-platform frontend for [DAPNET v2](https://github.com/dapnet-core)
 
 ## Getting started
+### Using docker
+Run
+```bash
+docker build -t dapnet-quasar:latest . && docker run -p 80:80 dapnet-quasar:latest
+```
+and open a webbrowser at [localhost](http://localhost). This will launch the production build.
+
+### Manually
+
 Install node.js (≥ 18) and npm (or any other package manager) and install the dependencies
 ```bash
 npm install
