@@ -13,6 +13,7 @@ const { execSync } = require('node:child_process')
 const { configure } = require('quasar/wrappers')
 const path = require('path')
 const pkg = require('./package.json')
+const terminalEnv = { api: process.env.API_SERVER }
 
 module.exports = configure(function (ctx) {
   // Get local git metadata
@@ -20,6 +21,7 @@ module.exports = configure(function (ctx) {
   const branchName = execSync('git rev-parse --abbrev-ref HEAD').toString().trimEnd()
   const commitHash = execSync('git rev-parse HEAD').toString().trimEnd().substring(0, 8)
   const version = pkg.version
+  console.log('Env:', terminalEnv)
 
   return {
     eslint: {
@@ -80,7 +82,7 @@ module.exports = configure(function (ctx) {
         version,
         branchName,
         commitHash,
-        apiServer: ctx.dev ? 'http://localhost:5555' : 'unknown'
+        apiServer: terminalEnv.api ? (ctx.prod ? terminalEnv.api : '/api_proxy') : ''
       },
       // rawDefine: {}
       // ignorePublicFolder: true,
@@ -105,7 +107,14 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
       // https: true
-      open: true // opens browser window automatically
+      open: true, // opens browser window automatically
+      proxy: {
+        '/api_proxy': {
+          target: terminalEnv.api,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api_proxy/, '')
+        }
+      }
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
