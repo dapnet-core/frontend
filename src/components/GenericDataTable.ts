@@ -1,6 +1,7 @@
 import { defineComponent, h, VNode } from 'vue'
 import DataTable from 'components/DataTable.vue'
 import { QTableColumn } from 'quasar'
+import { PaginationHandler, PaginationProps } from './models'
 
 /** Merge two types; Information from the right side is used if there is a conflict */
 type Merge<T, R extends Record<string, unknown>> = Omit<T, keyof R> & R
@@ -61,10 +62,18 @@ export interface Props<RowType extends Record<string, unknown>, Cols extends Rec
    */
   cols: Cols
   /**
-   * Called on mount of this component to supply data to the table.
+   * Called on mount of this component to supply all available data to the table.
    * This is an async function; Until it is resolved, a loading animation will play
    */
-  loadDataFunction:() => Promise<readonly RowType[]>
+  loadDataFunction?:() => Promise<readonly RowType[]>
+  /**
+   * Called each time new data is required. Implies server-side pagination. If set, loadDataFunction will be ignored.
+   */
+  loadPaginatedData?: PaginationHandler<RowType>
+  /**
+   * Overwrite default pagination
+   */
+  defaultPagination? : PaginationProps
   /**
    * Property name of row type that defines the unique key for each row
    */

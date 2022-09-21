@@ -5,9 +5,10 @@ import { globalStore } from 'stores/global-store'
  * @param route the route, relative to the API url
  * @param method optional, either GET or POST
  * @param useAuth optional, whether to send the auth token with the request
+ * @param data optional, will either be passed as query string or body depending on the method
  * @returns A promise of the given ResponseType that will error if the request failed
  */
-export function fetchJson<ResponseType> (route: string, method: 'GET' | 'POST' = 'GET', useAuth = true) {
+export function fetchJson<ResponseType> (route: string, method: 'GET' | 'POST' = 'GET', useAuth = true, data?: Record<string, string>) {
   const store = globalStore()
   const headers = new Headers()
   headers.append('Accept', 'application/json')
@@ -17,9 +18,13 @@ export function fetchJson<ResponseType> (route: string, method: 'GET' | 'POST' =
     headers.append('Authorization', 'Basic ' + store.auth.token)
   }
 
-  return fetch(`${process.env.apiServer}/${route}`, {
+  let url = `${process.env.apiServer}/${route}`
+  if (data && method === 'GET') url += '?'; url += new URLSearchParams(data).toString()
+
+  return fetch(url, {
     method,
-    headers
+    headers,
+    body: (data && method === 'POST') ? JSON.stringify(data) : undefined
   }).then(res => {
     if (res.ok) return res.json() as Promise<ResponseType>
     throw new Error(res.statusText)
