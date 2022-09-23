@@ -5,7 +5,7 @@
       :cols="columns"
       unique-row-key="id"
       :load-paginated-data="loadData"
-      :default-pagination="{sortBy: 'created_at', descending: true}"
+      :default-pagination="defaultPagination"
     >
       <template #cell-subscribers="props">
         <q-chip v-for="(item, key) in props.value.subscribers"        :key="key" icon="mdi-wifi"            :label="item" color="grey" text-color="white" />
@@ -27,7 +27,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Column, useGenericTable } from 'src/components/GenericDataTable'
 import { fetchJson } from 'src/fetch'
-import { PaginatedResponse, PaginationHandler } from 'src/components/models'
+import { PaginatedResponse, PaginationHandler, PaginationProps } from 'src/components/models'
 
 const { t, d } = useI18n({ useScope: 'global' })
 
@@ -124,6 +124,15 @@ const loadData: PaginationHandler<CallResponse> = async (limit, cursor, sorting,
   }
 
   return fetchJson<PaginatedResponse<CallResponse>>('calls', 'GET', true, args)
+}
+
+const defaultPagination: PaginationProps<CallResponse> = {
+  sortBy: 'created_at',
+  descending: true,
+  fallbackSorting: {
+    sortBy: 'created_at',
+    descending: true
+  }
 }
 
 const CallTable = useGenericTable<CallResponse, Columns>()

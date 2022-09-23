@@ -25,10 +25,19 @@ export type PaginationHandler<T> = (
   filter?: string
 ) => Promise<PaginatedResponse<T>>
 
-// TODO: generic typing
-export type PaginationProps = QTableProps['pagination'] & {
+/**
+ * Pagination props for DataTable, generic over the data type
+ */
+export type PaginationProps<T> = Omit<NonNullable<QTableProps['pagination']>, 'sortBy'> & {
+  /** Sorting column */
+  sortBy?: keyof T
   /** Cursor for all entries that come before the current view */
   before?: string
   /** Cursor for all entries that come after the current view */
   after?: string
+  /** Sets the fallback sorting column. If no sorting column is set, this one will be set.
+   *  Useful if the server sorts the data even if no sorting is requested by the client,
+   *  which often happens in cursor-based pagination
+   */
+   fallbackSorting?: { sortBy: keyof T, descending: boolean }
 }

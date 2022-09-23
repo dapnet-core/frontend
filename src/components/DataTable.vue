@@ -24,7 +24,7 @@
           <q-icon name="mdi-magnify" />
         </template>
       </q-input>
-      </template>
+    </template>
   </q-table>
 </template>
 
@@ -39,7 +39,7 @@ const props = defineProps<{
   cols: Record<string, Omit<QTableColumn, 'name'>>
   loadDataFunction?:() => Promise<readonly unknown[]>
   loadPaginatedData?: PaginationHandler<Record<string, unknown>>
-  defaultPagination? : PaginationProps
+  defaultPagination? : PaginationProps<Record<string, unknown>>
   uniqueRowKey: string
 }>()
 
@@ -47,7 +47,7 @@ const rows = ref<readonly unknown[] | undefined>()
 const filter = ref('')
 const loading = ref(false)
 const error = ref<string | undefined>(undefined)
-const pagination = ref<PaginationProps>({
+const pagination = ref<PaginationProps<Record<string, unknown>>>({
   // IMPORTANT: Page starts at 1
   page: 1,
   rowsPerPage: 20,
@@ -68,7 +68,11 @@ function _handleError (e: unknown) {
 }
 
 /**
- * Invariants: 'limit' > 0, 'props.loadPaginatedData' defined, 'after' and 'before' not set at the same time, 'descending' set if 'sortBy' is truthy
+ * Invariants:
+ * - 'limit' > 0
+ * - 'props.loadPaginatedData' defined
+ * - 'after' and 'before' not set at the same time
+ * - 'descending' set if 'sortBy' is truthy
  */
 async function _requestPaginatedData (limit: number, before: string | undefined, after: string | undefined, sortBy: string | undefined, descending: boolean | undefined, filter: string | undefined) {
   if (!props.loadPaginatedData || limit <= 0 || (after && before) || (sortBy && descending === undefined)) throw Error('Invariant violation')
@@ -102,9 +106,15 @@ onMounted(async () => {
 })
 
 const handleRequest: QTableProps['onRequest'] = (args) => {
-  const { page, rowsPerPage, sortBy, descending } = args.pagination
+  let { page, rowsPerPage, sortBy, descending } = args.pagination
   const filter = args.filter
   const currentPage = pagination.value.page
+
+  if (!sortBy && pagination.value.fallbackSorting) {
+    sortBy = pagination.value.fallbackSorting.sortBy
+    descending = pagination.value.fallbackSorting.descending
+  }
+
   // If the sorting column changes the cursor becomes invalid
   const validCursor = sortBy === pagination.value.sortBy
 
@@ -117,7 +127,7 @@ const handleRequest: QTableProps['onRequest'] = (args) => {
     sortBy, descending, filter
   ).then(() => {
     // Update local pagination
-    pagination.value.page = page
+    pagination.value.page = validCursor ? page : 1
     pagination.value.rowsPerPage = rowsPerPage
     pagination.value.sortBy = sortBy
     pagination.value.descending = descending
