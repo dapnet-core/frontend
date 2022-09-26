@@ -3,7 +3,7 @@
 
     <q-header elevated class="text-white bg-primary">
       <q-toolbar>
-        <q-btn dense flat round icon="mdi-menu" @click="toggleLeftDrawer" />
+        <q-btn dense flat round icon="mdi-menu" @click="() => { leftDrawerOpen = !leftDrawerOpen }" />
 
         <q-toolbar-title>
           <!-- TODO: Make responsive or remove/replace -->
@@ -93,11 +93,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { globalStore } from 'stores/global-store'
 import { MessageLanguages } from 'boot/i18n'
 import { useI18n } from 'vue-i18n'
 import Item from 'components/AppSidebarComponent.vue'
+import { fetchJson } from 'src/fetch'
+import { storeToRefs } from 'pinia'
 
 const store = globalStore()
 const { t } = useI18n()
@@ -113,38 +115,59 @@ const footerLinks = computed(() => [
   { icon: 'mdi-twitter', link: 'https://twitter.com/RWTHAmateurfunk', tooltip: 'Twitter' },
   { icon: 'mdi-facebook', link: 'https://www.facebook.com/DL0UA', tooltip: 'Facebook' }
 ])
-interface Count {
-  calls: number
-  subscribers: number
-  transmitters: number
-  rubrics: number
-  users: number
-  nodes: number
-  my?: {
-    subscribers: number
-    transmitters: number
-    rubrics: number
-    nodes: number
-  }
-}
-const count = ref<Count | undefined>({
-  calls: 10,
-  subscribers: 50,
-  transmitters: 0,
-  rubrics: 0,
-  users: 0,
-  nodes: 0,
+
+const count = ref<{
+  calls?: number
+  subscribers?: number
+  transmitters?: number
+  rubrics?: number
+  users?: number
+  nodes?: number
   my: {
-    subscribers: 50,
-    transmitters: 0,
-    rubrics: 0,
-    nodes: 0
+    subscribers?: number
+    transmitters?: number
+    rubrics?: number
+    nodes?: number
+  }
+}>({
+  my: {}
+})
+
+// TODO: to many requests for these. Simplyfy count once these are batched
+function fetchGlobalCounts () {
+  fetchJson<{count: number}>('calls/_count', 'GET', false).then(resp => { count.value.calls = resp.count })
+  fetchJson<{count: number}>('transmitters/_count', 'GET', false).then(resp => { count.value.transmitters = resp.count })
+  fetchJson<{count: number}>('users/_count', 'GET', false).then(resp => { count.value.users = resp.count })
+  fetchJson<{count: number}>('rubrics/_count', 'GET', false).then(resp => { count.value.rubrics = resp.count })
+  fetchJson<{count: number}>('subscribers/_count', 'GET', false).then(resp => { count.value.subscribers = resp.count })
+  fetchJson<{count: number}>('nodes/_count', 'GET', false).then(resp => { count.value.nodes = resp.count })
+}
+
+function fetchUserCounts () {
+  fetchJson<{count: number}>('transmitters/_my_count').then(resp => { count.value.my.transmitters = resp.count })
+  fetchJson<{count: number}>('rubrics/_my_count').then(resp => { count.value.my.rubrics = resp.count })
+  fetchJson<{count: number}>('subscribers/_my_count').then(resp => { count.value.my.subscribers = resp.count })
+  fetchJson<{count: number}>('nodes/_my_count').then(resp => { count.value.my.nodes = resp.count })
+}
+
+// Watch the 'loggedIn' state; Update personal counts when it changes
+const { loggedIn } = storeToRefs(store)
+watch(loggedIn, (n) => {
+  if (n) fetchUserCounts()
+  else {
+    count.value.my = {}
   }
 })
 
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
+// Fetch new global counts every 10 seconds
+// TODO: Do we want this? Adjust interval depending on device? Only do if tab is focused?
+setTimeout(fetchGlobalCounts, 10000)
+
+// Fetch counts on startup
+onMounted(() => {
+  fetchGlobalCounts()
+  if (store.loggedIn) fetchUserCounts()
+})
 </script>
 
 <style scoped lang="scss">

@@ -8,7 +8,6 @@
       {{ title }}
     </q-item-section>
 
-    <!-- TODO: Loading animation for count -->
     <q-item-section side v-if="count">
       <q-badge color="primary" :label="count" />
     </q-item-section>
