@@ -22,11 +22,10 @@ npm install
 
 After that you can launch the development profile with
 ```bash
-npm run dev
+API_SERVER=<your_server> npm run dev
 ```
 
-There is no backend connection at the moment. I will add a docker-compose file to allow easy deployment once that is set up.
-
+It is advised to set up a local node too and connect to it's api server.
 ## Why this rework?
 There already is a working [web frontend for DAPNET v2](https://github.com/dapnet-core/web/tree/vuetify), but its using lots of outdated dependencies and is hard to migrate and maintain. Additionally, it only covers the web; DAPNET v1 has apps for [Android](https://github.com/DecentralizedAmateurPagingNetwork/DAPNETApp) and [iOS](https://apps.apple.com/ca/app/dapnet/id1638627303), which DAPNET v2 should match.
 
