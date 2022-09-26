@@ -1,16 +1,19 @@
-# Dapnet App (dapnet-quasar)
+# Dapnet Frontend
 
 New multi-platform frontend for [DAPNET v2](https://github.com/dapnet-core)
 
 ## Getting started
+### Using a full DAPNET node
+See [this repository](https://github.com/dapnet-core/core) for setup instructions
 ### Using docker
 Run
 ```bash
-docker build -t dapnet-quasar:latest . && docker run -p 80:80 dapnet-quasar:latest
+$ docker build -t dapnet-quasar:latest .
+$ docker run -p 80:80 -v "$(pwd)"/docker/nginx.conf:/etc/nginx/nginx.conf:ro dapnet-quasar:latest
 ```
-and open a webbrowser at [localhost](http://localhost). This will launch the production build.
+and open a webbrowser at [localhost](http://localhost). This will launch the production build, without an API server. You can specify one using `--build-arg api_server=<your_server>` in the first command
 
-### Manually
+### Manually (recommended for development)
 
 Install node.js (≥ 18) and npm (or any other package manager) and install the dependencies
 ```bash

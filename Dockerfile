@@ -1,11 +1,15 @@
 FROM node:18 as build
 
 WORKDIR /app/
-COPY . /app/
 
+# Copy package data manually so 'npm install' is cached
+COPY package.json package-lock.json /app/
 RUN npm install
-RUN npm run build
+
+COPY . /app/
+ARG api_server=""
+# API_SERVER is passed into 'quasar.config.js'
+RUN API_SERVER=$api_server npm run build
 
 FROM nginx:alpine
-COPY ./docker/nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist/spa /var/www/dapnet
