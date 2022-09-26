@@ -1,3 +1,5 @@
+<!-- This file is just mockup right now, a place to test components -->
+
 <template>
   <q-page padding class="row justify-evenly">
     <div class="column full-width">
@@ -81,7 +83,6 @@ const columns = computed<QTableColumn[]>(() => [
     label: t('general.priority'),
     align: 'center',
     field: 'priority',
-    // TODO: Use format
     sortable: true
   }
 ])

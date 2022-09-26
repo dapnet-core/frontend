@@ -8,7 +8,7 @@
     />
     <ol-fullscreen-control />
     <ol-scaleline-control />
-    <!-- <ol-zoom-control /> TODO: Move to bottom right. Waits on https://github.com/MelihAltintas/vue3-openlayers/issues/101 -->
+    <ol-zoom-control />
     <ol-attribution-control />
     <ControlContainer v-if="selected" class="data-container">
       <slot name="marker-info" :marker="selected.marker" :index="selected.key" />
@@ -87,5 +87,15 @@ function transformCoords (coords: [number, number]): [number, number] {
 
   body.body--dark .data-container{
     background-color: $transparent-dark;
+  }
+</style>
+
+<!-- TODO: Workaround, waits on https://github.com/MelihAltintas/vue3-openlayers/issues/101 -->
+<style>
+  div.ol-zoom.ol-unselectable.ol-control {
+    right: 0.5em;
+    bottom: 2em;
+    left: unset;
+    top: unset;
   }
 </style>
