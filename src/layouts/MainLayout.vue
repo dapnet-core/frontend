@@ -5,11 +5,6 @@
       <q-toolbar>
         <q-btn dense flat round icon="mdi-menu" @click="() => { leftDrawerOpen = !leftDrawerOpen }" />
 
-        <q-toolbar-title>
-          <!-- TODO: Make responsive or remove/replace -->
-          <q-img src="~assets/dapnet-logo.png" height="56px" fit="contain" position="0% 50%" />
-        </q-toolbar-title>
-
         <q-space />
 
         <!-- TODO: Make dropdown wider on large screens so 2 languages fit per line -->
@@ -26,26 +21,32 @@
 
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
       <q-list padding>
-        <q-item v-if="store.loggedIn" >
-          <q-item-section top avatar>
-            <q-avatar v-if="store.auth?.avatar">
-              <img :src="store.auth?.avatar">
-            </q-avatar>
-            <q-avatar v-else color="primary" text-color="white">
-              {{ store.auth?.username[0] }}
-            </q-avatar>
-          </q-item-section>
+        <template v-if="store.loggedIn">
+          <q-item >
+            <q-item-section top avatar>
+              <q-avatar v-if="store.auth?.avatar">
+                <img :src="store.auth.avatar">
+              </q-avatar>
+              <q-avatar v-else color="primary" text-color="white">
+                {{ store.auth?.username[0] }}
+              </q-avatar>
+            </q-item-section>
 
-          <q-item-section>
-            <q-item-label>{{ store.auth?.username }}</q-item-label>
-          </q-item-section>
-        </q-item>
-        <Item icon="mdi-send" :title="$t('navigation.calls.new')" to="/calls/new" v-if="store.loggedIn" />
-        <Item icon="mdi-cast" :title="$t('navigation.subscribers.my')" to="/subscribers/my" :count="count?.my?.subscribers" v-if="store.loggedIn && count?.my?.subscribers"/>
-        <Item icon="mdi-wifi" :title="$t('navigation.transmitters.my')" to="/transmitters/my" :count="count?.my?.transmitters" v-if="store.loggedIn && count?.my?.transmitters"/>
-        <Item icon="mdi-message-text" :title="$t('navigation.rubrics.my')" to="/rubrics/my" :count="count?.my?.rubrics" v-if="store.loggedIn && count?.my?.rubrics"/>
-        <Item icon="mdi-cloud" :title="$t('navigation.nodes.my')" to="/nodes/my" :count="count?.my?.nodes" v-if="store.loggedIn && count?.my?.nodes"/>
-        <q-separator v-if="store.loggedIn" />
+            <q-item-section>
+              <q-item-label>{{ store.auth?.username }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <Item icon="mdi-send" :title="$t('navigation.calls.new')" to="/calls/new" />
+          <Item icon="mdi-cast" :title="$t('navigation.subscribers.my')" to="/subscribers/my" :count="count.my.subscribers" v-if="count.my.subscribers"/>
+          <Item icon="mdi-wifi" :title="$t('navigation.transmitters.my')" to="/transmitters/my" :count="count.my.transmitters" v-if="count.my.transmitters"/>
+          <Item icon="mdi-message-text" :title="$t('navigation.rubrics.my')" to="/rubrics/my" :count="count.my.rubrics" v-if="count.my.rubrics"/>
+          <Item icon="mdi-cloud" :title="$t('navigation.nodes.my')" to="/nodes/my" :count="count.my.nodes" v-if="count.my.nodes"/>
+        </template>
+        <!-- TODO: Adapt logo to dark mode. Maybe allow each node to provide a different variation of this image? -->
+        <q-img v-else src="~assets/dapnet-logo.png" height="64px" fit="contain" />
+        <q-separator />
+        <Item icon="mdi-home" :title="$t('navigation.home')" to="/" />
         <Item icon="mdi-map" :title="$t('navigation.transmitters.map')" to="/transmitters/map" />
         <Item icon="mdi-email" :title="$t('navigation.calls.all')" to="/calls" :count="count?.calls" />
         <Item icon="mdi-cast" :title="$t('navigation.subscribers.all')" to="/subscribers" :count="count?.subscribers"/>
@@ -150,7 +151,7 @@ function fetchUserCounts () {
   fetchJson<{count: number}>('nodes/_my_count').then(resp => { count.value.my.nodes = resp.count })
 }
 
-// Watch the 'loggedIn' state; Update personal counts when it changes
+// Watch the 'loggedIn' state; Update personal counts when some new logged in
 const { loggedIn } = storeToRefs(store)
 watch(loggedIn, (n) => {
   if (n) fetchUserCounts()
@@ -169,10 +170,3 @@ onMounted(() => {
   if (store.loggedIn) fetchUserCounts()
 })
 </script>
-
-<style scoped lang="scss">
-  .bg-gradient{
-    background: $primary;
-    background: linear-gradient(to bottom right, $primary, $secondary);
-  }
-</style>

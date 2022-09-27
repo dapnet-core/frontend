@@ -74,8 +74,6 @@ const featureSelected = (event: SelectEvent) => {
 function transformCoords (coords: [number, number]): [number, number] {
   return fromLonLat(coords as Coordinate) as [number, number]
 }
-
-// TODO: Use https://vueuse.org/core/useresizeobserver to resize map on component resize
 </script>
 
 <style lang="scss" scoped>

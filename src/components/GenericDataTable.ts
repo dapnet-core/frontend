@@ -73,7 +73,7 @@ export interface Props<RowType extends Record<string, unknown>, Cols extends Rec
   /**
    * Overwrite default pagination
    */
-  defaultPagination? : PaginationProps
+  defaultPagination? : PaginationProps<RowType>
   /**
    * Property name of row type that defines the unique key for each row
    */
