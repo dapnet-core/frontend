@@ -13,13 +13,23 @@ const { execSync } = require('node:child_process')
 const { configure } = require('quasar/wrappers')
 const path = require('path')
 const pkg = require('./package.json')
+
+// This env is passed in from the command line; Typing won't be accurate
 const terminalEnv = { api: process.env.API_SERVER }
 
 module.exports = configure(function (ctx) {
   // Get local git metadata
   // https://stackoverflow.com/a/71162041
-  const branchName = execSync('git rev-parse --abbrev-ref HEAD').toString().trimEnd()
-  const commitHash = execSync('git rev-parse HEAD').toString().trimEnd().substring(0, 8)
+  let branchName = '?'
+  let commitHash = '?'
+  try {
+    // TODO: Will error if used in full node setup, see issue #2
+    branchName = execSync('git rev-parse --abbrev-ref HEAD').toString().trimEnd()
+    commitHash = execSync('git rev-parse HEAD').toString().trimEnd().substring(0, 8)
+  }catch (error){
+    console.log('Failed to get git metadata: ' + error)
+  }
+
   const version = pkg.version
   console.log('Env:', terminalEnv)
 
