@@ -98,7 +98,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { globalStore } from 'stores/global-store'
 import { MessageLanguages } from 'boot/i18n'
 import { useI18n } from 'vue-i18n'
-import Item from 'components/AppSidebarComponent.vue'
+import Item from 'components/SidebarItem.vue'
 import { fetchJson } from 'src/fetch'
 import { storeToRefs } from 'pinia'
 
