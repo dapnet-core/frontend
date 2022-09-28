@@ -25,7 +25,7 @@
 
 <style scoped lang="scss">
   .bg-gradient{
-    background: $primary;
+    background: $primary; // Fallback if linear-gradient is not supported
     background: linear-gradient(to bottom right, $primary, $secondary);
   }
 </style>

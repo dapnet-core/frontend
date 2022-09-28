@@ -23,10 +23,10 @@ module.exports = configure(function (ctx) {
   let branchName = '?'
   let commitHash = '?'
   try {
-    // TODO: Will error if used in full node setup, see issue #2
+    // FIXME: Will error if used in full node setup, see issue #2
     branchName = execSync('git rev-parse --abbrev-ref HEAD').toString().trimEnd()
     commitHash = execSync('git rev-parse HEAD').toString().trimEnd().substring(0, 8)
-  }catch (error){
+  } catch (error) {
     console.log('Failed to get git metadata: ' + error)
   }
 

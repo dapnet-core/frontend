@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
 import { QTableColumn, QTableProps } from 'quasar'
+import { errorToString } from 'src/misc'
 import { ref, onMounted, useSlots, computed } from 'vue'
 import { PaginationHandler, PaginationProps } from './models'
 
@@ -55,16 +56,7 @@ const pagination = ref<PaginationProps<Record<string, unknown>>>({
 })
 
 function _handleError (e: unknown) {
-  if (typeof e === 'string') {
-    console.warn(e)
-    error.value = e
-  } else if (e instanceof Error) {
-    console.warn(e)
-    error.value = e.message
-  } else {
-    console.error('Unknown error:', e)
-    error.value = 'unknown error'
-  }
+  error.value = errorToString(e, true)
 }
 
 /**
