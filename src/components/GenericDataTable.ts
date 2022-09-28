@@ -1,7 +1,7 @@
 import { defineComponent, h, VNode } from 'vue'
 import DataTable from 'components/DataTable.vue'
 import { QTableColumn } from 'quasar'
-import { PaginationHandler, PaginationProps } from './models'
+import { PaginationHandler, PaginationProps } from 'src/api/pagination'
 
 /** Merge two types; Information from the right side is used if there is a conflict */
 type Merge<T, R extends Record<string, unknown>> = Omit<T, keyof R> & R

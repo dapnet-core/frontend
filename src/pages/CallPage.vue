@@ -26,40 +26,20 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Column, useGenericTable } from 'src/components/GenericDataTable'
-import { fetchJson } from 'src/fetch'
-import { PaginatedResponse, PaginationHandler, PaginationProps } from 'src/components/models'
+import { loadPaginatedData, PaginationProps } from 'src/api/pagination'
+import { CallRowType, Calls } from 'src/api/api_routes'
 
 const { t, d } = useI18n({ useScope: 'global' })
 
-// Expected row response type from the server
-type CallResponse = {
-  created_at: string // DateTime
-  created_by: string
-  data: string
-  distribution: {
-    transmitter_groups: string[]
-    transmitters: string[]
-  }
-  expires_at: string // DateTime
-  id: string // UUID V1
-  local: boolean
-  origin: string
-  priority: number
-  recipients: {
-    subscriber_groups: string[]
-    subscribers: string[]
-  }
-}
-
 // TODO: Should be able to infer field type if https://github.com/microsoft/TypeScript/issues/24085 is resolved
 type Columns = {
-  created_at: Column<CallResponse, 'created_at'>
-  created_by: Column<CallResponse, 'created_by'>
-  message: Column<CallResponse, 'data'>
-  subscribers: Column<CallResponse, 'recipients'>
-  transmitters: Column<CallResponse, 'distribution'>
-  origin: Column<CallResponse, 'origin'>
-  priority: Column<CallResponse, (row: CallResponse) => { text: string, bgColor: string, textColor: string }>
+  created_at: Column<CallRowType, 'created_at'>
+  created_by: Column<CallRowType, 'created_by'>
+  message: Column<CallRowType, 'data'>
+  subscribers: Column<CallRowType, 'recipients'>
+  transmitters: Column<CallRowType, 'distribution'>
+  origin: Column<CallRowType, 'origin'>
+  priority: Column<CallRowType, (row: CallRowType) => { text: string, bgColor: string, textColor: string }>
 }
 
 const columns = computed<Columns>(() => ({
@@ -105,28 +85,9 @@ const columns = computed<Columns>(() => ({
   }
 }))
 
-const loadData: PaginationHandler<CallResponse> = async (limit, cursor, sorting, filter) => {
-  let args: Record<string, string> = { limit: limit.toString() }
-  if (typeof cursor === 'object') {
-    // Sets either 'before' or 'after'
-    args = { ...args, ...cursor }
-  } else if (cursor === 'lastpage') {
-    throw Error('Not yet implemented!')
-  } // else it's 'firstpage', which is the default and doesn't need any args
+const loadData = loadPaginatedData<CallRowType, Calls>('calls')
 
-  if (sorting) {
-    args.sortBy = sorting.sortBy
-    args.desc = sorting.descending ? '1' : '0'
-  }
-
-  if (filter) {
-    args.filter = filter
-  }
-
-  return fetchJson<PaginatedResponse<CallResponse>>('calls', 'GET', true, args)
-}
-
-const defaultPagination: PaginationProps<CallResponse> = {
+const defaultPagination: PaginationProps<CallRowType> = {
   sortBy: 'created_at',
   descending: true,
   fallbackSorting: {
@@ -135,7 +96,7 @@ const defaultPagination: PaginationProps<CallResponse> = {
   }
 }
 
-const CallTable = useGenericTable<CallResponse, Columns>()
+const CallTable = useGenericTable<CallRowType, Columns>()
 
 const priorities = (priority: number) => {
   switch (priority) {

@@ -1,4 +1,5 @@
 import type { QTableProps } from 'quasar'
+import { getJson, ApiRouteGet } from './fetch'
 
 /**
  * Paginated Reponse over data type T.
@@ -24,6 +25,52 @@ export type PaginationHandler<T> = (
   sorting?: { sortBy: keyof T, descending: boolean },
   filter?: string
 ) => Promise<PaginatedResponse<T>>
+
+/**
+ * Api route for paginated GET request to the server
+ *
+ * Invariants (not enforced by types atm):
+ * - 'query.after', 'query.before' or neither are set
+ * - 'query.sortBy' and 'query.desc' or neither are set
+ */
+export interface ApiRouteGetPaginated<T> extends ApiRouteGet {
+  response: PaginatedResponse<T>
+  query: {
+    limit: number
+    filter?: string
+    after?: string
+    before?: string
+    sortBy?: keyof T
+    desc?: '0' | '1'
+  }
+}
+
+/**
+ * Generic pagination handler of an ApiRouteGetPaginated R
+ * @param route The path of the route to call
+ */
+export function loadPaginatedData<T, R extends ApiRouteGetPaginated<T>> (route: string): PaginationHandler<T> {
+  return async (limit, cursor, sorting, filter) => {
+    let args: R['query'] = { limit }
+    if (typeof cursor === 'object') {
+      // Sets either 'before' or 'after'
+      args = { ...args, ...cursor }
+    } else if (cursor === 'lastpage') {
+      throw Error('Not yet implemented!')
+    } // else it's 'firstpage', which is the default and doesn't need any args
+
+    if (sorting) {
+      args.sortBy = sorting.sortBy
+      args.desc = sorting.descending ? '1' : '0'
+    }
+
+    if (filter) {
+      args.filter = filter
+    }
+
+    return getJson<R>(route, true, args)
+  }
+}
 
 /**
  * Pagination props for DataTable, generic over the data type

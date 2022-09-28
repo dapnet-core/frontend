@@ -32,7 +32,7 @@
 import { QTableColumn, QTableProps } from 'quasar'
 import { errorToString } from 'src/misc'
 import { ref, onMounted, useSlots, computed } from 'vue'
-import { PaginationHandler, PaginationProps } from './models'
+import { PaginationHandler, PaginationProps } from 'src/api/pagination'
 
 // TODO: Import 'Props' from 'components/GenericDataTable' once https://github.com/vuejs/core/issues/4294 is resolved
 const props = defineProps<{

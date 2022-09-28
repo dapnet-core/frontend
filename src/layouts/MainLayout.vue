@@ -99,9 +99,10 @@ import { globalStore } from 'stores/global-store'
 import { MessageLanguages } from 'boot/i18n'
 import { useI18n } from 'vue-i18n'
 import Item from 'components/SidebarItem.vue'
-import { fetchJson } from 'src/fetch'
+import { getJson } from 'src/api/fetch'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
+import { Count } from 'src/api/api_routes'
 
 const router = useRouter()
 const store = globalStore()
@@ -144,19 +145,19 @@ function logout () {
 
 // TODO: to many requests for these. Simplyfy count once these are batched
 function fetchGlobalCounts () {
-  fetchJson<{count: number}>('calls/_count', 'GET', false).then(resp => { count.value.calls = resp.count })
-  fetchJson<{count: number}>('transmitters/_count', 'GET', false).then(resp => { count.value.transmitters = resp.count })
-  fetchJson<{count: number}>('users/_count', 'GET', false).then(resp => { count.value.users = resp.count })
-  fetchJson<{count: number}>('rubrics/_count', 'GET', false).then(resp => { count.value.rubrics = resp.count })
-  fetchJson<{count: number}>('subscribers/_count', 'GET', false).then(resp => { count.value.subscribers = resp.count })
-  fetchJson<{count: number}>('nodes/_count', 'GET', false).then(resp => { count.value.nodes = resp.count })
+  getJson<Count>('calls/_count', false).then(resp => { count.value.calls = resp.count })
+  getJson<Count>('transmitters/_count', false).then(resp => { count.value.transmitters = resp.count })
+  getJson<Count>('users/_count', false).then(resp => { count.value.users = resp.count })
+  getJson<Count>('rubrics/_count', false).then(resp => { count.value.rubrics = resp.count })
+  getJson<Count>('subscribers/_count', false).then(resp => { count.value.subscribers = resp.count })
+  getJson<Count>('nodes/_count', false).then(resp => { count.value.nodes = resp.count })
 }
 
 function fetchUserCounts () {
-  fetchJson<{count: number}>('transmitters/_my_count').then(resp => { count.value.my.transmitters = resp.count })
-  fetchJson<{count: number}>('rubrics/_my_count').then(resp => { count.value.my.rubrics = resp.count })
-  fetchJson<{count: number}>('subscribers/_my_count').then(resp => { count.value.my.subscribers = resp.count })
-  fetchJson<{count: number}>('nodes/_my_count').then(resp => { count.value.my.nodes = resp.count })
+  getJson<Count>('transmitters/_my_count').then(resp => { count.value.my.transmitters = resp.count })
+  getJson<Count>('rubrics/_my_count').then(resp => { count.value.my.rubrics = resp.count })
+  getJson<Count>('subscribers/_my_count').then(resp => { count.value.my.subscribers = resp.count })
+  getJson<Count>('nodes/_my_count').then(resp => { count.value.my.nodes = resp.count })
 }
 
 // Watch the 'loggedIn' state; Update personal counts when someone new logged in

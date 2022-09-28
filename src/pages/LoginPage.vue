@@ -33,7 +33,8 @@
 </template>
 
 <script setup lang="ts">
-import { fetchJson } from 'src/fetch'
+import { Login } from 'src/api/api_routes'
+import { postJson } from 'src/api/fetch'
 import { errorToString } from 'src/misc'
 import { globalStore } from 'src/stores/global-store'
 import { ref } from 'vue'
@@ -41,11 +42,6 @@ import { useRouter } from 'vue-router'
 
 const store = globalStore()
 const router = useRouter()
-
-interface LoginResponse {
-  permissions: Record<string, string>
-  user: Record<string, unknown>
-}
 
 const username = ref('')
 const password = ref('')
@@ -58,7 +54,7 @@ const onSubmit = () => {
   const u = username.value
   const p = password.value
 
-  fetchJson<LoginResponse>('auth/users/login', 'POST', false, { username: u, password: p }).then((res) => {
+  postJson<Login>('auth/users/login', false, { username: u, password: p }).then((res) => {
     store.auth = {
       username: u,
       // FIXME: Will break if Unicode is used in either username or password
