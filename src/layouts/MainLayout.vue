@@ -55,11 +55,11 @@
         <Item icon="mdi-account-box" :title="$t('navigation.users.all')" to="/users" :count="count?.users"/>
         <Item icon="mdi-cloud" :title="$t('navigation.nodes.all')" to="/nodes" :count="count?.nodes" />
         <q-separator />
-        <Item icon="mdi-information" :title="$t('navigation.help.wiki')" href="https://hampager.de/dokuwiki/doku.php" target="_blank"/>
-        <Item icon="mdi-comment-question" :title="$t('navigation.help.support')" href="https://support.hampager.de/" target="_blank"/>
+        <Item icon="mdi-information" :title="$t('navigation.help.wiki')" href="https://hampager.de/dokuwiki/doku.php" target="_blank" external/>
+        <Item icon="mdi-comment-question" :title="$t('navigation.help.support')" href="https://support.hampager.de/" target="_blank" external/>
         <q-separator />
         <Item icon="mdi-cog" :title="$t('navigation.settings')" to="/settings" v-if="store.loggedIn" />
-        <Item icon="mdi-logout" :title="$t('navigation.logout')" v-if="store.loggedIn" @click="store.auth = undefined"/>
+        <Item icon="mdi-logout" :title="$t('navigation.logout')" v-if="store.loggedIn" @click="logout" />
         <Item icon="mdi-login" :title="$t('navigation.login')" v-if="!store.loggedIn" to="/login" />
       </q-list>
     </q-drawer>
@@ -101,7 +101,9 @@ import { useI18n } from 'vue-i18n'
 import Item from 'components/SidebarItem.vue'
 import { fetchJson } from 'src/fetch'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const store = globalStore()
 const { t } = useI18n()
 
@@ -133,6 +135,12 @@ const count = ref<{
 }>({
   my: {}
 })
+
+function logout () {
+  store.auth = undefined
+  // Navigate to Home if we are not already there
+  if (router.currentRoute.value.path !== '/') router.push('/')
+}
 
 // TODO: to many requests for these. Simplyfy count once these are batched
 function fetchGlobalCounts () {

@@ -5,7 +5,10 @@
     </q-item-section>
 
     <q-item-section>
-      {{ title }}
+      <div>
+        {{ title }}
+        <q-icon v-if="external" name="mdi-open-in-new" color="primary" />
+      </div>
     </q-item-section>
 
     <q-item-section side v-if="count !== undefined">
@@ -19,5 +22,6 @@ defineProps<{
   title: string
   icon: string
   count?: number
+  external?: boolean
 }>()
 </script>

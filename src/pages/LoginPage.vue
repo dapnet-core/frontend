@@ -67,8 +67,7 @@ const onSubmit = () => {
       permissions: res.permissions
     }
 
-    // Navigate to homepage
-    router.push('/')
+    router.back()
   }).catch((err) => {
     state.value.error = errorToString(err, true)
   }).finally(() => {
