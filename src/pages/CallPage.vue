@@ -16,7 +16,7 @@
         <q-chip v-for="(item, key) in props.value.transmitter_groups" :key="key" icon="mdi-account-group"   :label="item" color="grey" text-color="white" />
       </template>
       <template #cell-priority="props">
-        <q-chip :label="props.value.text" :color="props.value.color" />
+        <q-chip :label="props.value.text" :color="props.value.bgColor" :text-color="props.value.textColor" />
       </template>
     </CallTable>
   </q-page>
@@ -59,7 +59,7 @@ type Columns = {
   subscribers: Column<CallResponse, 'recipients'>
   transmitters: Column<CallResponse, 'distribution'>
   origin: Column<CallResponse, 'origin'>
-  priority: Column<CallResponse, (row: CallResponse) => { text: string, color: string }>
+  priority: Column<CallResponse, (row: CallResponse) => { text: string, bgColor: string, textColor: string }>
 }
 
 const columns = computed<Columns>(() => ({
@@ -139,13 +139,13 @@ const CallTable = useGenericTable<CallResponse, Columns>()
 
 const priorities = (priority: number) => {
   switch (priority) {
-    case 1: return { text: t('general.priorities.lowest'), color: 'green' }
-    case 2: return { text: t('general.priorities.low'), color: 'green' }
-    case 3: return { text: t('general.priorities.medium'), color: 'yellow' }
-    case 4: return { text: t('general.priorities.high'), color: 'orange' }
-    case 5: return { text: t('general.priorities.highest'), color: 'red' }
+    case 1: return { text: t('general.priorities.lowest'), bgColor: 'green', textColor: 'white' }
+    case 2: return { text: t('general.priorities.low'), bgColor: 'green', textColor: 'white' }
+    case 3: return { text: t('general.priorities.medium'), bgColor: 'yellow', textColor: 'black' }
+    case 4: return { text: t('general.priorities.high'), bgColor: 'orange', textColor: 'black' }
+    case 5: return { text: t('general.priorities.highest'), bgColor: 'red', textColor: 'white' }
   }
   console.warn(`Undefined priority: ${priority}`)
-  return { text: t('general.priorities.high'), color: 'grey' }
+  return { text: t('general.priorities.high'), bgColor: 'grey', textColor: 'white' }
 }
 </script>

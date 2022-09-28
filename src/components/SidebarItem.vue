@@ -8,7 +8,7 @@
       {{ title }}
     </q-item-section>
 
-    <q-item-section side v-if="count">
+    <q-item-section side v-if="count !== undefined">
       <q-badge color="primary" :label="count" />
     </q-item-section>
   </q-item>

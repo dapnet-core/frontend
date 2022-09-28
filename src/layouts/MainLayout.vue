@@ -151,7 +151,7 @@ function fetchUserCounts () {
   fetchJson<{count: number}>('nodes/_my_count').then(resp => { count.value.my.nodes = resp.count })
 }
 
-// Watch the 'loggedIn' state; Update personal counts when some new logged in
+// Watch the 'loggedIn' state; Update personal counts when someone new logged in
 const { loggedIn } = storeToRefs(store)
 watch(loggedIn, (n) => {
   if (n) fetchUserCounts()

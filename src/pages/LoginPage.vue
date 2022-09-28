@@ -25,9 +25,9 @@
 
       <q-btn :label="$t('navigation.login')" type="submit" color="primary" />
 
-      <q-banner v-if="state.error" class="text-white bg-red" rounded>
-      {{ $t('rest.errors.permissions') }}
-    </q-banner>
+      <q-banner v-if="state.error" class="text-white bg-negative" rounded>
+        {{ $t('rest.errors.permissions') }}
+      </q-banner>
     </q-form>
   </q-page>
 </template>
