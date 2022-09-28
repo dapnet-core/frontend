@@ -60,7 +60,7 @@
         <q-separator />
         <Item icon="mdi-cog" :title="$t('navigation.settings')" to="/settings" v-if="store.loggedIn" />
         <Item icon="mdi-logout" :title="$t('navigation.logout')" v-if="store.loggedIn" @click="store.auth = undefined"/>
-        <Item icon="mdi-login" :title="$t('navigation.login')" v-if="!store.loggedIn" @click="store.auth = {username: 'Testtyp', token: '', permissions: []}" />
+        <Item icon="mdi-login" :title="$t('navigation.login')" v-if="!store.loggedIn" to="/login" />
       </q-list>
     </q-drawer>
 

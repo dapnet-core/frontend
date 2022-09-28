@@ -9,7 +9,7 @@ interface State {
     username: string
     avatar?: string // avatar URL
     token: string // some web token used for authorization
-    permissions: []
+    permissions: Record<string, string> // TODO: Hardcode all valid permissions
   }
   language: MessageLanguage,
   theme: Theme

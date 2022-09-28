@@ -19,12 +19,22 @@ export function fetchJson<ResponseType> (route: string, method: 'GET' | 'POST' =
   }
 
   let url = `${process.env.apiServer}/${route}`
-  if (data && method === 'GET') url += '?'; url += new URLSearchParams(data).toString()
+  if (data && method === 'GET') {
+    url += '?'
+    url += new URLSearchParams(data).toString()
+  }
+
+  let body
+  if (data && method === 'POST') {
+    body = JSON.stringify(data)
+    headers.append('Content-Type', 'application/json;charset=UTF-8')
+    headers.append('Content-Length', body.length.toString())
+  }
 
   return fetch(url, {
     method,
     headers,
-    body: (data && method === 'POST') ? JSON.stringify(data) : undefined
+    body
   }).then(res => {
     if (res.ok) return res.json() as Promise<ResponseType>
     throw new Error(res.statusText)
