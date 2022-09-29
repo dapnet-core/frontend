@@ -24,6 +24,9 @@ export interface Count extends ApiRouteGet {
   query: Record<string, never>
 }
 
+/**
+ * Expected row type of GET '/calls'
+ */
 export interface CallRowType extends Record<string, unknown> {
   created_at: string // DateTime
   created_by: string
@@ -54,7 +57,7 @@ export type Calls = ApiRouteGetPaginated<CallRowType>
 export interface Login extends ApiRoutePost {
   response: {
     permissions: Record<string, string>
-    user: Record<string, unknown> // We don not really care about this right now
+    user: Record<string, unknown> // We do not really care about this right now
   }
   body: {
     password: string

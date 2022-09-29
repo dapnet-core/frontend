@@ -1,11 +1,21 @@
 import { globalStore } from 'stores/global-store'
 
+/**
+ * Abstract definition of GET request to our api service
+ *
+ * Extend it and overwrite 'response' and 'query'
+ */
 export type ApiRouteGet = {
   method: 'GET'
   response: unknown
   query: Record<string, string | number | symbol>
 }
 
+/**
+ * Abstract definition of POST request to our api service
+ *
+ * Extend it and overwrite 'response' and 'body'
+ */
 export type ApiRoutePost = {
   method: 'POST'
   response: unknown

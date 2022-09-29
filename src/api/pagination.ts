@@ -2,6 +2,10 @@ import type { QTableProps } from 'quasar'
 import { getJson, ApiRouteGet } from './fetch'
 
 /**
+ * This file implements keyset/cursor-based pagination, see https://stackoverflow.com/a/70520457
+ */
+
+/**
  * Paginated Reponse over data type T.
  * Returned by https://hexdocs.pm/paginator/Paginator.html
  */
@@ -18,6 +22,10 @@ export interface PaginatedResponse<T> {
 
 /**
  * Function that requests cursor-based paginated data from the server.
+ * @param limit The maximum number of rows to return
+ * @param cursor Where to start the requested rows
+ * @param sorting Optional, sends sorting information to the server
+ * @param filter Optional, sends a filter to the server
  */
 export type PaginationHandler<T> = (
   limit: number,
@@ -28,6 +36,8 @@ export type PaginationHandler<T> = (
 
 /**
  * Api route for paginated GET request to the server
+ *
+ * Just provide the generic row type to extend it
  *
  * Invariants (not enforced by types atm):
  * - 'query.after', 'query.before' or neither are set
