@@ -37,13 +37,14 @@ export type PaginationHandler<T> = (
 /**
  * Api route for paginated GET request to the server
  *
- * Just provide the generic row type to extend it
+ * Just provide the generic row and path type
  *
  * Invariants (not enforced by types atm):
  * - 'query.after', 'query.before' or neither are set
  * - 'query.sortBy' and 'query.desc' or neither are set
  */
-export interface ApiRouteGetPaginated<T> extends ApiRouteGet {
+export interface ApiRouteGetPaginated<T, P extends string> extends ApiRouteGet {
+  path: P
   response: PaginatedResponse<T>
   query: {
     limit: number
@@ -59,7 +60,8 @@ export interface ApiRouteGetPaginated<T> extends ApiRouteGet {
  * Generic pagination handler of an ApiRouteGetPaginated R
  * @param route The path of the route to call
  */
-export function loadPaginatedData<T, R extends ApiRouteGetPaginated<T>> (route: string): PaginationHandler<T> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function loadPaginatedData<R extends ApiRouteGetPaginated<any, string>> (route: R['path']): PaginationHandler<R['response'] extends PaginatedResponse<infer V> ? V : never> {
   return async (limit, cursor, sorting, filter) => {
     let args: R['query'] = { limit }
     if (typeof cursor === 'object') {
@@ -78,7 +80,7 @@ export function loadPaginatedData<T, R extends ApiRouteGetPaginated<T>> (route: 
       args.filter = filter
     }
 
-    return getJson<R>(route, true, args)
+    return getJson<R>(route, args)
   }
 }
 

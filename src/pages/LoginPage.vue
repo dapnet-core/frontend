@@ -54,7 +54,7 @@ const onSubmit = () => {
   const u = username.value
   const p = password.value
 
-  postJson<Login>('auth/users/login', false, { username: u, password: p }).then((res) => {
+  postJson<Login>('auth/users/login', { username: u, password: p }, false).then((res) => {
     store.auth = {
       username: u,
       // FIXME: Will break if Unicode is used in either username or password

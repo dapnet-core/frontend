@@ -85,7 +85,7 @@ const columns = computed<Columns>(() => ({
   }
 }))
 
-const loadData = loadPaginatedData<CallRowType, Calls>('calls')
+const loadData = loadPaginatedData<Calls>('calls')
 
 const defaultPagination: PaginationProps<CallRowType> = {
   sortBy: 'created_at',
