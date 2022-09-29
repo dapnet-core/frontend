@@ -7,6 +7,8 @@
     :loading="loading"
     :row-key="props.uniqueRowKey"
     :no-data-label="error ? $t('table.error', {error}) : $t('table.noData')"
+    wrap-cells
+    :grid="$q.screen.sm"
     :filter="filter"
     v-model:pagination="pagination"
     @request="handleRequest"
@@ -17,6 +19,24 @@
       <q-td :props="slotData">
         <slot :name="`cell-${name}`" v-bind="slotData"></slot>
       </q-td>
+    </template>
+    <!-- If the display becomes small, this table will switch to "grid mode" and rows
+         will be stacked in cards, see https://quasar.dev/vue-components/table#grid-style
+         This template overwrites these cards and injects our custom cell slots into it -->
+    <template #item="props">
+      <div class="q-table__grid-item col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <div :class="`q-table__grid-item-card q-table__card${$q.dark.isActive ? ' q-table__card--dark q-dark' : ''}`">
+          <div v-for="([col, value], key) in _getNoneEmptyCols(props.colsMap, props.row)" :key="key" class="q-table__grid-item-row">
+            <div class="q-table__grid-item-title">{{col.label}}</div>
+            <div class="q-table__grid-item-value">
+              <slot :name="`cell-${col.name}`" v-bind="{col, value, ...props}">
+                <!-- Fallback if no slot for this column is set -->
+                {{col.format ? col.format(value, props.row): value}}
+              </slot>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
     <template v-slot:top-right>
       <q-input borderless dense debounce="250" v-model="filter" :placeholder="$t('table.search')">
@@ -54,6 +74,22 @@ const pagination = ref<PaginationProps<Record<string, unknown>>>({
   rowsPerPage: 20,
   ...props.defaultPagination
 })
+
+/**
+ * This function will iterate through all columns and only return those that have a truthy row[col.field] value
+ */
+function _getNoneEmptyCols<T extends Record<string, unknown>> (cols: Record<string, QTableColumn<T>>, row: T) {
+  return Object.entries(cols).reduce((ret, [, col]) => {
+    const value = (typeof col.field === 'string') ? row[col.field] : col.field(row)
+    if (
+      value &&
+      ((Array.isArray(value) && value.length) || !Array.isArray(value)) // Reject empty arrays
+    ) {
+      ret.push([col, value])
+    }
+    return ret
+  }, [] as [QTableColumn, T][])
+}
 
 function _handleError (e: unknown) {
   error.value = errorToString(e, true)
