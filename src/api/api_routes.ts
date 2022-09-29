@@ -78,3 +78,45 @@ export interface Login extends ApiRoutePost {
     username: string
   }
 }
+
+export type Pager = {
+  enabled: boolean
+  function: number
+  name: string
+  ric: number
+  type: string
+}
+
+export type SubscriberRowType = {
+  changed_by?: string
+  changed_on?: string // UTC date string
+  created_by?: string
+  created_on?: string // UTC date string
+  description: string
+  groups: string[]
+  owners: string[]
+  pagers: Pager[]
+  // TODO: Improve typing
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  thirdparty: Record<string, any[]>
+  _id: string
+  _rev: string
+}
+
+/**
+ * GET /subscribers
+ */
+export interface Subscribers extends ApiRouteGet {
+  path: 'subscribers'
+  response: {
+    offset: number
+    rows: readonly SubscriberRowType[]
+    total_rows: number
+  }
+  query: {
+    limit: number
+    offset: number
+    descending: boolean
+    startswith: string
+  } | null
+}
