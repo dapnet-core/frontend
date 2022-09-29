@@ -7,9 +7,14 @@
       :load-data-function="() => getJson<Subscribers>('subscribers').then((resp) => resp.rows)"
     >
       <template #cell-pager="props">
-        <q-chip v-for="(item, key) in props.value" :key="key" :icon="item.img" :label="item.ric" :color="item.bgColor" :text-color="item.textColor">
+        <q-chip
+          v-for="(item, key) in props.value" :key="key"
+          :icon="item.img" :label="item.ric" size="1em"
+          :color="item.bgColor" :text-color="item.textColor"
+        >
           <q-tooltip>
-            {{item.name}}
+            <!-- TODO: Localize -->
+            Name: {{item.name}}
             <br/>
             Type: {{item.type}}
             <br/>
@@ -18,25 +23,45 @@
         </q-chip>
       </template>
       <template #cell-thirdparty="props">
-        <q-chip v-for="(item, key) in props.value" :key="key" :label="item.text" :color="item.bgColor" :text-color="item.textColor">
-          <q-badge color="primary" floating>{{item.badge}}</q-badge>
+        <q-chip
+          v-for="(item, key) in props.value" :key="key"
+          :label="item.text" size="1em"
+          :color="item.bgColor" :text-color="item.textColor"
+        >
+          <q-badge v-if="item.badge > 1" color="primary" floating>{{item.badge}}</q-badge>
           <q-tooltip v-if="item.data">
             <span v-for="(i, k) in item.data" :key="k">{{i}}<br/></span>
           </q-tooltip>
         </q-chip>
       </template>
       <template #cell-owner="props">
-        <q-chip v-for="(item, key) in props.value" :key="key" :label="item" color="grey" text-color="white" />
+        <q-chip
+          v-for="(item, key) in props.value" :key="key"
+          :label="item" size="1em"
+          color="grey" text-color="white"
+        />
       </template>
       <template #cell-group="props">
-        <q-chip v-for="(item, key) in props.value" :key="key" :label="item" color="grey" text-color="white" />
+        <q-chip
+          v-for="(item, key) in props.value" :key="key"
+          :label="item" size="1em"
+          color="grey" text-color="white"
+        />
+      </template>
+      <template #cell-actions="props">
+        <q-btn-group unelevated>
+          <q-btn color="secondary" icon="mdi-pencil-outline" size="1em" @click="handleEdit(props.value)"/>
+          <q-btn color="secondary" icon="mdi-delete-outline" size="1em" @click="handleDelete(props.value)"/>
+          <!-- TODO: Missing mail in row type -->
+          <!-- <q-btn color="secondary" icon="mdi-email-fast-outline" :href="`mailto:${props.row.mail}`"/> -->
+        </q-btn-group>
       </template>
     </SubsTable>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { computed, toRaw } from 'vue'
+import { computed, ComputedRef, toRaw } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Column, useGenericTable } from 'src/components/GenericDataTable'
 import { SubscriberRowType, Pager, Subscribers } from 'src/api/api_routes'
@@ -48,57 +73,53 @@ import iconSwissphone from 'assets/pager/swissphone.png'
 
 const { t } = useI18n({ useScope: 'global' })
 
-// TODO: Should be able to infer field type if https://github.com/microsoft/TypeScript/issues/24085 is resolved
-type Columns = {
-  name: Column<SubscriberRowType, '_id'>
-  description: Column<SubscriberRowType, 'description'>
-  pager: Column<SubscriberRowType, (row: SubscriberRowType) => (Pager & {img: string, bgColor: string, textColor: string})[]>
-  thirdparty: Column<SubscriberRowType, (row: SubscriberRowType) => {
-    bgColor: string;
-    text: string;
-    textColor: string;
-    badge: number;
-    data: string[];
-}[]>
-  owner: Column<SubscriberRowType, 'owners'>
-  group: Column<SubscriberRowType, 'groups'>
-}
-
-const columns = computed<Columns>(() => ({
+const columns = computed(() => ({
   name: {
     label: t('general.name'),
     align: 'left',
     field: '_id',
     sortable: true
-  },
+  } as Column<SubscriberRowType, '_id'>,
   description: {
     label: t('general.description'),
     align: 'left',
     field: 'description',
     sortable: true
-  },
+  } as Column<SubscriberRowType, 'description'>,
   pager: {
     label: t('general.pagers'),
     align: 'left',
     field: (row) => row.pagers.map(convertPager)
-  },
+  } as Column<SubscriberRowType, (row: SubscriberRowType) => (Pager & {img: string, bgColor: string, textColor: string})[]>,
   thirdparty: {
     align: 'left',
     label: t('general.thirdpartyservices'),
     field: (row) => Object.entries(row.thirdparty).map(([key, val]) => convertThirdparty(key, toRaw(val)))
-  },
+  } as Column<SubscriberRowType, (row: SubscriberRowType) => {
+    bgColor: string;
+    text: string;
+    textColor: string;
+    badge: number;
+    data: string[];
+  }[]>,
   owner: {
     label: t('general.owner'),
     align: 'center',
     field: 'owners'
-  },
+  } as Column<SubscriberRowType, 'owners'>,
   group: {
     label: t('general.subscriber_groups'),
     align: 'center',
     field: 'groups'
-  }
+  } as Column<SubscriberRowType, 'groups'>,
+  actions: {
+    label: t('general.actions'),
+    align: 'center',
+    field: '_id'
+  } as Column<SubscriberRowType, '_id'>
 }))
 
+type Columns = (typeof columns) extends ComputedRef<infer T> ? T : never
 const SubsTable = useGenericTable<SubscriberRowType, Columns>()
 
 function convertPager (pager: Pager) {
@@ -141,6 +162,14 @@ function convertPager (pager: Pager) {
   }
 }
 
+function handleDelete (id: string) {
+  console.log('Delete ' + id)
+}
+
+function handleEdit (id: string) {
+  console.log('Edit ' + id)
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const convertThirdparty = (name: string, data: any[]) => {
   let tmp
@@ -173,7 +202,7 @@ const convertThirdparty = (name: string, data: any[]) => {
     bgColor: 'red',
     textColor: 'white',
     text: name,
-    badge: 1,
+    badge: data.length,
     data: data.map((v) => v.toString()),
     ...tmp
   }
