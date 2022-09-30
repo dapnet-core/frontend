@@ -30,7 +30,7 @@
             "dapnet": {
                 "title": "Bienvenue sur DAPNET Web!",
                 "text1": "Le DAPNET (Decentralized Amateur Paging Network) est un réseau opéré par des radioamateurs passionnés. Puisqu'il utilise les fréquences radioamateur, tout usage commercial est interdit.",
-                "text2": "Si vous disposez d'un indicatif radioamateur, vous pouvez vous inscrire dés maintenant."     
+                "text2": "Si vous disposez d'un indicatif radioamateur, vous pouvez vous inscrire dés maintenant."
             },
             "raspager": {
                 "title": "Émetteur Raspager",
@@ -206,7 +206,7 @@
             "pl": "Polonais",
             "it": "Italien",
             "pt": "Portugais",
-            "se": "Suedois"
+            "sv": "Suedois"
         },
         "support": {
             "title": "Soutenez-nous",
