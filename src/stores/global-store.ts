@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { MessageLanguage, setGlobalLocale } from 'boot/i18n'
+import { getUserLocale, MessageLanguage, setGlobalLocale } from 'boot/i18n'
 import { Dark } from 'quasar'
 
 export type Theme = 'dark' | 'light'
@@ -23,7 +23,7 @@ export const globalStore = defineStore('global', {
     }
   },
   state: () : State => ({
-    language: 'en',
+    language: getUserLocale(),
     theme: 'light',
     auth: undefined // For some reason this is necessary
   }),
