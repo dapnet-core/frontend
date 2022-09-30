@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ComputedRef, toRaw } from 'vue'
+import { computed, toRaw } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Column, useGenericTable } from 'src/components/GenericDataTable'
 import { SubscriberRowType, Pager, Subscribers } from 'src/api/api_routes'
@@ -70,8 +70,12 @@ import iconQuix from 'assets/pager/quix.png'
 import iconSkyper from 'assets/pager/skyper.png'
 import iconAlphapoc from 'assets/pager/alphapoc.png'
 import iconSwissphone from 'assets/pager/swissphone.png'
+import { ExtractComputed } from 'src/misc'
 
 const { t } = useI18n({ useScope: 'global' })
+
+// Shorthand
+type FCol<T> = Column<SubscriberRowType, (row: SubscriberRowType) => T, T>
 
 const columns = computed(() => ({
   name: {
@@ -90,18 +94,12 @@ const columns = computed(() => ({
     label: t('general.pagers'),
     align: 'left',
     field: (row) => row.pagers.map(convertPager)
-  } as Column<SubscriberRowType, (row: SubscriberRowType) => (Pager & {img: string, bgColor: string, textColor: string})[]>,
+  } as FCol<(Pager & {img: string, bgColor: string, textColor: string})[]>,
   thirdparty: {
     align: 'left',
     label: t('general.thirdpartyservices'),
     field: (row) => Object.entries(row.thirdparty).map(([key, val]) => convertThirdparty(key, toRaw(val)))
-  } as Column<SubscriberRowType, (row: SubscriberRowType) => {
-    bgColor: string;
-    text: string;
-    textColor: string;
-    badge: number;
-    data: string[];
-  }[]>,
+  } as FCol<{bgColor: string; text: string; textColor: string; badge: number; data: string[]}[]>,
   owner: {
     label: t('general.owner'),
     align: 'center',
@@ -119,8 +117,7 @@ const columns = computed(() => ({
   } as Column<SubscriberRowType, '_id'>
 }))
 
-type Columns = (typeof columns) extends ComputedRef<infer T> ? T : never
-const SubsTable = useGenericTable<SubscriberRowType, Columns>()
+const SubsTable = useGenericTable<SubscriberRowType, ExtractComputed<typeof columns>>()
 
 function convertPager (pager: Pager) {
   if (pager.type === 'alphapoc') {

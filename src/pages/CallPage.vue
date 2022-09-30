@@ -28,61 +28,51 @@ import { useI18n } from 'vue-i18n'
 import { Column, useGenericTable } from 'src/components/GenericDataTable'
 import { loadPaginatedData, PaginationProps } from 'src/api/pagination'
 import { CallRowType, Calls } from 'src/api/api_routes'
+import { ExtractComputed } from 'src/misc'
 
 const { t, d } = useI18n({ useScope: 'global' })
 
-// TODO: Should be able to infer field type if https://github.com/microsoft/TypeScript/issues/24085 is resolved
-type Columns = {
-  created_at: Column<CallRowType, 'created_at'>
-  created_by: Column<CallRowType, 'created_by'>
-  message: Column<CallRowType, 'data'>
-  subscribers: Column<CallRowType, 'recipients'>
-  transmitters: Column<CallRowType, 'distribution'>
-  origin: Column<CallRowType, 'origin'>
-  priority: Column<CallRowType, (row: CallRowType) => { text: string, bgColor: string, textColor: string }>
-}
-
-const columns = computed<Columns>(() => ({
+const columns = computed(() => ({
   created_at: {
     label: t('general.created_at'),
     align: 'left',
     field: 'created_at',
     format: (val) => d(val, 'numeric'),
     sortable: true
-  },
+  } as Column<CallRowType, 'created_at'>,
   created_by: {
     label: t('calls.overview.from'),
     align: 'left',
     field: 'created_by',
     sortable: true
-  },
+  } as Column<CallRowType, 'created_by'>,
   message: {
     label: t('general.message'),
     align: 'left',
     field: 'data'
-  },
+  } as Column<CallRowType, 'data'>,
   subscribers: {
     align: 'center',
     label: t('general.subscribers'),
     field: 'recipients'
-  },
+  } as Column<CallRowType, 'recipients'>,
   transmitters: {
     align: 'center',
     label: t('general.transmitters'),
     field: 'distribution'
-  },
+  } as Column<CallRowType, 'distribution'>,
   origin: {
     label: t('calls.overview.origin'),
     align: 'center',
     field: 'origin',
     sortable: true
-  },
+  } as Column<CallRowType, 'origin'>,
   priority: {
     label: t('general.priority'),
     align: 'center',
     field: (row) => priorities(row.priority),
     sortable: true
-  }
+  } as Column<CallRowType, (row: CallRowType) => { text: string, bgColor: string, textColor: string }>
 }))
 
 const loadData = loadPaginatedData<Calls>('calls')
@@ -96,7 +86,7 @@ const defaultPagination: PaginationProps<CallRowType> = {
   }
 }
 
-const CallTable = useGenericTable<CallRowType, Columns>()
+const CallTable = useGenericTable<CallRowType, ExtractComputed<typeof columns>>()
 
 const priorities = (priority: number) => {
   switch (priority) {

@@ -11,6 +11,10 @@ type Merge<T, R extends Record<string, unknown>> = Omit<T, keyof R> & R
  *
  * `const col: Column<DataType, 'myField'> = { ... }`
  *
+ * Can also use a function to derive its field value; This can be expressed with types as
+ *
+ * `const col: Column<DataType, (row: DataType) => MyDerivedValue> = { ... }`
+ *
  * *Generic version of QTableColumn*
  */
 export type Column<

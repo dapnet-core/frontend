@@ -1,3 +1,5 @@
+import { ComputedRef } from 'vue'
+
 /**
  * Take in any kind of error and return it as a string. Useful for catch clauses.
  * @param e Anything, really
@@ -18,3 +20,8 @@ export function errorToString (e: unknown, log = false): string {
     return 'unknown error type'
   }
 }
+
+/**
+ * Helper type to extract the encapsulated type from a `computed` value
+ */
+export type ExtractComputed<C extends ComputedRef<unknown>> = C extends ComputedRef<infer T> ? T : never
