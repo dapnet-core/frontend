@@ -1094,7 +1094,7 @@
 			"overview": "Call Overview",
 			"new": "New Call"
 		},
-		"subscriber": {
+		"subscribers": {
 			"my": "My Subscribers",
 			"overview": "Subscriber Overview",
 			"new": "New Subscriber",
