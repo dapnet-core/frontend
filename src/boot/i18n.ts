@@ -3,7 +3,7 @@ import { createI18n } from 'vue-i18n'
 import { Quasar, QuasarLanguage } from 'quasar'
 import { errorToString } from 'src/misc'
 
-// TODO: Lazy-load languages
+// TODO: Lazy-load translations; This import will import all languages, even if only one is going to be used
 import messages from 'src/i18n'
 
 export type MessageLanguage = keyof typeof messages
@@ -24,6 +24,7 @@ async function loadLangPack (lang: MessageLanguage, fileName: string = lang): Pr
   }
 }
 
+// TODO: Lazy-load language packs; 'await' is blocking in this context
 const quasarLangPacks: { [k in MessageLanguage]: QuasarLanguage} = {
   de: await loadLangPack('de'),
   en: await loadLangPack('en', 'en-US'),
@@ -73,93 +74,41 @@ export function getUserLocale (): MessageLanguage {
   return 'en'
 }
 
+const numeric = {
+  numeric: {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  } as { // Explicit type annotation to prevent type errors; Not sure why I need those...
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  }
+}
+
 const i18n = createI18n({
   locale: getUserLocale(),
   fallbackLocale: 'en',
   legacy: false,
-  messages,
-  // TODO: Auto-generate DatetimeFormats
+  // Explicit type conversation makes sure typing is working as intended
+  // Otherwise, due to our translations being incomplete, a type error is
+  // emitted, which cripples type inference of global i18n instance
+  messages: messages as unknown as {[k in MessageLanguage]: MessageSchema},
   datetimeFormats: {
-    en: {
-      numeric: {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
-      }
-    },
-    de: {
-      numeric: {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
-      }
-    },
-    es: {
-      numeric: {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
-      }
-    },
-    fr: {
-      numeric: {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
-      }
-    },
-    it: {
-      numeric: {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
-      }
-    },
-    nl: {
-      numeric: {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
-      }
-    },
-    pl: {
-      numeric: {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
-      }
-    },
-    sv: {
-      numeric: {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
-      }
-    }
+    en: numeric,
+    de: numeric,
+    es: numeric,
+    fr: numeric,
+    it: numeric,
+    nl: numeric,
+    pl: numeric,
+    sv: numeric
   }
 })
 
@@ -169,7 +118,6 @@ export default boot(({ app }) => {
 })
 
 export function setGlobalLocale (lang: MessageLanguage) {
-  // 'i18n.global.locale' is a ref; TS doesn't know this for some reason
   i18n.global.locale.value = lang
   Quasar.lang.set(quasarLangPacks[lang])
 }
