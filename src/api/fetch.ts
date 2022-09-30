@@ -14,7 +14,7 @@ export type ApiRouteGet = {
   /**
    * URL Query parameters that are send with this request. Set to `null` if no params are allowed
    *
-   * SAFETY: Don't actually pass in a symbol as value, it likely won't work; Still have to allow it so satisfy type constraints
+   * SAFETY: Don't actually pass in a symbol as value, it likely won't work; Still have to allow it to satisfy type constraints
    */
   query: Record<string, string | number | boolean | symbol> | null
 }

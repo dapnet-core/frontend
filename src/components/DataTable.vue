@@ -8,7 +8,7 @@
     :row-key="props.uniqueRowKey"
     :no-data-label="error ? $t('table.error', {error}) : $t('table.noData')"
     wrap-cells
-    :grid="$q.screen.sm"
+    :grid="$q.screen.lt.md"
     :filter="filter"
     v-model:pagination="pagination"
     @request="handleRequest"
