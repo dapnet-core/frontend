@@ -4,7 +4,8 @@
       :title="$t('pagetitle.subscribers.overview')"
       :cols="columns"
       unique-row-key="_id"
-      :load-data-function="() => getJson<Subscribers>('subscribers').then((resp) => resp.rows)"
+      :load-data-function="loadData"
+      :actions="actions"
     >
       <template #cell-pager="props">
         <q-chip
@@ -50,8 +51,12 @@
       </template>
       <template #cell-actions="props">
         <q-btn-group unelevated>
-          <q-btn color="secondary" icon="mdi-pencil-outline" size="1em" @click="handleEdit(props.value)"/>
-          <q-btn color="secondary" icon="mdi-delete-outline" size="1em" @click="handleDelete(props.value)"/>
+          <q-btn color="info" icon="mdi-pencil-outline" dense size="1em" @click="handleEdit(props.value)">
+            <q-tooltip>{{$t('table.actionbuttons.edit')}}</q-tooltip>
+          </q-btn>
+          <q-btn color="negative" icon="mdi-delete-outline" dense size="1em" @click="handleDelete(props.value)">
+            <q-tooltip>{{$t('table.actionbuttons.delete')}}</q-tooltip>
+          </q-btn>
           <!-- TODO: Missing mail in row type -->
           <!-- <q-btn color="secondary" icon="mdi-email-fast-outline" :href="`mailto:${props.row.mail}`"/> -->
         </q-btn-group>
@@ -74,7 +79,7 @@ import { ExtractComputed } from 'src/misc'
 
 const { t } = useI18n({ useScope: 'global' })
 
-// Shorthand
+// Shorthand, T being the data type of the field function
 type FCol<T> = Column<SubscriberRowType, (row: SubscriberRowType) => T, T>
 
 const columns = computed(() => ({
@@ -93,12 +98,12 @@ const columns = computed(() => ({
   pager: {
     label: t('general.pagers'),
     align: 'left',
-    field: (row) => row.pagers.map(convertPager)
+    field: (row) => row.pagers.map(displayPager)
   } as FCol<(Pager & {img: string, bgColor: string, textColor: string})[]>,
   thirdparty: {
     align: 'left',
     label: t('general.thirdpartyservices'),
-    field: (row) => Object.entries(row.thirdparty).map(([key, val]) => convertThirdparty(key, toRaw(val)))
+    field: (row) => Object.entries(row.thirdparty).map(([key, val]) => displayThirdparty(key, toRaw(val)))
   } as FCol<{bgColor: string; text: string; textColor: string; badge: number; data: string[]}[]>,
   owner: {
     label: t('general.owner'),
@@ -119,7 +124,15 @@ const columns = computed(() => ({
 
 const SubsTable = useGenericTable<SubscriberRowType, ExtractComputed<typeof columns>>()
 
-function convertPager (pager: Pager) {
+const actions = computed(() => ([
+  { color: 'primary', icon: 'mdi-plus', tooltip: t('subscribers.overview.addsubscriber'), handler: handleAdd }
+]))
+
+function loadData () {
+  return getJson<Subscribers>('subscribers').then((resp) => resp.rows)
+}
+
+function displayPager (pager: Pager) {
   if (pager.type === 'alphapoc') {
     return {
       bgColor: 'green',
@@ -167,41 +180,55 @@ function handleEdit (id: string) {
   console.log('Edit ' + id)
 }
 
+function handleAdd () {
+  console.log('Add')
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const convertThirdparty = (name: string, data: any[]) => {
-  let tmp
+const displayThirdparty = (name: string, input: any[]) => {
+  const badge = input.length
+  const data = input.map((v) => v.toString())
+
   if (name === 'aprs') {
-    tmp = {
+    return {
       bgColor: 'deep-orange',
       text: 'APRS',
-      textColor: 'white'
+      textColor: 'white',
+      badge,
+      data
     }
   } else if (name === 'brandmeister') {
-    tmp = {
+    return {
       bgColor: 'purple',
       text: 'Brandmeister',
-      textColor: 'white'
+      textColor: 'white',
+      badge,
+      data
     }
   } else if (name === 'ipsc2') {
-    tmp = {
+    return {
       bgColor: 'purple',
       text: 'IPCS2',
-      textColor: 'white'
+      textColor: 'white',
+      badge,
+      data
     }
   } else if (name === 'email') {
-    tmp = {
+    return {
       bgColor: 'amber',
       text: 'Email',
-      textColor: 'black'
+      textColor: 'black',
+      badge,
+      data
     }
   }
+
   return {
     bgColor: 'red',
     textColor: 'white',
     text: name,
-    badge: data.length,
-    data: data.map((v) => v.toString()),
-    ...tmp
+    badge,
+    data
   }
 }
 </script>

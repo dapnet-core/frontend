@@ -3,7 +3,7 @@
     "dbaeumer.vscode-eslint",
     "editorconfig.editorconfig",
     "vue.volar",
-    "wayou.vscode-todo-highlight"
+    "gruntfuggly.todo-tree"
   ],
   "unwantedRecommendations": [
     "octref.vetur",

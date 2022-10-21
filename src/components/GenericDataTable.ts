@@ -82,6 +82,11 @@ export interface Props<RowType extends Record<string, unknown>, Cols extends Rec
    * Property name of row type that defines the unique key for each row
    */
   uniqueRowKey: keyof RowType
+  /**
+   * Contains definitions for 'action' buttons, right to the search bar.
+   * Icon, color, onClickHandler and optionally a tooltip can be set.
+   */
+  actions?: {icon: string, tooltip?: string, handler: () => void, color: string}[]
 }
 
 /** *Generic version of quasar/dist/types/index.d.ts:10536* */

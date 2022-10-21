@@ -87,6 +87,9 @@ export type Pager = {
   type: string
 }
 
+/**
+ * Expected row type of GET /subscribers
+ */
 export type SubscriberRowType = {
   changed_by?: string
   changed_on?: string // UTC date string

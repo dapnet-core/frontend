@@ -38,10 +38,21 @@
         </div>
       </div>
     </template>
+    <!-- TODO: Maybe put these into the toolbar on mobile -->
     <template v-slot:top-right>
-      <q-input borderless dense debounce="250" v-model="filter" :placeholder="$t('table.search')">
-        <template v-slot:append>
+      <q-input borderless dense debounce="200" v-model="filter" :label="$t('table.search')" clearable>
+        <template v-slot:append v-if="!filter"> <!-- Only show icon if 'filter' is empty; Otherwise, the clear icon is shown -->
           <q-icon name="mdi-magnify" />
+        </template>
+        <template v-slot:after v-if="actions && actions.length > 0">
+          <q-btn-group>
+            <q-btn
+              v-for="({icon, color, handler, tooltip}, key) in actions" :key="key"
+              dense :icon="icon" :color="color" @click="handler"
+            >
+              <q-tooltip v-if="tooltip">{{tooltip}}</q-tooltip>
+            </q-btn>
+          </q-btn-group>
         </template>
       </q-input>
     </template>
@@ -62,6 +73,7 @@ const props = defineProps<{
   loadPaginatedData?: PaginationHandler<Record<string, unknown>>
   defaultPagination? : PaginationProps<Record<string, unknown>>
   uniqueRowKey: string
+  actions?: {icon: string, tooltip?: string, handler: () => void, color: string}[]
 }>()
 
 const rows = ref<readonly unknown[] | undefined>()
