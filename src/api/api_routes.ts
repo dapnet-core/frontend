@@ -41,14 +41,14 @@ export interface Count extends ApiRouteGet {
  * Expected row type of GET '/calls'
  */
 export interface CallRowType extends Record<string, unknown> {
-  created_at: string // DateTime
+  created_at: string // ISO8601 datetime string
   created_by: string
   data: string
   distribution: {
     transmitter_groups: string[]
     transmitters: string[]
   }
-  expires_at: string // DateTime
+  expires_at: string // ISO8601 datetime string
   id: string // UUID V1
   local: boolean
   origin: string
@@ -70,8 +70,8 @@ export type Calls = ApiRouteGetPaginated<CallRowType, 'calls'>
 export interface Login extends ApiRoutePost {
   path: 'auth/users/login'
   response: {
-    permissions: Record<string, string>
-    user: Record<string, unknown> // We do not really care about this right now
+    permissions: Record<string, string> // TODO: Hardcode permissions
+    user: Record<string, any> // We do not really care about this right now
   }
   body: {
     password: string
@@ -92,16 +92,14 @@ export type Pager = {
  */
 export type SubscriberRowType = {
   changed_by?: string
-  changed_on?: string // UTC date string
+  changed_on?: string // ISO8601 datetime string
   created_by?: string
-  created_on?: string // UTC date string
+  created_on?: string // ISO8601 datetime string
   description: string
   groups: string[]
   owners: string[]
   pagers: Pager[]
-  // TODO: Improve typing
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  thirdparty: Record<string, any[]>
+  thirdparty: Record<string, any[]> // TODO: Improve typing
   _id: string
   _rev: string
 }
@@ -118,7 +116,71 @@ export interface Subscribers extends ApiRouteGet {
   }
   query: {
     limit: number
+    skip: number
+    descending: boolean
+    startswith: string
+  } | null
+}
+
+/**
+ * Expected row type of GET /subscribers
+ */
+export type TransmitterRowType = {
+  changed_by?: string
+  changed_on?: string // ISO8601 datetime string
+  created_by?: string
+  created_on?: string // ISO8601 datetime string
+  antenna: {
+    agl: number
+    direction: number
+    gain: number
+    type: 'omni' | 'directional'
+  }
+  aprs_broadcast: boolean
+  auth_key: string
+  coordinates: [number, number]
+  emergency_power?: {
+    available: boolean
+    duration: number
+    infinite: boolean
+  }
+  enabled: boolean
+  frequency?: number
+  groups: string[]
+  owners: string[]
+  power: number
+  status: {
+    online: boolean // TODO: Why is this always false in the API response??
+    addr?: string // IPv4 Address
+    connected_since?: string // ISO8601 datetime string
+    id?: string
+    last_seen?: string // ISO8601 datetime string
+    node?: string
+    software?: {
+      name: string
+      version: string
+    }
+  }
+  // 16 booleans in an array
+  timeslots: [boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean]
+  usage: 'personal' | 'widerange'
+  _id: string
+  _rev: string
+}
+
+/**
+ * GET /transmitters
+ */
+export interface Transmitters extends ApiRouteGet {
+  path: 'transmitters'
+  response: {
     offset: number
+    rows: readonly TransmitterRowType[]
+    total_rows: number
+  }
+  query: {
+    limit: number
+    skip: number
     descending: boolean
     startswith: string
   } | null
