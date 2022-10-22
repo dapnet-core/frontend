@@ -56,7 +56,11 @@ export type Column<
   classes?: string | ((row: RowType) => string)
 }>
 
-export interface Props<RowType extends Record<string, unknown>, Cols extends Record<string, Column<RowType>>> {
+export interface Props<
+  RowType extends Record<string, unknown>,
+  Cols extends Record<string, Column<RowType>>,
+  UniqueRowKey extends keyof RowType = keyof RowType
+> {
   /**
    * Title of this table
    */
@@ -79,9 +83,13 @@ export interface Props<RowType extends Record<string, unknown>, Cols extends Rec
    */
   defaultPagination? : PaginationProps<RowType>
   /**
-   * Property name of row type that defines the unique key for each row
+   * Property name of row key that defines the unique value for each row
    */
-  uniqueRowKey: keyof RowType
+  uniqueRowKey: UniqueRowKey
+  /**
+   * If set to true, a watcher will be enabled that fires a `on-view-change` event each time the displayed rows change due to filter, search or pagination. Changing this value after init won't enable this event.
+   */
+  enableViewChangeEvent?: boolean
   /**
    * Contains definitions for 'action' buttons, right to the search bar.
    * Icon, color, onClickHandler and optionally a tooltip can be set.
@@ -170,15 +178,19 @@ export type TableCell<
  *
  * ## Slots
  * - `cell-{colName}`, where *colName* is a name of the defined columns. Overwrites the render function for this specific column. Equivalent to QTable `body-cell-{colName}`, except that we don't have to wrap out code in `<q-td>`. Props are of type `TableCell<RowType, Column>`
+ *
+ * ## Events
+ * - `@on-view-change` fires if the shown rows change due to pagination or filtering. A set of IDs of the added and removed rows is given, with the full row data before and after the change. Typing: `(addedIDs: RowType[UniqueRowKey][], removedIDs: RowType[UniqueRowKey][], pre: readonly RowType[], post: readonly RowType[]) => void`. Note: For typing to work, the third optional generic parameter has to be set to the literal unique row key: `const myGenericTable = useGenericTable<myRowDataType, myColumns, '_id'>()`
  */
 // Adapted from https://logaretm.com/blog/generic-type-components-with-composition-api/
 export function useGenericTable<
   RowType extends Record<string, unknown>,
   // This must be any, otherwise the index signature doesn't work
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Cols extends Record<string, Column<RowType, any, any>>
+  Cols extends Record<string, Column<RowType, any, any>>,
+  UniqueRowKey extends keyof RowType = keyof RowType
 > () {
-  const wrapper = defineComponent((props: Props<RowType, Cols>, { slots }) => {
+  const wrapper = defineComponent((props: Props<RowType, Cols, UniqueRowKey>, { slots }) => {
     // Returning functions in `setup` means this is the render function
     return () => h(DataTable, props, slots)
   })
@@ -192,6 +204,9 @@ export function useGenericTable<
 
         // Slot 'cell-{colName}', where colName is any column name (not field name!)
         [name in keyof Cols as name extends string ? `cell-${name}` : never]: (arg: TableCell<RowType, Cols[name]>) => VNode[];
+      };
+      $emit: {
+        (e: 'onViewChange', addedIDs: RowType[UniqueRowKey][], removedIDs: RowType[UniqueRowKey][], pre: readonly RowType[], post: readonly RowType[]): void
       };
     };
   }

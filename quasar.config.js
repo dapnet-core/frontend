@@ -121,6 +121,7 @@ module.exports = configure(function (ctx) {
       proxy: {
         '/api_proxy': {
           target: terminalEnv.api,
+          ws: true,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api_proxy/, '')
         }

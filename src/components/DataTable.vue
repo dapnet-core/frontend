@@ -1,3 +1,5 @@
+<!-- For documentation, consult the GenericDataTable file -->
+
 <template>
   <q-table
     :title="title"
@@ -12,6 +14,7 @@
     :filter="filter"
     v-model:pagination="pagination"
     @request="handleRequest"
+    ref="tableRef"
   >
     <!-- Filter all passed slots on 'cell-{name}', then use this to pass it through to QTable.
          The extra step of stripping 'cell-' just to append it later is necessary so the slot is correctly identified by vue -->
@@ -60,9 +63,9 @@
 </template>
 
 <script setup lang="ts">
-import { QTableColumn, QTableProps } from 'quasar'
+import { QTable, QTableColumn, QTableProps } from 'quasar'
 import { errorToString } from 'src/misc'
-import { ref, onMounted, useSlots, computed } from 'vue'
+import { ref, onMounted, useSlots, computed, watch } from 'vue'
 import { PaginationHandler, PaginationProps } from 'src/api/pagination'
 
 // TODO: Import 'Props' from 'components/GenericDataTable' once https://github.com/vuejs/core/issues/4294 is resolved
@@ -74,7 +77,15 @@ const props = defineProps<{
   defaultPagination? : PaginationProps<Record<string, unknown>>
   uniqueRowKey: string
   actions?: {icon: string, tooltip?: string, handler: () => void, color: string}[]
+  enableViewChangeEvent?: boolean
 }>()
+
+// eslint-disable-next-line func-call-spacing
+const emit = defineEmits<{
+  // Note: Keep in sync with definition in $emits in GenericDataTable
+  (e: 'onViewChange', addedIDs: unknown[], removedIDs: unknown[], pre: readonly unknown[], post: readonly unknown[]): void
+}>()
+const tableRef = ref<QTable | null>(null)
 
 const rows = ref<readonly unknown[] | undefined>()
 const filter = ref('')
@@ -189,4 +200,24 @@ function mapCols (obj: Record<string, Omit<QTableColumn, 'name'>>): QTableColumn
     return t
   })
 }
+
+if (props.enableViewChangeEvent) {
+  // Since we access a property of the ref, we have to wrap it inside a function call
+  watch(() => tableRef.value?.computedRows, (post, pre) => {
+    if (!post) return // Should never be called
+
+    // Transforms our array of rows into an array of unique IDs of those rows
+    // 'post' are the rows as of now, and 'pre' are the rows before the change
+    const postKeys = post.map((val) => val[props.uniqueRowKey])
+    const preKeys = pre ? pre.map((val) => val[props.uniqueRowKey]) : []
+
+    // Calculate difference between both sets
+    const added = postKeys.filter(x => !preKeys.includes(x))
+    const removed = preKeys.filter(x => !postKeys.includes(x))
+
+    // Emit an event of changed datasets
+    if (added.length > 0 || removed.length > 0) emit('onViewChange', added, removed, pre || [], post)
+  })
+}
+
 </script>
