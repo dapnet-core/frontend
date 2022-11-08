@@ -12,29 +12,19 @@ export const MessageLanguages = Object.keys(messages) as [MessageLanguage]
 export type MessageSchema = typeof messages['en']
 
 /**
- * Function to dynamically load Quasar language packs, see
+ * Defines how to load a quasar language pack. Wrapped in function calls to not resolve the promise early
  * https://quasar.dev/options/quasar-language-packs
  */
-async function loadLangPack (lang: MessageLanguage, fileName: string = lang): Promise<QuasarLanguage> {
-  try {
-    return (await import(`../../node_modules/quasar/lang/${fileName}.mjs`)).default
-  } catch (err) {
-    console.error(`Failed to load Quasar language pack for locale "${lang}": ${errorToString(err)}`)
-    throw err
-  }
-}
-
-// TODO: Lazy-load language packs; 'await' is blocking in this context
-const quasarLangPacks: { [k in MessageLanguage]: QuasarLanguage} = {
-  de: await loadLangPack('de'),
-  en: await loadLangPack('en', 'en-US'),
-  es: await loadLangPack('es'),
-  fr: await loadLangPack('fr'),
-  it: await loadLangPack('it'),
-  nl: await loadLangPack('nl'),
-  pl: await loadLangPack('pl'),
-  pt: await loadLangPack('pt'),
-  sv: await loadLangPack('sv')
+const quasarLangPacks: { [k in MessageLanguage]: () => Promise<QuasarLanguage>} = {
+  de: async () => (await import('quasar/lang/de')).default,
+  en: async () => (await import('quasar/lang/en-US')).default,
+  es: async () => (await import('quasar/lang/es')).default,
+  fr: async () => (await import('quasar/lang/fr')).default,
+  it: async () => (await import('quasar/lang/it')).default,
+  nl: async () => (await import('quasar/lang/nl')).default,
+  pl: async () => (await import('quasar/lang/pl')).default,
+  pt: async () => (await import('quasar/lang/pt')).default,
+  sv: async () => (await import('quasar/lang/sv')).default
 }
 
 // See https://vue-i18n.intlify.dev/guide/advanced/typescript.html#global-resource-schema-type-definition
@@ -119,5 +109,8 @@ export default boot(({ app }) => {
 
 export function setGlobalLocale (lang: MessageLanguage) {
   i18n.global.locale.value = lang
-  Quasar.lang.set(quasarLangPacks[lang])
+  // This is cached by vite. Its transpiled into a simple import statement, which if called a second time won't make another request to the server
+  quasarLangPacks[lang]()
+    .then(pack => Quasar.lang.set(pack))
+    .catch(err => console.error(`Failed to load Quasar language pack for locale "${lang}": ${errorToString(err)}`))
 }

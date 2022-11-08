@@ -16,7 +16,7 @@ export function errorToString (e: unknown, log = false): string {
   } else {
     console.warn('Unknown error:', e)
     // Debug this type of error and decide how to handle it
-    if (process.env.DEV) debugger
+    if (process.env.DEV) debugger // eslint-disable-line no-debugger
     return 'unknown error type'
   }
 }
