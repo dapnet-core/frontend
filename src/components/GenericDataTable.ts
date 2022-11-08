@@ -87,7 +87,8 @@ export interface Props<
    */
   uniqueRowKey: UniqueRowKey
   /**
-   * If set to true, a watcher will be enabled that fires a `on-view-change` event each time the displayed rows change due to filter, search or pagination. Changing this value after init won't enable this event.
+   * If set to true, a watcher will be enabled that fires a `on-view-change` event each time the displayed rows change due to filter, search or pagination.
+   * This value is not reactive: Changes after init won't (un)register the watcher.
    */
   enableViewChangeEvent?: boolean
   /**

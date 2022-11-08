@@ -6,25 +6,21 @@
       unique-row-key="_id"
       :load-data-function="loadData"
       :actions="actions"
+      enable-view-change-event
+      @on-view-change="onViewChange"
     >
       <template #cell-enabled="props">
         <q-icon v-if="props.value" color="positive" name="mdi-toggle-switch" size="2em"/>
         <q-icon v-else color="negative" name="mdi-toggle-switch-off" size="2em"/>
       </template>
-      <template #cell-connected="props">
-        <q-icon v-if="props.value" color="positive" name="mdi-cloud-check-variant" size="1.5em"/>
-        <q-icon v-else color="negative" name="mdi-cloud-off-outline" size="1.5em"/>
-      </template>
-      <template #cell-onAir="props">
-        <q-icon v-if="props.value" color="positive" name="mdi-wifi" size="1.5em"/>
-        <q-icon v-else color="negative" name="mdi-wifi-off" size="1.5em"/>
-      </template>
-      <template #cell-node="props">
-        <q-chip
-          v-if="props.value"
-          :label="props.value" size="1em"
-          color="grey" text-color="white"
-        />
+      <template #cell-telemetry="props">
+        <div v-if="props.value">
+          Connected!
+          <!-- TODO: Embed reactive SVG for telemetry visualization. Small by default, but enlarged on click (dialog?) -->
+        </div>
+        <q-icon v-else color="negative" name="mdi-cloud-off-outline" size="1.5em">
+          <q-tooltip>{{t('rest.errors.no-connection')}}</q-tooltip>
+        </q-icon>
       </template>
       <template #cell-usage="props">
         <q-icon v-if="props.value === 'personal'" name="mdi-router-wireless" size="1.75em">
@@ -55,6 +51,7 @@
       <template #cell-emergencyPower="props">
         <q-icon v-if="props.value?.available" color="positive" name="mdi-battery-high" size="1.5em">
           <q-tooltip>
+            <!-- TODO: Localize -->
             Emergency power for {{props.value.duration}} seconds
           </q-tooltip>
         </q-icon>
@@ -85,8 +82,9 @@ import { Column, useGenericTable } from 'src/components/GenericDataTable'
 import { TransmitterRowType, Transmitters } from 'src/api/api_routes'
 import { getJson } from 'src/api/fetch'
 import { ExtractComputed } from 'src/misc'
+import telemetryWS from 'src/telemetry'
 
-const { t, d } = useI18n({ useScope: 'global' })
+const { t } = useI18n({ useScope: 'global' })
 
 // Shorthand, T being the data type of the field function
 type FCol<T> = Column<TransmitterRowType, (row: TransmitterRowType) => T, T>
@@ -104,42 +102,11 @@ const columns = computed(() => ({
     field: 'enabled',
     sortable: true
   } as Column<TransmitterRowType, 'enabled'>,
-  // TODO: The next five colums get their data from the 'telemetry' endpoint; They are stubs and should be consolidated
-  connected: {
-    label: t('transmitters.status.connected'),
-    align: 'center',
-    field: (row) => row.status.online,
-    sortable: true
-  } as FCol<boolean>,
-  onAir: {
-    label: t('transmitters.status.onair'),
-    align: 'center',
-    field: (row) => false,
-    sortable: true
-  } as FCol<boolean>,
-  lastSeen: {
-    label: t('transmitters.status.lastseen'),
-    align: 'center',
-    field: (row) => row.status.last_seen,
-    format: (val) => val ? (new Date(val).getTime() - Date.now()) + ' msec ago' : '',
-    sortable: true
-  } as FCol<string | undefined>,
-  node: {
-    label: t('transmitters.status.node'),
-    align: 'center',
-    field: (row) => row.status.node,
-    sortable: true
-  } as FCol<string | undefined>,
-  software: {
-    label: t('transmitters.status.software'),
+  telemetry: {
+    label: t('transmitters.overview.table.status'),
     align: 'left',
-    field: (row) => {
-      const software = row.status.software
-      if (!software) return ''
-      return `${software.name} - ${software.version}`
-    },
-    sortable: true
-  } as FCol<string>,
+    field: (row) => row.status.online
+  } as FCol<boolean>,
   usage: {
     label: t('transmitters.usage.title'),
     align: 'center',
@@ -175,7 +142,7 @@ const columns = computed(() => ({
   } as Column<TransmitterRowType, '_id'>
 }))
 
-const TransmitterTable = useGenericTable<TransmitterRowType, ExtractComputed<typeof columns>>()
+const TransmitterTable = useGenericTable<TransmitterRowType, ExtractComputed<typeof columns>, '_id'>()
 
 const actions = computed(() => ([
   { color: 'primary', icon: 'mdi-plus', tooltip: t('transmitters.overview.actions.newtransmitter'), handler: handleAdd }
@@ -183,6 +150,21 @@ const actions = computed(() => ([
 
 function loadData () {
   return getJson<Transmitters>('transmitters').then((resp) => resp.rows)
+}
+
+const { subscribeTransmitters, unsubscribeTransmitters } = telemetryWS()
+
+/**
+ * Called when the displayed rows change; Used to update our telemetry data
+ */
+function onViewChange (addedIDs: string[], removedIDs: string[]) {
+  if (addedIDs.length > 0) {
+    subscribeTransmitters(addedIDs)
+  }
+
+  if (removedIDs.length > 0) {
+    unsubscribeTransmitters(removedIDs)
+  }
 }
 
 function handleDelete (id: string) {
