@@ -7,7 +7,7 @@
 
         <q-space />
 
-        <!-- TODO: Make dropdown wider on large screens so 2 languages fit per line -->
+        <!-- TODO: Make dialog? -->
         <q-btn-dropdown flat :label="store.language">
           <q-list>
             <q-item clickable v-close-popup v-for="(item, key) in MessageLanguages" :key="key" @click="store.changeLanguage(item)">
@@ -43,7 +43,7 @@
           <Item icon="mdi-message-text" :title="$t('navigation.rubrics.my')" to="/rubrics/my" :count="count.my.rubrics" v-if="count.my.rubrics"/>
           <Item icon="mdi-cloud" :title="$t('navigation.nodes.my')" to="/nodes/my" :count="count.my.nodes" v-if="count.my.nodes"/>
         </template>
-        <!-- TODO: Adapt logo to dark mode. Maybe allow each node to provide a different variation of this image? -->
+        <!-- TODO: Maybe allow each node to provide a different variation of this image? -->
         <q-img v-else src="~assets/dapnet-logo.png" height="64px" fit="contain" />
         <q-separator />
         <Item icon="mdi-home" :title="$t('navigation.home')" to="/" />
@@ -69,7 +69,7 @@
     </q-page-container>
 
     <q-footer elevated class="bg-grey-8 text-white">
-      <!-- TODO: Make responsive -->
+      <!-- TODO: Make responsive or move into left sidebar? -->
       <q-toolbar class="q-px-xl">
         <q-btn flat :label="$t('footer.contact.contact')" href="https://www.afu.rwth-aachen.de/ueber-uns/kontakt" target="_blank"/>
         <q-btn flat :label="$t('footer.contact.impress')" to="/impress" />
@@ -143,7 +143,7 @@ function logout () {
   if (router.currentRoute.value.path !== '/') router.push('/')
 }
 
-// TODO: to many requests for these. Simplyfy count once these are batched
+// TODO: to many requests for these. Simplify count once these are batched
 function fetchGlobalCounts () {
   getJson<Count>('calls/_count', null, false).then(resp => { count.value.calls = resp.count })
   getJson<Count>('transmitters/_count', null, false).then(resp => { count.value.transmitters = resp.count })
