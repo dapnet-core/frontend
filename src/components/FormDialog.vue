@@ -20,6 +20,7 @@
         :name="id" :title="item.title"
         :caption="item.subtitle"
         :icon="item.icon"
+        :error-icon="item.icon"
         :done="state[id] === 'done'"
         :error="state[id] === 'error'"
       >
@@ -36,7 +37,7 @@
         <q-stepper-navigation class="right-nav">
           <q-btn-group>
             <q-btn v-if="!hideExitBtn" flat :label="$t('general.abort')" @click="close" />
-            <q-btn color="primary" :label="finishBtnText" @click="trySubmit"/>
+            <q-btn :disable="!validForm" color="primary" :label="finishBtnText" @click="trySubmit"/>
           </q-btn-group>
         </q-stepper-navigation>
       </q-step>
@@ -80,15 +81,28 @@ const stepList = computed(() => Object.keys(props.steps))
 const step = ref(stepList.value[0])
 const state = ref<Record<string, State>>({})
 const forms = ref<Record<string, QForm>>({})
+
+/* Check all steps for errors, is true if there are none */
 const validForm = computed(() => Object.values(state.value).every(s => s !== 'error'))
 
-watch(step, (newId, oldId) => {
-  // Trigger validation. This calls 'validation-error' or 'validation-success'
-  // event and sets the state
-  forms.value[oldId]?.validate(false)
+/* Iterates all 'validateable' components of each step's form
+ * and checks each for errors */
+const formInputs = computed(() => {
+  const inputs: Record<string, boolean> = {}
+  for (const k in forms.value) {
+    const f = forms.value[k]
+    const inputRefs = f?.getValidationComponents()
+    if (inputRefs) inputs[k] = inputRefs.every((inputRef) => !inputRef.hasError)
+  }
+  return inputs
 })
 
-watch(() => props.modelValue, console.log)
+/* Watches all form elements for errors and propagates them */
+watch(formInputs, (inputs) => {
+  for (const form in inputs) {
+    state.value[form] = inputs[form] ? 'done' : 'error'
+  }
+})
 
 async function trySubmit () {
   for (const key in forms.value) {
@@ -99,20 +113,19 @@ async function trySubmit () {
     // Validation ok, try to submit form
     // If onSubmit() returns false, cancel the event
     if (!props.onSubmit || props.onSubmit()) {
-      _resetInternalState()
+      _closeDialogInternal()
     }
   }
 }
 
 function close () {
   if (props.onExit) props.onExit()
-  _resetInternalState()
+  _closeDialogInternal()
 }
 
-function _resetInternalState () {
+function _closeDialogInternal () {
   showDialog.value = false
 }
-
 </script>
 
 <style>
