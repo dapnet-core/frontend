@@ -1,23 +1,41 @@
 <!-- SectionedForm: A multi-section form for creating and editing data -->
+<!-- Middle ground between using steps and just rendering the form in full -->
+<!-- See https://ux.stackexchange.com/questions/95422/keep-long-form-or-separate-into-multiple-steps -->
+<!-- One form per section, so we can assign errors to each section specifically -->
 <template>
   <q-list
     bordered
     class="rounded-borders"
   >
-    <q-expansion-item
-      v-for="(item, id) in sections" :key="id"
-      :name="id" :label="item.title"
-      :caption="item.subtitle"
-      :icon="item.icon"
-      :header-class="formInputs[id] ? '' : 'text-red'"
-    >
-      <q-form
-        :ref="(el) => forms[id] = el as QForm"
-        @submit.prevent greedy
+    <q-item-label v-if="title" class="q-pt-md q-pl-md text-h5">{{ title }}</q-item-label>
+    <q-item v-if="!!slots['section-default']">
+      <q-item-section>
+        <q-form
+          :ref="(el) => forms['section-default'] = el as QForm"
+          @submit.prevent greedy
+        >
+          <slot :name="`section-default`"></slot>
+        </q-form>
+      </q-item-section>
+    </q-item>
+    <q-separator/>
+    <template v-for="(item, id) in sections" :key="id">
+      <q-expansion-item
+        :name="id" :label="item.title"
+        :caption="item.subtitle"
+        :icon="item.icon"
+        :header-class="formInputs[id] ? '' : 'text-red animated headShake'"
       >
-        <slot :name="`section-${id}`"></slot>
-      </q-form>
-    </q-expansion-item>
+        <q-form
+          :ref="(el) => forms[id] = el as QForm"
+          @submit.prevent greedy
+          class="q-px-md"
+        >
+          <slot :name="`section-${id}`"></slot>
+        </q-form>
+      </q-expansion-item>
+      <q-separator/>
+    </template>
     <q-item>
       <q-btn-group>
         <q-btn v-if="!hideExitBtn" flat :label="$t('general.abort')" @click="_exit"/>
@@ -29,12 +47,13 @@
 
 <script setup lang="ts">
 import { QForm } from 'quasar'
-import { computed, ref } from 'vue'
+import { computed, ref, useSlots } from 'vue'
 
 type Section = {title: string, icon: string, subtitle?: string}
 
+const slots = useSlots()
 const props = defineProps<{
-  title: string,
+  title?: string,
   finishBtnText: string,
   sections: Record<string, Section>,
   hideExitBtn?: true,

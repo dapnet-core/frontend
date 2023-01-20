@@ -99,7 +99,12 @@ export type SubscriberRowType = {
   groups: string[]
   owners: string[]
   pagers: Pager[]
-  thirdparty: Record<string, any[]> // TODO: Improve typing
+  thirdparty: {
+    aprs: string[],
+    brandmeister: number[],
+    ipsc2: number[],
+    email: string[]
+  },
   _id: string
   _rev: string
 }

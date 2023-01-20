@@ -17,6 +17,11 @@ const routes: RouteRecordRaw[] = [
     children: [{ path: '', component: () => import('pages/SubscriberPage.vue') }]
   },
   {
+    path: '/subscribers/new',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '', component: () => import('pages/SubscriberForm.vue') }]
+  },
+  {
     path: '/transmitters',
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '', component: () => import('pages/TransmitterPage.vue') }]

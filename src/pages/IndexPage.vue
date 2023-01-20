@@ -22,43 +22,6 @@
         </template>
       </q-table>
 
-      <SectionedForm
-        title="Test"
-        :sections="{kek: {icon: 'mdi-wifi-off', title: 'STEP Phil'}, kek32: {icon: 'mdi-wifi', title: 'STEP Marvin'}}"
-        finish-btn-text="Finish"
-        show-exit-btn
-        :onExit="onExit"
-        :onSubmit="onSubmit"
-      >
-        <template #section-kek>
-          <div class="q-pa-md" style="max-width: 400px">
-            <q-input
-              filled
-              v-model="name"
-              label="Your name *"
-              hint="Name and surname"
-              :rules="[ val => val && val.length > 0 || 'Please type something']"
-            />
-
-            <q-input
-              filled
-              type="number"
-              v-model="age"
-              label="Your age *"
-              :rules="[
-                val => val !== null && val !== '' || 'Please type your age',
-                val => val > 0 && val < 100 || 'Please type a real age'
-              ]"
-            />
-
-            <q-toggle v-model="accept" label="I accept the license and terms" />
-            </div>
-        </template>
-        <template #section-kek32>
-          Lol
-        </template>
-      </SectionedForm>
-
       <Map height="500px" :center="[6, 50]"
           :markers="markers">
           <template #marker-info="{ marker, index }">
@@ -88,22 +51,8 @@ import icon from 'assets/markers/marker-transmitter-personal-online.png'
 import { computed, ref } from 'vue'
 import { QTableColumn } from 'quasar'
 import { useI18n } from 'vue-i18n'
-import SectionedForm from 'src/components/SectionedForm.vue'
 
 const { t, d } = useI18n({ useScope: 'global' })
-
-const name = ref('')
-const age = ref<null | number>(null)
-const accept = ref(false)
-
-function onSubmit () {
-  console.log('onSubmit')
-  return true
-}
-
-function onExit () {
-  console.log('onExit')
-}
 
 const markers = ref<Marker[]>([{ coordinates: [6, 51], icon }, { coordinates: [6, 50], icon }])
 

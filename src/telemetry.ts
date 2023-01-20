@@ -1,6 +1,5 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 
-// TODO: The Spec says we also have node telemetry. But do we really?
 /**
  * Composable for managing the transmitter telemetry WebSocket
  *
@@ -26,6 +25,7 @@ export default function telemetryWS () {
         return
       }
 
+      // TODO: Document types for telemetry messages and use them
       switch (msg._type) {
         case 'subscription': {
           // Ignore 'subscription' updates

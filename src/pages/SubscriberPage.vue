@@ -67,6 +67,7 @@
 
 <script setup lang="ts">
 import { computed, toRaw } from 'vue'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Column, useGenericTable } from 'src/components/GenericDataTable'
 import { SubscriberRowType, Pager, Subscribers } from 'src/api/api_routes'
@@ -172,6 +173,8 @@ function displayPager (pager: Pager) {
   }
 }
 
+const router = useRouter()
+
 function handleDelete (id: string) {
   console.log('Delete ' + id)
 }
@@ -181,7 +184,7 @@ function handleEdit (id: string) {
 }
 
 function handleAdd () {
-  console.log('Add')
+  router.push('/subscribers/new')
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
