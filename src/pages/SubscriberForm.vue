@@ -5,7 +5,7 @@
 <template>
   <q-page padding>
     <SectionedForm
-      :finish-btn-text="$t('general.submit')" :title="props.init ? $t('subscribers.editsubscriber') : $t('subscribers.newsubscriber')"
+      :finish-btn-text="$t('general.submit')" :title="props.edit ? $t('subscribers.editsubscriber') : $t('subscribers.newsubscriber')"
       :sections="sections"
       :on-exit="onExit"
     >
@@ -160,9 +160,27 @@ import { useRouter } from 'vue-router'
 import SectionedForm from '../components/SectionedForm.vue'
 
 const props = defineProps<{
-  init?: SubscriberRowType
+  edit?: SubscriberRowType['_id']
 }>()
-const data = ref<SubscriberRowType>(props.init ? props.init : {
+
+function loadSubscriber (subscriber: SubscriberRowType['_id']): SubscriberRowType {
+  return {
+    _id: subscriber,
+    _rev: '',
+    description: 'I ALREADY EXIST!!',
+    groups: [],
+    owners: [],
+    pagers: [],
+    thirdparty: {
+      aprs: [],
+      brandmeister: [],
+      email: [],
+      ipsc2: []
+    }
+  }
+}
+
+const data = ref<SubscriberRowType>(props.edit ? loadSubscriber(props.edit) : {
   _id: '',
   _rev: '',
   description: '',

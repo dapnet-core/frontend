@@ -14,12 +14,11 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/subscribers',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/SubscriberPage.vue') }]
-  },
-  {
-    path: '/subscribers/new',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/SubscriberForm.vue') }]
+    children: [
+      { path: '', component: () => import('pages/SubscriberPage.vue') },
+      { path: 'new', component: () => import('pages/SubscriberForm.vue') },
+      { path: 'edit/:id', component: () => import('pages/SubscriberForm.vue'), props: (route) => ({ subscriber: route.params.id }) }
+    ]
   },
   {
     path: '/transmitters',

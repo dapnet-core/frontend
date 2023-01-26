@@ -175,12 +175,12 @@ function displayPager (pager: Pager) {
 
 const router = useRouter()
 
-function handleDelete (id: string) {
+function handleDelete (id: SubscriberRowType['_id']) {
   console.log('Delete ' + id)
 }
 
-function handleEdit (id: string) {
-  console.log('Edit ' + id)
+function handleEdit (id: SubscriberRowType['_id']) {
+  router.push({ path: '/subscribers/edit/' + id })
 }
 
 function handleAdd () {
