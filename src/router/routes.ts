@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       { path: '', component: () => import('pages/SubscriberPage.vue') },
       { path: 'new', component: () => import('pages/SubscriberForm.vue') },
-      { path: 'edit/:id', component: () => import('pages/SubscriberForm.vue'), props: (route) => ({ subscriber: route.params.id }) }
+      { path: 'edit/:id', component: () => import('pages/SubscriberForm.vue'), props: (route) => ({ editId: route.params.id }) }
     ]
   },
   {

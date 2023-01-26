@@ -1,11 +1,10 @@
 <!-- TODO: Just mockup right now, no validation or data submittion -->
 <!-- TODO: Make custom form components for Input, SingelSelection, MultiSelection to cut down on code repetition -->
-<!-- TODO: Show other data if in editing mode -->
 
 <template>
   <q-page padding>
     <SectionedForm
-      :finish-btn-text="$t('general.submit')" :title="props.edit ? $t('subscribers.editsubscriber') : $t('subscribers.newsubscriber')"
+      :finish-btn-text="$t('general.submit')" :title="props.editId ? $t('subscribers.editsubscriber') : $t('subscribers.newsubscriber')"
       :sections="sections"
       :on-exit="onExit"
     >
@@ -16,6 +15,7 @@
           :label="$t('subscribers.new.subscriber.title')"
           :hint="$t('subscribers.new.subscriber.help')"
           :rules="[ val => val && val.length > 0 || 'Name must not be empty']"
+          :loading = "loading" :disable="loading"
           class="col-md-4 col-12 q-px-xs q-mb-sm"
         >
         <template v-slot:prepend><q-icon name="mdi-tag-text-outline" /></template>
@@ -25,6 +25,7 @@
           :label="$t('subscribers.new.description.title')"
           :hint="$t('subscribers.new.description.help')"
           :rules="[ val => val && val.length > 0 ]"
+          :loading = "loading" :disable="loading"
           class="col-md-8 col-12 q-px-xs q-mb-sm"
         >
         <template v-slot:prepend><q-icon name="mdi-file-document-outline" /></template>
@@ -34,7 +35,7 @@
           :label="$t('general.subscriber_groups')"
           :hint="$t('subscribers.new.subscriber_groups.help')"
           :options="groupOptions"
-          :loading="!groups"
+          :loading="!groups || loading" :disable="!groups || loading"
           @input-value="(val) => groupSearch = val"
           multiple use-chips use-input
           class="col-lg-6 col-12 q-px-xs"
@@ -46,7 +47,7 @@
           :label="$t('general.owners')"
           :hint="$t('subscribers.new.owner.help')"
           :options="ownerOptions"
-          :loading="!owners"
+          :loading="!owners || loading" :disable="!owners || loading"
           @input-value="(val) => ownerSearch = val"
           multiple use-chips use-input
           class="col-lg-6 col-12 q-px-xs"
@@ -58,6 +59,7 @@
       </template>
       <template #section-pagers>
         <q-list bordered separator class="q-mb-sm">
+          <!-- TODO: Show pagers -->
           <q-item class="q-px-xs q-pt-none q-pb-md wrap">
             <q-select
             v-model="newPager.type"
@@ -115,6 +117,7 @@
             :label="$t('subscribers.new.aprs.title')"
             :hint="$t('subscribers.new.aprs.help')"
             multiple use-chips use-input
+            :loading = "loading" :disable="loading"
             class="col-lg-6 col-12 q-px-xs"
           >
             <template v-slot:prepend><q-icon name="mdi-crosshairs-gps" /></template>
@@ -124,6 +127,7 @@
             :label="$t('subscribers.new.brandmeister.title')"
             :hint="$t('subscribers.new.brandmeister.help')"
             multiple use-chips use-input
+            :loading = "loading" :disable="loading"
             class="col-lg-6 col-12 q-px-xs"
           >
             <template v-slot:prepend><q-icon name="mdi-radio-handheld" /></template>
@@ -133,6 +137,7 @@
             :label="$t('subscribers.new.ipsc2.title')"
             :hint="$t('subscribers.new.ipsc2.help')"
             multiple use-chips use-input
+            :loading = "loading" :disable="loading"
             class="col-lg-6 col-12 q-px-xs"
           >
             <template v-slot:prepend><q-icon name="mdi-radio-handheld" /></template>
@@ -142,6 +147,7 @@
             :label="$t('subscribers.new.email.title')"
             :hint="$t('subscribers.new.email.help')"
             multiple use-chips use-input
+            :loading = "loading" :disable="loading"
             class="col-lg-6 col-12 q-px-xs"
           >
             <template v-slot:prepend><q-icon name="mdi-email" /></template>
@@ -153,21 +159,28 @@
 </template>
 <script setup lang="ts">
 import { QSelect, QInput, QIcon } from 'quasar'
-import { SubscriberRowType, Pager } from 'src/api/api_routes'
+import { SubscriberRowType, Pager, SubscriberShow } from 'src/api/api_routes'
+import { getJson } from 'src/api/fetch'
 import { ref, computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import SectionedForm from '../components/SectionedForm.vue'
 
 const props = defineProps<{
-  edit?: SubscriberRowType['_id']
+  editId?: SubscriberRowType['_id']
 }>()
 
-function loadSubscriber (subscriber: SubscriberRowType['_id']): SubscriberRowType {
+const loading = ref<boolean>(false)
+function loadSubscriber (subscriber: SubscriberRowType['_id'] | undefined): SubscriberRowType {
+  if (subscriber) {
+    loading.value = true
+    getJson<SubscriberShow>(`subscribers/${subscriber}`).then(row => { data.value = row; loading.value = false })
+    // TODO: Show error if loading fails
+  }
+
   return {
-    _id: subscriber,
+    _id: '',
     _rev: '',
-    description: 'I ALREADY EXIST!!',
+    description: '',
     groups: [],
     owners: [],
     pagers: [],
@@ -180,20 +193,7 @@ function loadSubscriber (subscriber: SubscriberRowType['_id']): SubscriberRowTyp
   }
 }
 
-const data = ref<SubscriberRowType>(props.edit ? loadSubscriber(props.edit) : {
-  _id: '',
-  _rev: '',
-  description: '',
-  groups: [],
-  owners: [],
-  pagers: [],
-  thirdparty: {
-    aprs: [],
-    brandmeister: [],
-    email: [],
-    ipsc2: []
-  }
-})
+const data = ref<SubscriberRowType>(loadSubscriber(props.editId))
 
 const newPager = ref<Partial<Pager>>({ enabled: true })
 const groups = ref<string[] | null>(['Test1', 'Test2', 'Test3'])
@@ -215,7 +215,7 @@ const ownerOptions = computed<string[]>(() => {
   return owners.value.filter(v => v.toLocaleLowerCase().indexOf(needle) > -1)
 })
 
-const { t } = useI18n({ useScope: 'global' })
+// TODO: Localize
 const sections = computed(() => ({
   pagers: { title: 'Pagers', icon: 'mdi-id-card', subtitle: data.value.pagers.length > 0 ? `${data.value.pagers.length} pagers configured` : 'No pagers configured' },
   external: { title: 'Thirdparty', icon: 'mdi-cube-send', subtitle: 'APRS, Brandmeister, IPCS2, Email' }

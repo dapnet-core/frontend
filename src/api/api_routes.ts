@@ -128,6 +128,15 @@ export interface Subscribers extends ApiRouteGet {
 }
 
 /**
+ * GET /subscribers/:id
+ */
+export interface SubscriberShow extends ApiRouteGet {
+  path: `subscribers/${SubscriberRowType['_id']}`
+  response: SubscriberRowType
+  query: null
+}
+
+/**
  * Expected row type of GET /subscribers
  */
 export type TransmitterRowType = {
