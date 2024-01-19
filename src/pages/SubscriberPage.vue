@@ -72,10 +72,11 @@ import { useI18n } from 'vue-i18n'
 import { Column, useGenericTable } from 'src/components/GenericDataTable'
 import { SubscriberRowType, Pager, Subscribers } from 'src/api/api_routes'
 import { getJson } from 'src/api/fetch'
-import iconQuix from 'assets/pager/quix.png'
-import iconSkyper from 'assets/pager/skyper.png'
 import iconAlphapoc from 'assets/pager/alphapoc.png'
+import iconBirdy from 'assets/pager/birdy.png'
+import iconSkyper from 'assets/pager/skyper.png'
 import iconSwissphone from 'assets/pager/swissphone.png'
+import iconQuix from 'assets/pager/quix.png'
 import { ExtractComputed } from 'src/misc'
 
 const { t } = useI18n({ useScope: 'global' })
@@ -139,6 +140,13 @@ function displayPager (pager: Pager) {
       bgColor: 'green',
       textColor: 'white',
       img: `img:${iconAlphapoc}`,
+      ...pager
+    }
+  } else if (pager.type === 'birdy') {
+    return {
+      bgColor: 'blue',
+      textColor: 'white',
+      img: `img:${iconBirdy}`,
       ...pager
     }
   } else if (pager.type === 'skyper') {

@@ -9,28 +9,35 @@ import { ApiRouteGet, ApiRoutePost } from './fetch'
  */
 
 /**
- * GET /calls/_count
- * GET /transmitters/_count
- * GET /users/_count
- * GET /rubrics/_count
- * GET /subscribers/_count
- * GET /nodes/_count
- * GET /transmitters/_my_count
- * GET /rubrics/_my_count
- * GET /subscribers/_my_count
- * GET /nodes/_my_count
+ * Pager Type definition
  */
+
+export type Pager = {
+  enabled: boolean
+  function: number
+  name: string
+  ric: number
+  type: string
+}
+
+/**
+ * GET routes
+ */
+
 export interface Count extends ApiRouteGet {
   path: 'calls/_count'
-      | 'transmitters/_count'
-      | 'users/_count'
-      | 'rubrics/_count'
-      | 'subscribers/_count'
       | 'nodes/_count'
-      | 'transmitters/_my_count'
-      | 'rubrics/_my_count'
-      | 'subscribers/_my_count'
       | 'nodes/_my_count'
+      | 'rubrics/_count'
+      | 'rubrics/_my_count'
+      | 'subscribers/_count'
+      | 'subscribers/_groups'
+      | 'subscribers/_my_count'
+      | 'subscribers/_names'
+      | 'transmitters/_count'
+      | 'transmitters/_my_count'
+      | 'users/_count'
+      | 'users/_usernames'
   response: {
     count: number
   }
@@ -38,7 +45,7 @@ export interface Count extends ApiRouteGet {
 }
 
 /**
- * Expected row type of GET '/calls'
+ * GET '/calls' Expected row type
  */
 export interface CallRowType extends Record<string, unknown> {
   created_at: string // ISO8601 datetime string
@@ -65,30 +72,7 @@ export interface CallRowType extends Record<string, unknown> {
 export type Calls = ApiRouteGetPaginated<CallRowType, 'calls'>
 
 /**
- * POST /auth/users/login
- */
-export interface Login extends ApiRoutePost {
-  path: 'auth/users/login'
-  response: {
-    permissions: Record<string, string> // TODO: Hardcode permissions
-    user: Record<string, any> // We do not really care about this right now
-  }
-  body: {
-    password: string
-    username: string
-  }
-}
-
-export type Pager = {
-  enabled: boolean
-  function: number
-  name: string
-  ric: number
-  type: string
-}
-
-/**
- * Expected row type of GET /subscribers
+ * GET /subscribers Expected row type
  */
 export type SubscriberRowType = {
   changed_by?: string
@@ -137,7 +121,7 @@ export interface SubscriberShow extends ApiRouteGet {
 }
 
 /**
- * Expected row type of GET /subscribers
+ * Expected row type of GET /transmitters
  */
 export type TransmitterRowType = {
   changed_by?: string
@@ -198,4 +182,23 @@ export interface Transmitters extends ApiRouteGet {
     descending: boolean
     startswith: string
   } | null
+}
+
+/**
+ * POST routes
+ */
+
+/**
+ * POST /auth/users/login
+ */
+export interface Login extends ApiRoutePost {
+  path: 'auth/users/login'
+  response: {
+    permissions: Record<string, string> // TODO: Hardcode permissions
+    user: Record<string, any> // We do not really care about this right now
+  }
+  body: {
+    password: string
+    username: string
+  }
 }

@@ -65,7 +65,7 @@
             v-model="newPager.type"
             :label="$t('subscribers.new.pager.type.title')"
             :hint="$t('subscribers.new.pager.type.help')"
-            :options="['AlphaPoc', 'Skyper', 'Quix']"
+            :options="['AlphaPoc', 'Birdy', 'Skyper', 'Swissphone', 'Quix']"
             class="col-3 q-px-xs"
           >
             <template #prepend><q-icon name="mdi-card-account-details-outline" /></template>
