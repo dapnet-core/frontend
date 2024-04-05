@@ -58,10 +58,10 @@ const markers = ref<Marker[]>([{ coordinates: [6, 51], icon }, { coordinates: [6
 
 const columns = computed<QTableColumn[]>(() => [
   {
-    name: 'created_at',
-    label: t('general.created_at'),
+    name: 'created_on',
+    label: t('general.created_on'),
     align: 'left',
-    field: 'created_at',
+    field: 'created_on',
     format: (val: string) => d(val, 'numeric'),
     sortable: true
   },
@@ -89,7 +89,7 @@ const columns = computed<QTableColumn[]>(() => [
 
 const rows = [{
   id: 0,
-  created_at: '2022-06-10T11:41:29Z',
+  created_on: '2022-06-10T11:41:29Z',
   created_by: 'Valentin',
   subscribers: ['Test', 'Test2'],
   subscriber_groups: ['Test3'],
@@ -97,10 +97,18 @@ const rows = [{
 },
 {
   id: 1,
-  created_at: '2022-08-10T14:46:59Z',
+  created_on: '2022-08-10T14:46:59Z',
   created_by: 'Yolomeus',
   subscribers: [],
   subscriber_groups: ['Test4', 'Test5'],
+  priority: 5
+},
+{
+  id: 1,
+  created_on: '2022-08-10T14:46:59Z',
+  created_by: 'Erwin Lindemann',
+  subscribers: ['Lottogewinner'],
+  subscriber_groups: ['Test6', 'Test7'],
   priority: 5
 }
 ]
