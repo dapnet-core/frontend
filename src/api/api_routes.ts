@@ -48,14 +48,14 @@ export interface Count extends ApiRouteGet {
  * GET '/calls' Expected row type
  */
 export interface CallRowType extends Record<string, unknown> {
-  created_at: string // ISO8601 datetime string
+  created_on: string // ISO8601 datetime string
   created_by: string
   data: string
   distribution: {
     transmitter_groups: string[]
     transmitters: string[]
   }
-  expires_at: string // ISO8601 datetime string
+  expires_on: string // ISO8601 datetime string
   id: string // UUID V1
   local: boolean
   origin: string
@@ -182,6 +182,55 @@ export interface Transmitters extends ApiRouteGet {
     descending: boolean
     startswith: string
   } | null
+}
+
+/**
+ * GET /users Expected row type
+ */
+export type UserRowType = {
+  created_on?: string // ISO8601 datetime string
+  created_by?: string
+  defaults: {
+    expiration_duration?: number,
+    priority?: number, // Wofür auch immer die gut ist...
+    subscriber_groups?: string[]
+    subscribers?: string[]
+    transmitter_groups?: string[]
+    transmitters?: string[]
+  },
+  email?: string
+  email_lastchecked?: string // ISO8601 datetime string
+  enabled: boolean
+  roles: string[]
+  _id: string
+  _rev: string
+}
+
+/**
+ * GET /users
+ */
+export interface Users extends ApiRouteGet {
+  path: 'users'
+  response: {
+    offset: number
+    rows: readonly UserRowType[]
+    total_rows: number
+  }
+  query: {
+    limit: number
+    skip: number
+    descending: boolean
+    startswith: string
+  } | null
+}
+
+/**
+ * GET /users/:usernames
+ */
+export interface UserNames extends ApiRouteGet {
+  path: 'users/_usernames'
+  response: string
+  query: null
 }
 
 /**

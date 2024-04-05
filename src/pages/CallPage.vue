@@ -33,13 +33,13 @@ import { ExtractComputed } from 'src/misc'
 const { t, d } = useI18n({ useScope: 'global' })
 
 const columns = computed(() => ({
-  created_at: {
-    label: t('general.created_at'),
+  created_on: {
+    label: t('general.created_on'),
     align: 'left',
-    field: 'created_at',
+    field: 'created_on',
     format: (val) => d(val, 'numeric'),
     sortable: true
-  } as Column<CallRowType, 'created_at'>,
+  } as Column<CallRowType, 'created_on'>,
   created_by: {
     label: t('calls.overview.from'),
     align: 'left',
@@ -78,10 +78,10 @@ const columns = computed(() => ({
 const loadData = loadPaginatedData<Calls>('calls')
 
 const defaultPagination: PaginationProps<CallRowType> = {
-  sortBy: 'created_at',
+  sortBy: 'created_on',
   descending: true,
   fallbackSorting: {
-    sortBy: 'created_at',
+    sortBy: 'created_on',
     descending: true
   }
 }

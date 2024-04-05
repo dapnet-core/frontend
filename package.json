@@ -1,6 +1,6 @@
 {
   "name": "dapnet-quasar",
-  "version": "0.0.1",
+  "version": "20240405",
   "description": "Frontend for DAPNET",
   "productName": "Dapnet App",
   "author": "Valentin Geyer <geyer@ihf.rwth-aachen.de>",

@@ -688,8 +688,8 @@
     "permalink": "Permalink",
     "duplication": "Changing this name will create a duplication and <i>not</i> change the element's name.",
     "news": "News",
-    "updated_at": "Updated at",
-    "created_at": "Created at",
+    "updated_on": "Updated at",
+    "created_on": "Created at",
     "byUser": "by",
     "missing": "missing",
     "general_settings": "General Settings",
@@ -837,7 +837,7 @@
       "subscriber": {
         "title": "Subscriber",
         "help": "Please enter a valid amateur radio callsign of a human or a classifying name of an organization.",
-        "error": "Name must not be empty"
+        "error": "Subscriber name must not be empty"
       },
       "description": {
         "title": "Description",

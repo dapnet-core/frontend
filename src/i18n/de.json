@@ -394,8 +394,8 @@
     "duplication":
       "Wenn dieser Name geändert wird, erzeugt das ein Duplikat und ändert <i>nicht</i> den Namen dieses Elements.",
     "news": "Nachrichten",
-    "updated_at": "Geändert am ",
-    "created_at": "Erstellt am",
+    "updated_on": "Geändert am ",
+    "created_on": "Erstellt am",
     "byUser": "durch",
     "missing": "fehlend",
     "general_settings": "Generelle Einstellungen",

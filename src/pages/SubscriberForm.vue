@@ -14,7 +14,7 @@
           v-model="data._id"
           :label="$t('subscribers.new.subscriber.title')"
           :hint="$t('subscribers.new.subscriber.help')"
-          :rules="[ val => val && val.length > 0 || 'Name must not be empty']"
+          :rules="[ val => val && val.length > 0 || $t('subscribers.new.subscriber.error')]"
           :loading = "loading" :disable="loading"
           class="col-md-4 col-12 q-px-xs q-mb-sm"
         >
@@ -159,11 +159,13 @@
 </template>
 <script setup lang="ts">
 import { QSelect, QInput, QIcon } from 'quasar'
-import { SubscriberRowType, Pager, SubscriberShow } from 'src/api/api_routes'
+import { SubscriberRowType, Pager, SubscriberShow, UserNames } from 'src/api/api_routes'
 import { getJson } from 'src/api/fetch'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import SectionedForm from '../components/SectionedForm.vue'
+import { json } from 'stream/consumers'
+import { Console } from 'console'
 
 const props = defineProps<{
   editId?: SubscriberRowType['_id']
@@ -193,12 +195,25 @@ function loadSubscriber (subscriber: SubscriberRowType['_id'] | undefined): Subs
   }
 }
 
+function loadOwnerNames () {
+  return getJson<UserNames>('subscribers').then((resp) => resp.rows)
+}
+//
+// async function loadUserNames (): Promise<string[]> {
+//  loading.value = true
+//  const response = await getJson<UserNames>('users/_usernames')
+//  const resultArray = Object.keys(response).map(function (userNamedIndex) { const user = persons[userNamedIndex] })
+//  console.log(typeof response)
+//  loading.value = false
+//  return { resultArray }
+// }
+
 const data = ref<SubscriberRowType>(loadSubscriber(props.editId))
 
 const newPager = ref<Partial<Pager>>({ enabled: true })
 const groups = ref<string[] | null>(['Test1', 'Test2', 'Test3'])
 const groupSearch = ref<string>('')
-const owners = ref<string[] | null>(['Test1', 'Test2', 'Test3'])
+const owners = ref<string[] | null>(['Test1', 'Test2', 'Test3']) // ref<Promise<string[]> | null>(loadUserNames())
 const ownerSearch = ref<string>('')
 
 const groupOptions = computed<string[]>(() => {
