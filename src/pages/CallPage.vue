@@ -8,12 +8,12 @@
       :default-pagination="defaultPagination"
     >
       <template #cell-subscribers="props">
-        <q-chip v-for="(item, key) in props.value.subscribers"        :key="key" icon="mdi-wifi"            :label="item" color="grey" text-color="white" />
-        <q-chip v-for="(item, key) in props.value.subscriber_groups"  :key="key" icon="mdi-wifi-strength-4" :label="item" color="grey" text-color="white" />
+        <q-chip v-for="(item, key) in props.value.subscribers" :key="key" icon="mdi-wifi" :label="item" color="grey" text-color="white" />
+        <q-chip v-for="(item, key) in props.value.subscriber_groups" :key="key" icon="mdi-wifi-strength-4" :label="item" color="grey" text-color="white" />
       </template>
       <template #cell-transmitters="props">
-        <q-chip v-for="(item, key) in props.value.transmitters"       :key="key" icon="mdi-account"         :label="item" color="grey" text-color="white" />
-        <q-chip v-for="(item, key) in props.value.transmitter_groups" :key="key" icon="mdi-account-group"   :label="item" color="grey" text-color="white" />
+        <q-chip v-for="(item, key) in props.value.transmitters" :key="key" icon="mdi-account" :label="item" color="grey" text-color="white" />
+        <q-chip v-for="(item, key) in props.value.transmitter_groups" :key="key" icon="mdi-account-group" :label="item" color="grey" text-color="white" />
       </template>
       <template #cell-priority="props">
         <q-chip :label="props.value.text" :color="props.value.bgColor" :text-color="props.value.textColor" />
@@ -25,10 +25,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Column, useGenericTable } from 'src/components/GenericDataTable'
-import { loadPaginatedData, PaginationProps } from 'src/api/pagination'
-import { CallRowType, Calls } from 'src/api/api_routes'
-import { ExtractComputed } from 'src/misc'
+import type { Column} from 'src/components/GenericDataTable';
+import { useGenericTable } from 'src/components/GenericDataTable'
+import type { PaginationProps } from 'src/api/pagination';
+import { loadPaginatedData } from 'src/api/pagination'
+import type { CallRowType, Calls } from 'src/api/api_routes'
+import type { ExtractComputed } from 'src/misc'
 
 const { t, d } = useI18n({ useScope: 'global' })
 

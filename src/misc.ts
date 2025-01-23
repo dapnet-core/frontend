@@ -1,4 +1,4 @@
-import { ComputedRef } from 'vue'
+import type { ComputedRef } from 'vue'
 
 /**
  * Take in any kind of error and return it as a string. Useful for catch clauses.
@@ -16,7 +16,7 @@ export function errorToString (e: unknown, log = false): string {
   } else {
     console.warn('Unknown error:', e)
     // Debug this type of error and decide how to handle it
-    if (process.env.DEV) debugger // eslint-disable-line no-debugger
+    if (process.env.DEV) debugger  
     return 'unknown error type'
   }
 }

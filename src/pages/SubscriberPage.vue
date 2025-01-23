@@ -15,11 +15,11 @@
         >
           <q-tooltip>
             <!-- TODO: Localize -->
-            Name: {{item.name}}
-            <br/>
-            Type: {{item.type}}
-            <br/>
-            {{item.enabled ? 'Enabled' : 'Disabled'}}
+            Name: {{ item.name }}
+            <br>
+            Type: {{ item.type }}
+            <br>
+            {{ item.enabled ? 'Enabled' : 'Disabled' }}
           </q-tooltip>
         </q-chip>
       </template>
@@ -29,9 +29,11 @@
           :label="item.text" size="1em"
           :color="item.bgColor" :text-color="item.textColor"
         >
-          <q-badge v-if="item.badge > 1" color="primary" floating>{{item.badge}}</q-badge>
+          <q-badge v-if="item.badge > 1" color="primary" floating>
+            {{ item.badge }}
+          </q-badge>
           <q-tooltip v-if="item.data">
-            <span v-for="(i, k) in item.data" :key="k">{{i}}<br/></span>
+            <span v-for="(i, k) in item.data" :key="k">{{ i }}<br></span>
           </q-tooltip>
         </q-chip>
       </template>
@@ -52,10 +54,10 @@
       <template #cell-actions="props">
         <q-btn-group unelevated>
           <q-btn color="info" icon="mdi-pencil-outline" dense size="1em" @click="handleEdit(props.value)">
-            <q-tooltip>{{$t('table.actionbuttons.edit')}}</q-tooltip>
+            <q-tooltip>{{ $t('table.actionbuttons.edit') }}</q-tooltip>
           </q-btn>
           <q-btn color="negative" icon="mdi-delete-outline" dense size="1em" @click="handleDelete(props.value)">
-            <q-tooltip>{{$t('table.actionbuttons.delete')}}</q-tooltip>
+            <q-tooltip>{{ $t('table.actionbuttons.delete') }}</q-tooltip>
           </q-btn>
           <!-- TODO: Missing mail in row type -->
           <!-- <q-btn color="secondary" icon="mdi-email-fast-outline" :href="`mailto:${props.row.mail}`"/> -->
@@ -69,15 +71,16 @@
 import { computed, toRaw } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { Column, useGenericTable } from 'src/components/GenericDataTable'
-import { SubscriberRowType, Pager, Subscribers } from 'src/api/api_routes'
+import type { Column} from 'src/components/GenericDataTable';
+import { useGenericTable } from 'src/components/GenericDataTable'
+import type { SubscriberRowType, Pager, Subscribers } from 'src/api/api_routes'
 import { getJson } from 'src/api/fetch'
 import iconAlphapoc from 'assets/pager/alphapoc.png'
 import iconBirdy from 'assets/pager/birdy.png'
 import iconSkyper from 'assets/pager/skyper.png'
 import iconSwissphone from 'assets/pager/swissphone.png'
 import iconQuix from 'assets/pager/quix.png'
-import { ExtractComputed } from 'src/misc'
+import type { ExtractComputed } from 'src/misc'
 
 const { t } = useI18n({ useScope: 'global' })
 
@@ -187,12 +190,12 @@ function handleDelete (id: SubscriberRowType['_id']) {
   console.log('Delete ' + id)
 }
 
-function handleEdit (id: SubscriberRowType['_id']) {
-  router.push({ path: '/subscribers/edit/' + id })
+async function handleEdit (id: SubscriberRowType['_id']) {
+  await router.push({ path: '/subscribers/edit/' + id })
 }
 
-function handleAdd () {
-  router.push('/subscribers/new')
+async function handleAdd () {
+  await router.push('/subscribers/new')
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

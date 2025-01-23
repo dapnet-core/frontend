@@ -1,7 +1,8 @@
-import { defineComponent, h, VNode } from 'vue'
+import type { VNode } from 'vue';
+import { defineComponent, h } from 'vue'
 import DataTable from 'components/DataTable.vue'
-import { QTableColumn } from 'quasar'
-import { PaginationHandler, PaginationProps } from 'src/api/pagination'
+import type { QTableColumn } from 'quasar'
+import type { PaginationHandler, PaginationProps } from 'src/api/pagination'
 
 /** Merge two types; Information from the right side is used if there is a conflict */
 type Merge<T, R extends Record<string, unknown>> = Omit<T, keyof R> & R
@@ -184,6 +185,7 @@ export type TableCell<
  * - `@on-view-change` fires if the shown rows change due to pagination or filtering. A set of IDs of the added and removed rows is given, with the full row data before and after the change. Typing: `(addedIDs: RowType[UniqueRowKey][], removedIDs: RowType[UniqueRowKey][], pre: readonly RowType[], post: readonly RowType[]) => void`. Note: For typing to work, the third optional generic parameter has to be set to the literal unique row key: `const myGenericTable = useGenericTable<myRowDataType, myColumns, '_id'>()`
  */
 // Adapted from https://logaretm.com/blog/generic-type-components-with-composition-api/
+// TODO: This functionality is officially supported now, migrate to it instead of using this hack. See https://vuejs.org/api/sfc-script-setup.html#generics
 export function useGenericTable<
   RowType extends Record<string, unknown>,
   // This must be any, otherwise the index signature doesn't work
@@ -193,6 +195,7 @@ export function useGenericTable<
 > () {
   const wrapper = defineComponent((props: Props<RowType, Cols, UniqueRowKey>, { slots }) => {
     // Returning functions in `setup` means this is the render function
+    // @ts-expect-error: Legacy code, ignore error - try to rewrite it all instead
     return () => h(DataTable, props, slots)
   })
   // Cast the wrapper as itself so we do not lose existing component type information

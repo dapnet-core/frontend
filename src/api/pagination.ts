@@ -1,5 +1,6 @@
 import type { QTableProps } from 'quasar'
-import { getJson, ApiRouteGet } from './fetch'
+import type { ApiRouteGet } from './fetch';
+import { getJson } from './fetch'
 
 /**
  * This file implements keyset/cursor-based pagination, see https://stackoverflow.com/a/70520457
@@ -91,9 +92,9 @@ export type PaginationProps<T> = Omit<NonNullable<QTableProps['pagination']>, 's
   /** Sorting column */
   sortBy?: keyof T
   /** Cursor for all entries that come before the current view */
-  before?: string
+  before?: string | undefined
   /** Cursor for all entries that come after the current view */
-  after?: string
+  after?: string | undefined
   /**
    * Sets the fallback sorting column. If no sorting column is set, this one will be set.
    * Useful if the server sorts the data even if no sorting is requested by the client,

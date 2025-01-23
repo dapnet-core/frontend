@@ -15,14 +15,12 @@ import {
   computed
 } from 'vue'
 import Control from 'ol/control/Control'
-import Map from 'ol/Map'
+import type Map from 'ol/Map'
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const map: Map = inject('map')!
 const mountpoint = ref<HTMLElement | null>(null)
 
 const control = computed(() => new Control({
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   element: mountpoint.value!
 }))
 

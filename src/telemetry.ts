@@ -21,7 +21,7 @@ export default function telemetryWS () {
       try {
         msg = JSON.parse(ev.data)
       } catch (err) {
-        console.error('Invalid telemetry data!', ev.data)
+        console.error('Invalid telemetry data!', ev.data, err)
         return
       }
 

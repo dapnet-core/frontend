@@ -53,7 +53,7 @@ export function postJson<R extends ApiRoutePost> (route: R['path'], data: R['bod
 
   const url = `${process.env.apiServer}/${route}`
 
-  let body
+  let body = ""
   if (data) {
     body = JSON.stringify(data)
     headers.append('Content-Type', 'application/json;charset=UTF-8')

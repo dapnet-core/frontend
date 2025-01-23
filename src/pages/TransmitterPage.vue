@@ -10,8 +10,8 @@
       @on-view-change="onViewChange"
     >
       <template #cell-enabled="props">
-        <q-icon v-if="props.value" color="positive" name="mdi-toggle-switch" size="2em"/>
-        <q-icon v-else color="negative" name="mdi-toggle-switch-off" size="2em"/>
+        <q-icon v-if="props.value" color="positive" name="mdi-toggle-switch" size="2em" />
+        <q-icon v-else color="negative" name="mdi-toggle-switch-off" size="2em" />
       </template>
       <template #cell-telemetry="props">
         <div v-if="props.value">
@@ -19,19 +19,19 @@
           <!-- TODO: Embed reactive SVG for telemetry visualization. Small by default, but enlarged on click (dialog?) -->
         </div>
         <q-icon v-else color="negative" name="mdi-cloud-off-outline" size="1.5em">
-          <q-tooltip>{{t('rest.errors.no-connection')}}</q-tooltip>
+          <q-tooltip>{{ t('rest.errors.no-connection') }}</q-tooltip>
         </q-icon>
       </template>
       <template #cell-usage="props">
         <q-icon v-if="props.value === 'personal'" name="mdi-router-wireless" size="1.75em">
-          <q-tooltip>{{$t('transmitters.usage.personal')}}</q-tooltip>
+          <q-tooltip>{{ $t('transmitters.usage.personal') }}</q-tooltip>
         </q-icon>
         <q-icon v-else-if="props.value === 'widerange'" name="mdi-antenna" size="1.75em">
-          <q-tooltip>{{$t('transmitters.usage.widerange')}}</q-tooltip>
+          <q-tooltip>{{ $t('transmitters.usage.widerange') }}</q-tooltip>
         </q-icon>
         <!-- This case should never happen -->
         <q-icon v-else color="negative" name="mdi-help" size="1.75em">
-          <q-tooltip>{{props.value}}</q-tooltip>
+          <q-tooltip>{{ props.value }}</q-tooltip>
         </q-icon>
       </template>
       <template #cell-owner="props">
@@ -52,7 +52,7 @@
         <q-icon v-if="props.value?.available" color="positive" name="mdi-battery-high" size="1.5em">
           <q-tooltip>
             <!-- TODO: Localize -->
-            Emergency power for {{props.value.duration}} seconds
+            Emergency power for {{ props.value.duration }} seconds
           </q-tooltip>
         </q-icon>
         <q-icon v-else color="negative" name="mdi-power-plug-off-outline" size="1.5em">
@@ -62,10 +62,10 @@
       <template #cell-actions="props">
         <q-btn-group unelevated>
           <q-btn color="info" icon="mdi-pencil-outline" dense size="1em" @click="handleEdit(props.value)">
-            <q-tooltip>{{$t('table.actionbuttons.edit')}}</q-tooltip>
+            <q-tooltip>{{ $t('table.actionbuttons.edit') }}</q-tooltip>
           </q-btn>
           <q-btn color="negative" icon="mdi-delete-outline" dense size="1em" @click="handleDelete(props.value)">
-            <q-tooltip>{{$t('table.actionbuttons.delete')}}</q-tooltip>
+            <q-tooltip>{{ $t('table.actionbuttons.delete') }}</q-tooltip>
           </q-btn>
           <!-- TODO: Missing mail in row type -->
           <!-- <q-btn color="secondary" icon="mdi-email-fast-outline" :href="`mailto:${props.row.mail}`"/> -->
@@ -78,10 +78,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Column, useGenericTable } from 'src/components/GenericDataTable'
-import { TransmitterRowType, Transmitters } from 'src/api/api_routes'
+import type { Column} from 'src/components/GenericDataTable';
+import { useGenericTable } from 'src/components/GenericDataTable'
+import type { TransmitterRowType, Transmitters } from 'src/api/api_routes'
 import { getJson } from 'src/api/fetch'
-import { ExtractComputed } from 'src/misc'
+import type { ExtractComputed } from 'src/misc'
 import telemetryWS from 'src/telemetry'
 
 const { t } = useI18n({ useScope: 'global' })

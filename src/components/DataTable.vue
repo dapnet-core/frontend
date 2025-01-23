@@ -20,21 +20,25 @@
          The extra step of stripping 'cell-' just to append it later is necessary so the slot is correctly identified by vue -->
     <template v-for="(name, key) in cellSlots" :key="key" #[`body-cell-${name}`]="slotData">
       <q-td :props="slotData">
-        <slot :name="`cell-${name}`" v-bind="slotData"></slot>
+        <slot :name="`cell-${name}`" v-bind="slotData" />
       </q-td>
     </template>
     <!-- If the display becomes small, this table will switch to "grid mode" and rows
          will be stacked in cards, see https://quasar.dev/vue-components/table#grid-style
          This template overwrites these cards and injects our custom cell slots into it -->
-    <template #item="props">
+    <!-- @vue-ignore: "gridItemProps has any type". See API for typing -->
+    <template #item="gridItemProps">
       <div class="q-table__grid-item col-xs-12 col-sm-6 col-md-4 col-lg-3">
         <div :class="`q-table__grid-item-card q-table__card${$q.dark.isActive ? ' q-table__card--dark q-dark' : ''}`">
-          <div v-for="([col, value], key) in _getNoneEmptyCols(props.colsMap, props.row)" :key="key" class="q-table__grid-item-row">
-            <div class="q-table__grid-item-title">{{col.label}}</div>
+          <!-- @vue-ignore: [col, value] has any type -->
+          <div v-for="([col, value], key) in _getNoneEmptyCols(gridItemProps.colsMap, gridItemProps.row)" :key="key" class="q-table__grid-item-row">
+            <div class="q-table__grid-item-title">
+              {{ col.label }}
+            </div>
             <div class="q-table__grid-item-value">
-              <slot :name="`cell-${col.name}`" v-bind="{col, value, ...props}">
+              <slot :name="`cell-${col.name}`" v-bind="{col, value, ...gridItemProps}">
                 <!-- Fallback if no slot for this column is set -->
-                {{col.format ? col.format(value, props.row): value}}
+                {{ col.format ? col.format(value, gridItemProps.row): value }}
               </slot>
             </div>
           </div>
@@ -42,18 +46,21 @@
       </div>
     </template>
     <!-- TODO: Maybe put these into the toolbar on mobile -->
-    <template v-slot:top-right>
+    <template #top-right>
       <q-input borderless dense debounce="200" v-model="filter" :label="$t('table.search')" clearable>
-        <template v-slot:append v-if="!filter"> <!-- Only show icon if 'filter' is empty; Otherwise, the clear icon is shown -->
+        <template #append v-if="!filter">
+          <!-- Only show icon if 'filter' is empty; Otherwise, the clear icon is shown -->
           <q-icon name="mdi-magnify" />
         </template>
-        <template v-slot:after v-if="actions && actions.length > 0">
+        <template #after v-if="actions && actions.length > 0">
           <q-btn-group>
             <q-btn
               v-for="({icon, color, handler, tooltip}, key) in actions" :key="key"
               dense :icon="icon" :color="color" @click="handler"
             >
-              <q-tooltip v-if="tooltip">{{tooltip}}</q-tooltip>
+              <q-tooltip v-if="tooltip">
+                {{ tooltip }}
+              </q-tooltip>
             </q-btn>
           </q-btn-group>
         </template>
@@ -63,10 +70,11 @@
 </template>
 
 <script setup lang="ts">
-import { QTable, QTableColumn, QTableProps } from 'quasar'
+import type { QTableColumn, QTableProps } from 'quasar';
+import { QTable } from 'quasar'
 import { errorToString } from 'src/misc'
 import { ref, onMounted, useSlots, computed, watch } from 'vue'
-import { PaginationHandler, PaginationProps } from 'src/api/pagination'
+import type { PaginationHandler, PaginationProps } from 'src/api/pagination'
 
 // TODO: Import 'Props' from 'components/GenericDataTable' once https://github.com/vuejs/core/issues/4294 is resolved
 const props = defineProps<{
@@ -80,14 +88,13 @@ const props = defineProps<{
   enableViewChangeEvent?: boolean
 }>()
 
-// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   // Note: Keep in sync with definition in $emits in GenericDataTable
   (e: 'onViewChange', addedIDs: unknown[], removedIDs: unknown[], pre: readonly unknown[], post: readonly unknown[]): void
 }>()
 const tableRef = ref<QTable | null>(null)
 
-const rows = ref<readonly unknown[] | undefined>()
+const rows = ref<readonly unknown[]>([])
 const filter = ref('')
 const loading = ref(false)
 const error = ref<string | undefined>(undefined)
@@ -130,8 +137,7 @@ async function _requestPaginatedData (limit: number, before: string | undefined,
   const resp = await props.loadPaginatedData(
     limit,
     after ? { after } : (before ? { before } : 'firstpage'),
-    // SAVETY: See invariant at the top of this function
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    // SAFETY: See invariant at the top of this function
     sortBy ? { sortBy, descending: descending! } : undefined,
     filter
   )
@@ -147,7 +153,6 @@ onMounted(async () => {
 
   if (props.loadPaginatedData) { // Use server-side pagination
     // SAFETY: A default value is provided before mount
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     await _requestPaginatedData(pagination.value.rowsPerPage!, undefined, undefined, pagination.value.sortBy, pagination.value.descending, filter.value).catch(_handleError)
   } else if (props.loadDataFunction) { // Request all data and do client-side pagination
     await props.loadDataFunction().then((data) => { rows.value = data }).catch(_handleError)
@@ -157,6 +162,7 @@ onMounted(async () => {
 })
 
 const handleRequest: QTableProps['onRequest'] = (args) => {
+  // eslint-disable-next-line prefer-const
   let { page, rowsPerPage, sortBy, descending } = args.pagination
   const filter = args.filter
   const currentPage = pagination.value.page

@@ -1,5 +1,5 @@
-import { ApiRouteGetPaginated } from './pagination'
-import { ApiRouteGet, ApiRoutePost } from './fetch'
+import type { ApiRouteGetPaginated } from './pagination'
+import type { ApiRouteGet, ApiRoutePost } from './fetch'
 
 /**
  * This file contains type definitions for all calls to our API service
@@ -244,7 +244,7 @@ export interface Login extends ApiRoutePost {
   path: 'auth/users/login'
   response: {
     permissions: Record<string, string> // TODO: Hardcode permissions
-    user: Record<string, any> // We do not really care about this right now
+    user: Record<string, unknown> // We do not really care about this right now
   }
   body: {
     password: string

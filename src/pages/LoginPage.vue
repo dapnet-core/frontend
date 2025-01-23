@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { Login } from 'src/api/api_routes'
+import type { Login } from 'src/api/api_routes'
 import { postJson } from 'src/api/fetch'
 import { errorToString } from 'src/misc'
 import { globalStore } from 'src/stores/global-store'

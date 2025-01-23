@@ -42,8 +42,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { fromLonLat } from 'ol/proj'
-import { Coordinate } from 'ol/coordinate'
-import { SelectEvent } from 'ol/interaction/Select'
+import type { Coordinate } from 'ol/coordinate'
+import type { SelectEvent } from 'ol/interaction/Select'
 import ControlContainer from 'components/MapControlContainer.vue'
 
 export type Marker = {
@@ -65,7 +65,7 @@ const map = ref<HTMLElement | null>(null) // Reference to map DOM element
 
 const featureSelected = (event: SelectEvent) => {
   // TODO: Center map on selected marker
-  selected.value = event.selected.length > 0 ? { marker: event.selected[0].get('marker'), key: event.selected[0].get('key') } : null
+  selected.value = event.selected.length > 0 ? { marker: event.selected[0]?.get('marker'), key: event.selected[0]?.get('key') } : null
 }
 
 /**

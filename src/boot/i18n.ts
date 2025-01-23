@@ -1,6 +1,7 @@
 import { defineBoot } from '#q-app/wrappers'
 import { createI18n } from 'vue-i18n'
-import { Quasar, QuasarLanguage } from 'quasar'
+import type { QuasarLanguage } from 'quasar';
+import { Quasar } from 'quasar'
 import { errorToString } from 'src/misc'
 
 // TODO: Lazy-load translations; This import will import all languages, even if only one is going to be used
@@ -28,9 +29,9 @@ const quasarLangPacks: { [k in MessageLanguage]: () => Promise<QuasarLanguage>} 
 }
 
 // See https://vue-i18n.intlify.dev/guide/advanced/typescript.html#global-resource-schema-type-definition
-/* eslint-disable @typescript-eslint/no-empty-interface */
 declare module 'vue-i18n' {
   // define the locale messages schema
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   export interface DefineLocaleMessage extends MessageSchema {}
 
   // define the datetime format schema
@@ -46,9 +47,9 @@ declare module 'vue-i18n' {
   }
 
   // define the number format schema
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   export interface DefineNumberFormat {}
 }
-/* eslint-enable @typescript-eslint/no-empty-interface */
 
 /**
  * Get the user's locale and process it; If we don't have language support for it, 'en' is returned

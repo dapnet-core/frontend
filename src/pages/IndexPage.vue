@@ -9,47 +9,49 @@
         :columns="columns"
         row-key="id"
       >
-        <template v-slot:body-cell-subscribers="props">
+        <template #body-cell-subscribers="props">
           <q-td :props="props">
             <q-chip v-for="(item, key) in props.value" :key="key" icon="mdi-wifi" :label="item" color="grey" text-color="white" />
             <q-chip v-for="(item, key) in props.row.subscriber_groups" :key="key" icon="mdi-wifi-strength-4" :label="item" color="grey" text-color="white" />
           </q-td>
         </template>
-        <template v-slot:body-cell-priority="props">
+        <template #body-cell-priority="props">
           <q-td :props="props">
             <q-chip :label="priorities(props.value).text" :color="priorities(props.value).color" />
           </q-td>
         </template>
       </q-table>
 
-      <Map height="500px" :center="[6, 50]"
-          :markers="markers">
-          <template #marker-info="{ marker, index }">
-            Position {{ marker.coordinates }}
-            <br>
-            Usage: WIDERANGE
-            <br>
-            Transmission Power (W): 1
-            <br>
-            Height (m): 15
-            <br>
-            Timeslot: 0123456789ABCDEF
-            <br>
-            Owner: me
-            <br>
-            Index: {{ index }}
-          </template>
+      <Map
+        height="500px" :center="[6, 50]"
+        :markers="markers"
+      >
+        <template #marker-info="{ marker, index }">
+          Position {{ marker.coordinates }}
+          <br>
+          Usage: WIDERANGE
+          <br>
+          Transmission Power (W): 1
+          <br>
+          Height (m): 15
+          <br>
+          Timeslot: 0123456789ABCDEF
+          <br>
+          Owner: me
+          <br>
+          Index: {{ index }}
+        </template>
       </Map>
     </div>
-
   </q-page>
 </template>
 
 <script setup lang="ts">
-import Map, { Marker } from 'components/MapComponent.vue'
+import type { Marker } from 'components/MapComponent.vue';
+import Map from 'components/MapComponent.vue'
 import icon from 'assets/markers/marker-transmitter-personal-online.png'
 import { computed, ref } from 'vue'
-import { QTableColumn } from 'quasar'
+import type { QTableColumn } from 'quasar'
 import { useI18n } from 'vue-i18n'
 
 const { t, d } = useI18n({ useScope: 'global' })

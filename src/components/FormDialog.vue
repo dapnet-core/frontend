@@ -30,14 +30,14 @@
           @validation-success="() => state[id] = 'done'"
           @submit.prevent greedy
         >
-          <slot :name="`step-${id}`"></slot>
+          <slot :name="`step-${id}`" />
         </q-form>
 
         <q-separator />
         <q-stepper-navigation class="right-nav">
           <q-btn-group>
             <q-btn v-if="!hideExitBtn" flat :label="$t('general.abort')" @click="close" />
-            <q-btn :disable="!validForm" color="primary" :label="finishBtnText" @click="trySubmit"/>
+            <q-btn :disable="!validForm" color="primary" :label="finishBtnText" @click="trySubmit" />
           </q-btn-group>
         </q-stepper-navigation>
       </q-step>
@@ -68,7 +68,6 @@ const props = defineProps<{
  *
  * See https://stackoverflow.com/q/71562592
  */
-// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:modelValue', newValue: boolean): void // Used for v-model directive
 }>()
@@ -92,6 +91,8 @@ const formInputs = computed(() => {
   for (const k in forms.value) {
     const f = forms.value[k]
     const inputRefs = f?.getValidationComponents()
+    // @ts-expect-error: Property "hasError" is no longer there, with no apparent replacement
+    // TODO: rewrite it
     if (inputRefs) inputs[k] = inputRefs.every((inputRef) => !inputRef.hasError)
   }
   return inputs
@@ -107,7 +108,7 @@ watch(formInputs, (inputs) => {
 async function trySubmit () {
   for (const key in forms.value) {
     // This calls 'validation-error' or 'validation-success'
-    await forms.value[key].validate(step.value !== key)
+    await forms.value[key]?.validate(step.value !== key)
   }
   if (validForm.value) {
     // Validation ok, try to submit form

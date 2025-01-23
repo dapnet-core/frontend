@@ -32,7 +32,7 @@ export default [
    * pluginVue.configs["flat/recommended"]
    *   -> Above, plus rules to enforce subjective community defaults to ensure consistency.
    */
-  ...pluginVue.configs[ 'flat/strongly-recommended' ],
+  ...pluginVue.configs['flat/strongly-recommended'],
 
   {
     files: ['**/*.ts', '**/*.vue'],
@@ -81,12 +81,15 @@ export default [
       'prefer-promise-reject-errors': 'off',
 
       // allow debugger during development only
-      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+
+      'vue/max-attributes-per-line': 'off',
+      'vue/first-attribute-linebreak': 'off',
     }
   },
 
   {
-    files: [ 'src-pwa/custom-service-worker.ts' ],
+    files: ['src-pwa/custom-service-worker.ts'],
     languageOptions: {
       globals: {
         ...globals.serviceworker
