@@ -1,43 +1,44 @@
 {
   "name": "dapnet-quasar",
-  "version": "20240405",
+  "version": "2025-01-23",
   "description": "Frontend for DAPNET",
   "productName": "Dapnet App",
-  "author": "Valentin Geyer <geyer@ihf.rwth-aachen.de>",
+  "author": "Valentin Geyer <trayshar@t-online.de>",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "quasar dev",
     "build": "quasar build",
-    "lint": "eslint --ext .js,.ts,.vue ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{ts,js,cjs,mjs,vue}\"",
+    "test": "echo \"No test specified\" && exit 0",
+    "postinstall": "quasar prepare"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.16.16",
     "pinia": "^2.0.11",
-    "pinia-plugin-persistedstate": "^2.1.1",
-    "quasar": "^2.6.0",
-    "vue": "^3.0.0",
-    "vue-i18n": "^9.2.2",
-    "vue-router": "^4.0.0",
-    "vue3-openlayers": "^0.1.70"
+    "pinia-plugin-persistedstate": "^4.2.0",
+    "quasar": "^2.17.7",
+    "vue": "^3.4.18",
+    "vue-i18n": "^11.0.0",
+    "vue-router": "^4.5.0",
+    "vue3-openlayers": "^11.3.0"
   },
   "devDependencies": {
-    "@intlify/vite-plugin-vue-i18n": "^6.0.1",
-    "@quasar/app-vite": "^1.0.0",
-    "@types/node": "^18.7.18",
-    "@typescript-eslint/eslint-plugin": "^5.10.0",
-    "@typescript-eslint/parser": "^5.10.0",
-    "autoprefixer": "^10.4.2",
-    "eslint": "^8.10.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-n": "^15.0.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-vue": "^9.0.0",
-    "typescript": "^4.5.4"
+    "@eslint/js": "^9.18.0",
+    "@intlify/unplugin-vue-i18n": "^6.0.3",
+    "@quasar/app-vite": "^2.0.0",
+    "@types/node": "^18.19.74",
+    "@vue/eslint-config-typescript": "^14.3.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.18.0",
+    "eslint-plugin-vue": "^9.32.0",
+    "globals": "^15.14.0",
+    "typescript": "^5.7.3",
+    "vite-plugin-checker": "^0.8.0",
+    "vue-tsc": "^2.1.10"
   },
   "engines": {
-    "node": "^18",
+    "node": "^28 || ^26 || ^24 || ^22 || ^20 || ^18",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   }

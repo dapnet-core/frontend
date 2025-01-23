@@ -1,0 +1,37 @@
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
+{
+	"name": "Quasar",
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:22-bullseye",
+
+	"customizations": {
+		"vscode": {
+			"settings": {},
+			"extensions": [
+				"streetsidesoftware.code-spell-checker",
+				"christian-kohler.npm-intellisense",
+				"ms-vscode.vscode-typescript-next",
+				"howardzuo.vscode-npm-dependency",
+				"vue.volar",
+				"dbaeumer.vscode-eslint",
+				"editorconfig.editorconfig",
+				"gruntfuggly.todo-tree"
+			]
+		}
+	},
+	// Mount node_modules as anonymous volume
+	"mounts": [
+	    "type=volume,target=${containerWorkspaceFolder}/node_modules"
+	],
+	// Make the "node_modules" folder, which is owned by root by default, writable
+	"postCreateCommand": "sudo chown $(id -u):$(id -g) node_modules",
+
+	"portsAttributes": {
+		"9000": {
+			"label": "Quasar Webserver",
+			"onAutoForward": "notify"
+		}
+	},
+
+	// Install Quasar CLI and project dependencies
+	"postStartCommand": "npm i -g @quasar/cli && npm install"
+}

@@ -1,23 +1,17 @@
-/* eslint-env node */
-
-/*
- * This file runs in a Node context (it's NOT transpiled by Babel), so use only
- * the ES6 features that are supported by your Node version. https://node.green/
- */
-
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
-const { execSync } = require('node:child_process')
+import { execSync } from 'node:child_process'
+import { fileURLToPath } from 'node:url'
 
-const { configure } = require('quasar/wrappers')
-const path = require('path')
-const pkg = require('./package.json')
+import { defineConfig } from '#q-app/wrappers'
+
+import { version } from './package.json'
 
 // This env is passed in from the command line; Typing won't be accurate
 const terminalEnv = { api: process.env.API_SERVER }
 
-module.exports = configure(function (ctx) {
+export default defineConfig((ctx) => {
   // Get local git metadata
   // https://stackoverflow.com/a/71162041
   let branchName = '?'
@@ -30,19 +24,9 @@ module.exports = configure(function (ctx) {
     console.log('Failed to get git metadata: ' + error)
   }
 
-  const version = pkg.version
   console.log('Env:', terminalEnv)
 
   return {
-    eslint: {
-      // fix: true,
-      // include = [],
-      // exclude = [],
-      // rawOptions = {},
-      warnings: true,
-      errors: true
-    },
-
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
 
@@ -75,8 +59,14 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
       target: {
-        browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
-        node: 'node16'
+        browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
+        node: 'node20'
+      },
+
+      typescript: {
+        strict: true,
+        vueShim: true
+        // extendTsConfig (tsConfig) {}
       },
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
@@ -104,13 +94,27 @@ module.exports = configure(function (ctx) {
       // viteVuePluginOptions: {},
 
       vitePlugins: [
-        ['@intlify/vite-plugin-vue-i18n', {
+        ['@intlify/unplugin-vue-i18n/vite', {
           // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
           // compositionOnly: false,
 
+          // if you want to use named tokens in your Vue I18n messages, such as 'Hello {name}',
+          // you need to set `runtimeOnly: false`
+          // runtimeOnly: false,
+
+          ssr: ctx.modeName === 'ssr',
+
           // you need to set i18n resource including paths !
-          include: path.resolve(__dirname, './src/i18n/**')
-        }]
+          include: [fileURLToPath(new URL('./src/i18n', import.meta.url))]
+        }],
+
+        ['vite-plugin-checker', {
+          vueTsc: true,
+          eslint: {
+            lintCommand: 'eslint -c ./eslint.config.js "./src*/**/*.{ts,js,mjs,cjs,vue}"',
+            useFlatConfig: true
+          }
+        }, { server: false }]
       ]
     },
 
