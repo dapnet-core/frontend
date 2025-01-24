@@ -169,12 +169,12 @@ function logout() {
 
 // TODO: to many requests for these. Simplify count once these are batched
 function fetchGlobalCounts() {
-  void getJson<Count>('calls/_count', null, false).then(resp => { count.value.calls = resp.count })
-  void getJson<Count>('transmitters/_count', null, false).then(resp => { count.value.transmitters = resp.count })
-  void getJson<Count>('users/_count', null, false).then(resp => { count.value.users = resp.count })
-  void getJson<Count>('rubrics/_count', null, false).then(resp => { count.value.rubrics = resp.count })
-  void getJson<Count>('subscribers/_count', null, false).then(resp => { count.value.subscribers = resp.count })
-  void getJson<Count>('nodes/_count', null, false).then(resp => { count.value.nodes = resp.count })
+  void getJson<Count>('calls/_count').then(resp => { count.value.calls = resp.count })
+  void getJson<Count>('transmitters/_count').then(resp => { count.value.transmitters = resp.count })
+  void getJson<Count>('users/_count').then(resp => { count.value.users = resp.count })
+  void getJson<Count>('rubrics/_count').then(resp => { count.value.rubrics = resp.count })
+  void getJson<Count>('subscribers/_count').then(resp => { count.value.subscribers = resp.count })
+  void getJson<Count>('nodes/_count').then(resp => { count.value.nodes = resp.count })
 }
 
 function fetchUserCounts() {

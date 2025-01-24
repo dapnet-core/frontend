@@ -32,6 +32,11 @@
 		}
 	},
 
+	// Enables to connect to API server for development
+	"runArgs": [
+		"--network=host"
+	],
+
 	// Install Quasar CLI and project dependencies
 	"postStartCommand": "npm i -g @quasar/cli && npm install"
 }

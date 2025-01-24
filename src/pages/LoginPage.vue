@@ -26,6 +26,7 @@
       />
 
       <q-btn :label="$t('navigation.login')" type="submit" color="primary" />
+      <q-btn label="Set token without checking it" @click="setAuthToken" color="warning" v-if="isDevBuild" />
 
       <q-banner v-if="state.error" class="text-white bg-negative" rounded>
         {{ $t('rest.errors.permissions') }}
@@ -48,6 +49,16 @@ const router = useRouter()
 const username = ref('')
 const password = ref('')
 const state = ref<{loading: boolean, error?: string}>({ loading: false })
+
+// Allows to set arbitrary auth tokens for development
+const isDevBuild = !process.env.isProd
+const setAuthToken = () => {
+  store.auth = {
+    username: username.value,
+    token: btoa(`${username.value}:${password.value}`),
+    permissions: {}
+  }
+}
 
 const onSubmit = () => {
   state.value.loading = true
