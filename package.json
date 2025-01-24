@@ -12,7 +12,7 @@
     "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{ts,js,cjs,mjs,vue}\" && vue-tsc --noEmit",
     "lintfix": "eslint -c ./eslint.config.js \"./src*/**/*.{ts,js,cjs,mjs,vue}\" --fix",
     "test": "echo \"No test specified\" && exit 0",
-    "postinstall": "quasar prepare"
+    "postinstall": "./post-install.sh"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.16",

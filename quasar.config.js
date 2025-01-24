@@ -24,7 +24,7 @@ export default defineConfig((ctx) => {
     console.log('Failed to get git metadata: ' + error)
   }
 
-  console.log('Env:', terminalEnv)
+  console.log('Env:', terminalEnv, { prod: ctx.prod } )
 
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
@@ -82,6 +82,7 @@ export default defineConfig((ctx) => {
         version,
         branchName,
         commitHash,
+        isProd: ctx.prod,
         apiServer: terminalEnv.api ? (ctx.prod ? terminalEnv.api : '/api_proxy') : ''
       },
       // rawDefine: {}
